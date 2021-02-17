@@ -8,15 +8,30 @@ namespace FreightManagement.Domain.Entities.Customers
    public class Customer : AuditableEntity
     {
 
+        public long Id { get; set; }
+        public string Name { get; set; }
+        public Address BillingAddress { get; set; }
+        public bool IsActive { get; set; }
+
+        private List<Location> _locations;
+
+        public IEnumerable<Location> Locations { get { return _locations; } }
+        
         public Customer()
         {
-            Locations = new List<Location>();
+            _locations = new List<Location>();
+            IsActive = true;
         }
 
-        public long Id { get; set; }
+        public void AddLocation(Location location)
+        {
+            _locations.Add(location);
+        }
 
-        public List<Location> Locations { get; set; }
-        public Address BillingAddress { get; set; }
+        public void RemoveLocation(Location location)
+        {
+            _locations.Remove(location);
+        }
 
     }
 }

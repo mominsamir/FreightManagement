@@ -1,18 +1,20 @@
 ﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace FreightManagement.WebUI.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
+    [AllowAnonymous]
     public class OidcConfigurationController : Controller
     {
-        private readonly ILogger<OidcConfigurationController> logger;
+        private readonly ILogger<OidcConfigurationController> _logger;
 
-        public OidcConfigurationController(IClientRequestParametersProvider clientRequestParametersProvider, ILogger<OidcConfigurationController> _logger)
+        public OidcConfigurationController(IClientRequestParametersProvider clientRequestParametersProvider, ILogger<OidcConfigurationController> logger)
         {
             ClientRequestParametersProvider = clientRequestParametersProvider;
-            logger = _logger;
+            _logger = logger;
         }
 
         public IClientRequestParametersProvider ClientRequestParametersProvider { get; }

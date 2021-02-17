@@ -22,9 +22,9 @@ namespace FreightManagement.Infrastructure
             }
             else
             {
+                var connectingString =  configuration.GetConnectionString("DefaultConnection");
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(
-                        configuration.GetConnectionString("DefaultConnection"),
+                    options.UseNpgsql(connectingString,
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
             }
 

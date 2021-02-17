@@ -14,6 +14,7 @@ namespace FreightManagement.Domain.Entities.Customers
         public string Name{ get; set; }
         public Address DeliveryAddress { get; set; }
         public Address BillingAddress { get; set; }
+        public Customer Customer { get; set; }
         public List<LocationTank> Tanks { get; set; }
     }
 }

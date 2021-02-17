@@ -1,5 +1,5 @@
 ﻿using FreightManagement.Domain.Common;
-using FreightManagement.Domain.Entities.Users;
+using FreightManagement.Domain.Entities.DriverSchedule;
 using System;
 using System.Collections.Generic;
 
@@ -8,22 +8,31 @@ namespace FreightManagement.Domain.Entities.Disptach
   public class Dispatch : AuditableEntity
     {
 
-        public Dispatch()
-        {
-            Loading = new List<DispatchLoading>();
-        }
-
         public long Id { get; set; }
 
-        public User Driver { get; set; }
-        public User Dispatcher { get; set; }
+        public ScheduleDriverTruckTrailer ScheduleDriverTruckTrailer { get; set; }
+        
+        public DateTime DispatchDateTime { get; set; }
 
-        public DateTime DispatchDate { get; set; }
+        public DispatchStatus Status { get; set; } = DispatchStatus.RECEIVED;
 
-        public DispatchStatus Status { get; set; }
+        public DateTime DispatchStartTime { get; set; }
+        public DateTime DispatchEndTime { get; set; }
+        public DateTime RackArrivalTime { get; set; }
+        public DateTime RackLeftOnTime { get; set; }
+        public DateTime LoadingStartTime { get; set; }
+        public DateTime LoadingEndTime { get; set; }
 
 
-        public List<DispatchLoading> Loading { get; private set; }
+        public List<DispatchLoading> _dispatchLoading;
+
+        public List<DispatchLoading> DispatchLoading { get { return _dispatchLoading; } }
+
+        public Dispatch()
+        {
+            _dispatchLoading = new List<DispatchLoading>();
+        }
+
     }
 
     public enum DispatchStatus

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Diagnostics;
+﻿using FreightManagement.Domain.Common;
+using System;
+using System.Collections.Generic;
 
 
 // https://conductofcode.io/post/entities-and-value-objects-in-csharp-for-ddd/
 
 namespace FreightManagement.Domain.ValueObjects
 {
-    [DebuggerDisplay("{Value}")]
-    public class Email : IEquatable<Email>, IEquatable<string>
+    public class Email : ValueObject
     {
+
         public string Value { get; }
 
         public Email(string value)
@@ -17,22 +18,6 @@ namespace FreightManagement.Domain.ValueObjects
 
             Value = value;
         }
-
-        #region Conversion
-
-        public static implicit operator string(Email value)
-        {
-            return value.Value;
-        }
-
-        public static implicit operator Email(string value)
-        {
-            return new Email(value);
-        }
-
-        #endregion
-
-        #region Equality
 
         public override bool Equals(object obj)
         {
@@ -45,20 +30,18 @@ namespace FreightManagement.Domain.ValueObjects
 
         public bool Equals(string other) => Value == other;
 
-        public static bool operator ==(Email a, Email b)
-        {
-            if (ReferenceEquals(a, b)) return true;
-            if (((object)a == null) || ((object)b == null)) return false;
+           public override string ToString() => Value;
 
-            return a.Value == b.Value;
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            // Using a yield return statement to return each element one at a time
+            yield return Value;
         }
 
-        public static bool operator !=(Email a, Email b) => !(a == b);
-
-        #endregion
-
-        public override int GetHashCode() => Value.GetHashCode();
-
-        public override string ToString() => Value;
+        public override int GetHashCode()
+        {
+           return  base.GetHashCode();
+        }
     }
+
 }

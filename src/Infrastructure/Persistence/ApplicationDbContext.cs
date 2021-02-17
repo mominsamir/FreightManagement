@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Common;
 using FreightManagement.Domain.Entities;
+using FreightManagement.Domain.Entities.Terminal;
 using FreightManagement.Infrastructure.Identity;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -35,6 +36,8 @@ namespace FreightManagement.Infrastructure.Persistence
 
         public DbSet<TodoList> TodoLists { get; set; }
 
+        public DbSet<Terminal> Terminal { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
@@ -63,7 +66,7 @@ namespace FreightManagement.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+            builder.UseSerialColumns();
             base.OnModelCreating(builder);
         }
 
