@@ -11,7 +11,7 @@ namespace FreightManagement.Domain.Entities.Customers
         public long Id { get; set; }
         public string Name { get; set; }
         public Address BillingAddress { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         private List<Location> _locations;
 
@@ -20,7 +20,6 @@ namespace FreightManagement.Domain.Entities.Customers
         public Customer()
         {
             _locations = new List<Location>();
-            IsActive = true;
         }
 
         public void AddLocation(Location location)

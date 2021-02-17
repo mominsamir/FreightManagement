@@ -1,7 +1,6 @@
 ﻿using FreightManagement.Domain.Common;
-using FreightManagement.Domain.Entities.Disptach;
 
-namespace FreightManagement.Domain.Entities.DriverSchedule
+namespace FreightManagement.Domain.Entities.DriversSchedule
 {
     public class DriverCheckList : AuditableEntity
     {
@@ -13,6 +12,7 @@ namespace FreightManagement.Domain.Entities.DriverSchedule
 
         public ScheduleDriverTruckTrailer ScheduleDriverTruckTrailer { get; set; }
 
+        public DriverCheckList() { }
         public DriverCheckList(string note, ScheduleDriverTruckTrailer scheduleDriverTruckTrailer)
         {
             CheckListItem = note;

@@ -2,7 +2,7 @@
 using FreightManagement.Domain.Entities.Products;
 using System.Collections.Generic;
 
-namespace FreightManagement.Domain.Entities.Disptach
+namespace FreightManagement.Domain.Entities.Disptaches
 {
    public class DispatchLoading : AuditableEntity
     {
@@ -13,9 +13,13 @@ namespace FreightManagement.Domain.Entities.Disptach
 
         public string LoadCode { get; set; }
 
+        public string BillOfLoading { get; set; }
+
         public double GrossQnt { get; set; }
 
-        public List<DisptachDelivery> _deliveries { get; private set; }
+        private List<DisptachDelivery> _deliveries;
+
+        public Dispatch Dispatch { get; set; }
 
         public IEnumerable<DisptachDelivery> Deliveries { get { return _deliveries; } }
 

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210217034937_init_db_1")]
+    [Migration("20210217064201_init_db_1")]
     partial class init_db_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,6 +150,285 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("customer_location_tanks");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.Dispatch", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("DispatchDateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("disptach_date");
+
+                    b.Property<DateTime>("DispatchEndTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("disptach_end_time");
+
+                    b.Property<DateTime>("DispatchStartTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("disptach_start_time");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime>("LoadingEndTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("loadng_end_time");
+
+                    b.Property<DateTime>("LoadingStartTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("loading_start_time");
+
+                    b.Property<DateTime>("RackArrivalTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rack_arrived_on");
+
+                    b.Property<DateTime>("RackLeftOnTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("rack_left_on");
+
+                    b.Property<long>("ScheduleDriverTruckTrailerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleDriverTruckTrailerId");
+
+                    b.ToTable("disptaches");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DispatchLoading", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<string>("BillOfLoading")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("bill_of_lading");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<long>("DispatchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FuelProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("GrossQnt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("gross_qnt");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("LoadCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("load_code");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DispatchId");
+
+                    b.HasIndex("FuelProductId");
+
+                    b.ToTable("disptache_loadings");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DisptachDelivery", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<double>("DeliveredQnt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("delivered_qnt");
+
+                    b.Property<long>("DispatchLoadingId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<long>("LocationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceivedByName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("received_by_name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DispatchLoadingId");
+
+                    b.HasIndex("LocationId");
+
+                    b.ToTable("disptache_deliveries");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.DriverCheckList", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<string>("CheckListItem")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("checklist_item");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_checked");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<long>("ScheduleDriverTruckTrailerId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleDriverTruckTrailerId");
+
+                    b.ToTable("driver_check_lists");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<long>("DriverId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("end_time");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_time");
+
+                    b.Property<long>("TrailerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TruckId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("TrailerId");
+
+                    b.HasIndex("TruckId");
+
+                    b.ToTable("driver_truck_trailer_schedules");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Orders.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -255,6 +534,147 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("order_items");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Payables.Invoice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("date")
+                        .HasColumnName("invoice_due_date");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("date")
+                        .HasColumnName("invoice_date");
+
+                    b.Property<string>("InvoiceNum")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("invoice_num");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<double>("Taxes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_taxes");
+
+                    b.Property<double>("Total")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_total");
+
+                    b.Property<long>("VendorId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VendorId");
+
+                    b.ToTable("vendor_invoice");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Payables.InvoiceItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("line_description");
+
+                    b.Property<long>("InvoiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<double>("LineTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("line_total");
+
+                    b.Property<double>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("quantity");
+
+                    b.Property<double>("Rate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("rate");
+
+                    b.Property<double>("SubTotal")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Taxes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_taxes");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("vendor_invoice_items");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Products.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -297,6 +717,147 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("products");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Receivable.Invoice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<long>("CustomerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("date")
+                        .HasColumnName("invoice_due_date");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("date")
+                        .HasColumnName("invoice_date");
+
+                    b.Property<string>("InvoiceNum")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("invoice_num");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("notes");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<double>("Taxes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_taxes");
+
+                    b.Property<double>("Total")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_total");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("customer_invoice");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Receivable.InvoiceItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("line_description");
+
+                    b.Property<long>("InvoiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<double>("LineTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("line_total");
+
+                    b.Property<double>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("quantity");
+
+                    b.Property<double>("Rate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("rate");
+
+                    b.Property<double>("SubTotal")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Taxes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("invoice_taxes");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("customer_invoice_items");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Terminal.Terminal", b =>
@@ -425,6 +986,36 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("TodoLists");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Users.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Vehicles.Vehicle", b =>
                 {
                     b.Property<long>("Id")
@@ -468,6 +1059,48 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("vehicles");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Vendors.Vendor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("vendor_name");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("vendors");
                 });
 
             modelBuilder.Entity("FreightManagement.Infrastructure.Identity.ApplicationUser", b =>
@@ -979,6 +1612,93 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.Dispatch", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", "ScheduleDriverTruckTrailer")
+                        .WithMany()
+                        .HasForeignKey("ScheduleDriverTruckTrailerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ScheduleDriverTruckTrailer");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DispatchLoading", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Disptaches.Dispatch", "Dispatch")
+                        .WithMany("DispatchLoading")
+                        .HasForeignKey("DispatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreightManagement.Domain.Entities.Products.FuelProduct", "FuelProduct")
+                        .WithMany()
+                        .HasForeignKey("FuelProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dispatch");
+
+                    b.Navigation("FuelProduct");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DisptachDelivery", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Disptaches.DispatchLoading", "DispatchLoading")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("DispatchLoadingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreightManagement.Domain.Entities.Customers.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DispatchLoading");
+
+                    b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.DriverCheckList", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", "ScheduleDriverTruckTrailer")
+                        .WithMany("CheckList")
+                        .HasForeignKey("ScheduleDriverTruckTrailerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ScheduleDriverTruckTrailer");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Users.User", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreightManagement.Domain.Entities.Vehicles.Trailer", "Trailer")
+                        .WithMany()
+                        .HasForeignKey("TrailerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreightManagement.Domain.Entities.Vehicles.Truck", "Truck")
+                        .WithMany()
+                        .HasForeignKey("TruckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("Trailer");
+
+                    b.Navigation("Truck");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Orders.Order", b =>
                 {
                     b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", "Customer")
@@ -1015,6 +1735,50 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Payables.Invoice", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Vendors.Vendor", "Vendor")
+                        .WithMany()
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vendor");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Payables.InvoiceItem", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Payables.Invoice", "Invoice")
+                        .WithMany("InvoiceItems")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Receivable.Invoice", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Receivable.InvoiceItem", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Receivable.Invoice", "Invoice")
+                        .WithMany("InvoiceItems")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Terminal.Terminal", b =>
@@ -1100,6 +1864,81 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         });
 
                     b.Navigation("Colour");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Vendors.Vendor", b =>
+                {
+                    b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "Address", b1 =>
+                        {
+                            b1.Property<long>("VendorId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("city");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("country");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasMaxLength(25)
+                                .HasColumnType("character varying(25)")
+                                .HasColumnName("state");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("street");
+
+                            b1.Property<string>("ZipCode")
+                                .IsRequired()
+                                .HasMaxLength(12)
+                                .HasColumnType("character varying(12)")
+                                .HasColumnName("zip_code");
+
+                            b1.HasKey("VendorId");
+
+                            b1.ToTable("vendors");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VendorId");
+                        });
+
+                    b.OwnsOne("FreightManagement.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<long>("VendorId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("email");
+
+                            b1.HasKey("VendorId");
+
+                            b1.ToTable("vendors");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VendorId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
+
+                    b.Navigation("Email")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1190,9 +2029,34 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Tanks");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.Dispatch", b =>
+                {
+                    b.Navigation("DispatchLoading");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DispatchLoading", b =>
+                {
+                    b.Navigation("Deliveries");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+                {
+                    b.Navigation("CheckList");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Orders.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Payables.Invoice", b =>
+                {
+                    b.Navigation("InvoiceItems");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Receivable.Invoice", b =>
+                {
+                    b.Navigation("InvoiceItems");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.TodoList", b =>

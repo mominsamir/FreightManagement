@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FreightManagement.Domain.Entities.DriverSchedule
+namespace FreightManagement.Domain.Entities.DriversSchedule
 {
     public class ScheduleDriverTruckTrailer : AuditableEntity
     {
@@ -17,9 +17,14 @@ namespace FreightManagement.Domain.Entities.DriverSchedule
         public Trailer Trailer { get; set; }
         public Truck Truck { get; set; }
 
-        public List<DriverCheckList> _checkList;
+        private List<DriverCheckList> _checkList;
 
         public IEnumerable<DriverCheckList> CheckList { get { return _checkList; } }
+
+        public ScheduleDriverTruckTrailer()
+        {
+            _checkList = new List<DriverCheckList>();
+        }
 
         public void AddCheckListNotes(List<string> checkLists)
         {

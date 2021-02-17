@@ -12,6 +12,10 @@ namespace FreightManagement.Domain.ValueObjects
 
         public string Value { get; }
 
+        public Email()
+        {
+        }
+
         public Email(string value)
         {
             if (!value.Contains("@")) throw new Exception("Email is invalid");

@@ -1,9 +1,9 @@
 ﻿using FreightManagement.Domain.Common;
-using FreightManagement.Domain.Entities.DriverSchedule;
+using FreightManagement.Domain.Entities.DriversSchedule;
 using System;
 using System.Collections.Generic;
 
-namespace FreightManagement.Domain.Entities.Disptach
+namespace FreightManagement.Domain.Entities.Disptaches
 {
   public class Dispatch : AuditableEntity
     {
@@ -24,7 +24,7 @@ namespace FreightManagement.Domain.Entities.Disptach
         public DateTime LoadingEndTime { get; set; }
 
 
-        public List<DispatchLoading> _dispatchLoading;
+        private List<DispatchLoading> _dispatchLoading;
 
         public List<DispatchLoading> DispatchLoading { get { return _dispatchLoading; } }
 
@@ -37,9 +37,9 @@ namespace FreightManagement.Domain.Entities.Disptach
 
     public enum DispatchStatus
     {
-        RECEIVED = 0,
-        SHIPPED = 1,
-        DEILVERED = 2,
+        RECEIVED,
+        SHIPPED,
+        DEILVERED
     }
 
 }

@@ -170,6 +170,24 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "vehicles",
                 columns: table => new
                 {
@@ -185,6 +203,30 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_vehicles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vendors",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    vendor_name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    street = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    city = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    state = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    country = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    zip_code = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vendors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -289,6 +331,36 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "customer_invoice",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    invoice_num = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    invoice_date = table.Column<DateTime>(type: "date", nullable: false),
+                    invoice_due_date = table.Column<DateTime>(type: "date", nullable: false),
+                    invoice_taxes = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    invoice_total = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    notes = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customer_invoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_customer_invoice_customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -439,6 +511,65 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "vendor_invoice",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    VendorId = table.Column<long>(type: "bigint", nullable: false),
+                    invoice_num = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    invoice_date = table.Column<DateTime>(type: "date", nullable: false),
+                    invoice_due_date = table.Column<DateTime>(type: "date", nullable: false),
+                    invoice_taxes = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    invoice_total = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    notes = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vendor_invoice", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_vendor_invoice_vendors_VendorId",
+                        column: x => x.VendorId,
+                        principalTable: "vendors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "customer_invoice_items",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    InvoiceId = table.Column<long>(type: "bigint", nullable: false),
+                    line_description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    quantity = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    rate = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    SubTotal = table.Column<double>(type: "double precision", nullable: false),
+                    invoice_taxes = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    line_total = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customer_invoice_items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_customer_invoice_items_customer_invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "customer_invoice",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "customer_location_tanks",
                 columns: table => new
                 {
@@ -502,6 +633,195 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "driver_truck_trailer_schedules",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    start_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    end_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DriverId = table.Column<long>(type: "bigint", nullable: false),
+                    TrailerId = table.Column<long>(type: "bigint", nullable: false),
+                    TruckId = table.Column<long>(type: "bigint", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_driver_truck_trailer_schedules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_driver_truck_trailer_schedules_trailers_TrailerId",
+                        column: x => x.TrailerId,
+                        principalTable: "trailers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_driver_truck_trailer_schedules_trucks_TruckId",
+                        column: x => x.TruckId,
+                        principalTable: "trucks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_driver_truck_trailer_schedules_User_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vendor_invoice_items",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    InvoiceId = table.Column<long>(type: "bigint", nullable: false),
+                    line_description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    quantity = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    rate = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    SubTotal = table.Column<double>(type: "double precision", nullable: false),
+                    invoice_taxes = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    line_total = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vendor_invoice_items", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_vendor_invoice_items_vendor_invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "vendor_invoice",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "disptaches",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    ScheduleDriverTruckTrailerId = table.Column<long>(type: "bigint", nullable: false),
+                    disptach_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    disptach_start_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    disptach_end_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    rack_arrived_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    rack_left_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    loading_start_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    loadng_end_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_disptaches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_disptaches_driver_truck_trailer_schedules_ScheduleDriverTru~",
+                        column: x => x.ScheduleDriverTruckTrailerId,
+                        principalTable: "driver_truck_trailer_schedules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "driver_check_lists",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    checklist_item = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    is_checked = table.Column<bool>(type: "boolean", nullable: false),
+                    ScheduleDriverTruckTrailerId = table.Column<long>(type: "bigint", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_driver_check_lists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_driver_check_lists_driver_truck_trailer_schedules_ScheduleD~",
+                        column: x => x.ScheduleDriverTruckTrailerId,
+                        principalTable: "driver_truck_trailer_schedules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "disptache_loadings",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    FuelProductId = table.Column<long>(type: "bigint", nullable: false),
+                    load_code = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    bill_of_lading = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    gross_qnt = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    DispatchId = table.Column<long>(type: "bigint", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_disptache_loadings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_disptache_loadings_disptaches_DispatchId",
+                        column: x => x.DispatchId,
+                        principalTable: "disptaches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_disptache_loadings_fuel_products_FuelProductId",
+                        column: x => x.FuelProductId,
+                        principalTable: "fuel_products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "disptache_deliveries",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    LocationId = table.Column<long>(type: "bigint", nullable: false),
+                    delivered_qnt = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
+                    received_by_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    DispatchLoadingId = table.Column<long>(type: "bigint", nullable: false),
+                    created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    updated_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_disptache_deliveries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_disptache_deliveries_customer_locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "customer_locations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_disptache_deliveries_disptache_loadings_DispatchLoadingId",
+                        column: x => x.DispatchLoadingId,
+                        principalTable: "disptache_loadings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -540,6 +860,16 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_customer_invoice_CustomerId",
+                table: "customer_invoice",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_customer_invoice_items_InvoiceId",
+                table: "customer_invoice_items",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_customer_location_tanks_LocationId",
                 table: "customer_location_tanks",
                 column: "LocationId");
@@ -559,6 +889,51 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "IX_DeviceCodes_Expiration",
                 table: "DeviceCodes",
                 column: "Expiration");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disptache_deliveries_DispatchLoadingId",
+                table: "disptache_deliveries",
+                column: "DispatchLoadingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disptache_deliveries_LocationId",
+                table: "disptache_deliveries",
+                column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disptache_loadings_DispatchId",
+                table: "disptache_loadings",
+                column: "DispatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disptache_loadings_FuelProductId",
+                table: "disptache_loadings",
+                column: "FuelProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_disptaches_ScheduleDriverTruckTrailerId",
+                table: "disptaches",
+                column: "ScheduleDriverTruckTrailerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_driver_check_lists_ScheduleDriverTruckTrailerId",
+                table: "driver_check_lists",
+                column: "ScheduleDriverTruckTrailerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_driver_truck_trailer_schedules_DriverId",
+                table: "driver_truck_trailer_schedules",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_driver_truck_trailer_schedules_TrailerId",
+                table: "driver_truck_trailer_schedules",
+                column: "TrailerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_driver_truck_trailer_schedules_TruckId",
+                table: "driver_truck_trailer_schedules",
+                column: "TruckId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_order_items_FuelProductId",
@@ -617,6 +992,16 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 table: "vehicles",
                 column: "number_plate",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vendor_invoice_VendorId",
+                table: "vendor_invoice",
+                column: "VendorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vendor_invoice_items_InvoiceId",
+                table: "vendor_invoice_items",
+                column: "InvoiceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -637,10 +1022,19 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "customer_invoice_items");
+
+            migrationBuilder.DropTable(
                 name: "customer_location_tanks");
 
             migrationBuilder.DropTable(
                 name: "DeviceCodes");
+
+            migrationBuilder.DropTable(
+                name: "disptache_deliveries");
+
+            migrationBuilder.DropTable(
+                name: "driver_check_lists");
 
             migrationBuilder.DropTable(
                 name: "order_items");
@@ -655,10 +1049,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "TodoItems");
 
             migrationBuilder.DropTable(
-                name: "trailers");
-
-            migrationBuilder.DropTable(
-                name: "trucks");
+                name: "vendor_invoice_items");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -667,10 +1058,13 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "customer_locations");
+                name: "customer_invoice");
 
             migrationBuilder.DropTable(
-                name: "fuel_products");
+                name: "disptache_loadings");
+
+            migrationBuilder.DropTable(
+                name: "customer_locations");
 
             migrationBuilder.DropTable(
                 name: "orders");
@@ -679,13 +1073,37 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "TodoLists");
 
             migrationBuilder.DropTable(
-                name: "vehicles");
+                name: "vendor_invoice");
+
+            migrationBuilder.DropTable(
+                name: "disptaches");
+
+            migrationBuilder.DropTable(
+                name: "fuel_products");
+
+            migrationBuilder.DropTable(
+                name: "customers");
+
+            migrationBuilder.DropTable(
+                name: "vendors");
+
+            migrationBuilder.DropTable(
+                name: "driver_truck_trailer_schedules");
 
             migrationBuilder.DropTable(
                 name: "products");
 
             migrationBuilder.DropTable(
-                name: "customers");
+                name: "trailers");
+
+            migrationBuilder.DropTable(
+                name: "trucks");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "vehicles");
         }
     }
 }
