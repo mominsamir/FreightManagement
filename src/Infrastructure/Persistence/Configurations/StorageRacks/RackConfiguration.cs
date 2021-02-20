@@ -1,18 +1,18 @@
-﻿using FreightManagement.Domain.Entities.Terminal;
+﻿using FreightManagement.Domain.Entities.StorageRack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
-namespace FreightManagement.Infrastructure.Persistence.Configurations
+namespace FreightManagement.Infrastructure.Persistence.Configurations.StorageRacks
 {
-    public class TerminalConfiguration : BaseEntityConfigurations<Terminal>
+    public class RackConfiguration : BaseEntityConfigurations<Rack>
     {
-        public override void Configure(EntityTypeBuilder<Terminal> builder)
+        public override void Configure(EntityTypeBuilder<Rack> builder)
         {
 
             base.Configure(builder);
 
-            builder.ToTable("terminals");
+            builder.ToTable("racks");
 
             builder.HasKey(x => x.Id);
 
@@ -27,7 +27,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations
 
                 .IsRequired();
 
-            builder.Property(t => t.isActive)
+            builder.Property(t => t.IsActive)
                 .HasColumnName("is_active")
                 .HasMaxLength(30)
                 .IsRequired();

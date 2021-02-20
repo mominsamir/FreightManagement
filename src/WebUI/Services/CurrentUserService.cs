@@ -13,6 +13,7 @@ namespace FreightManagement.WebUI.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
+
         public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

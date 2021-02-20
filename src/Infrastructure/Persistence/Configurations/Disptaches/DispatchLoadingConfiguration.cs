@@ -33,6 +33,13 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
                  .IsRequired()
                  .OnDelete(DeleteBehavior.Cascade);
 
+
+            builder
+                 .HasOne(s => s.Dispatch)
+                 .WithMany(g => g.DispatchLoading)
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
+
             builder
                 .HasOne(e => e.FuelProduct)
                 .WithMany()

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿    using FluentValidation;
 
 namespace FreightManagement.Application.TodoItems.Queries.GetTodoItemsWithPagination
 {

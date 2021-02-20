@@ -21,9 +21,8 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vendors
                 .IsRequired();
 
 
-            builder.Property(t => t.Status)
-                .HasColumnName("status")
-                .HasConversion<string>()
+            builder.Property(t => t.IsActive)
+                .HasColumnName("is_active")
                 .IsRequired();
 
             builder.OwnsOne(

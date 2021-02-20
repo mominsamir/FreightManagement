@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210217064201_init_db_1")]
-    partial class init_db_1
+    [Migration("20210218204123_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -860,7 +860,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("customer_invoice_items");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.Terminal.Terminal", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.StorageRack.Rack", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -883,6 +883,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("irs_code");
 
+                    b.Property<bool>("IsActive")
+                        .HasMaxLength(30)
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -898,17 +903,12 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(200)")
                         .HasColumnName("rack_name");
 
-                    b.Property<bool>("isActive")
-                        .HasMaxLength(30)
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_active");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IRSCode")
                         .IsUnique();
 
-                    b.ToTable("terminals");
+                    b.ToTable("racks");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.TodoItem", b =>
@@ -1078,6 +1078,10 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -1092,11 +1096,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
                         .HasColumnName("vendor_name");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
 
                     b.HasKey("Id");
 
@@ -1781,11 +1780,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Invoice");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.Terminal.Terminal", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.StorageRack.Rack", b =>
                 {
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "Address", b1 =>
                         {
-                            b1.Property<long>("TerminalId")
+                            b1.Property<long>("RackId")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint")
                                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
@@ -1820,12 +1819,12 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                                 .HasColumnType("character varying(12)")
                                 .HasColumnName("zip_code");
 
-                            b1.HasKey("TerminalId");
+                            b1.HasKey("RackId");
 
-                            b1.ToTable("terminals");
+                            b1.ToTable("racks");
 
                             b1.WithOwner()
-                                .HasForeignKey("TerminalId");
+                                .HasForeignKey("RackId");
                         });
 
                     b.Navigation("Address")

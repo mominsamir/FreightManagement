@@ -1,9 +1,9 @@
 ﻿using FreightManagement.Domain.Common;
 using FreightManagement.Domain.ValueObjects;
 
-namespace FreightManagement.Domain.Entities.Terminal
+namespace FreightManagement.Domain.Entities.StorageRack
 {
-    public class Terminal: AuditableEntity
+    public class Rack: AuditableEntity
     {
         public long Id { get; set; }
 
@@ -13,6 +13,6 @@ namespace FreightManagement.Domain.Entities.Terminal
 
         public Address Address { get; set; }
 
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

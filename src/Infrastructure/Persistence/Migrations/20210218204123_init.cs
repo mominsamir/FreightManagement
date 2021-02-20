@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
-    public partial class init_db_1 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -128,7 +128,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "terminals",
+                name: "racks",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -148,7 +148,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_terminals", x => x.Id);
+                    table.PrimaryKey("PK_racks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,7 +218,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     state = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     country = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     zip_code = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
-                    status = table.Column<string>(type: "text", nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -977,8 +977,8 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_terminals_irs_code",
-                table: "terminals",
+                name: "IX_racks_irs_code",
+                table: "racks",
                 column: "irs_code",
                 unique: true);
 
@@ -1043,7 +1043,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "terminals");
+                name: "racks");
 
             migrationBuilder.DropTable(
                 name: "TodoItems");

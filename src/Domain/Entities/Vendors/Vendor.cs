@@ -9,13 +9,8 @@ namespace FreightManagement.Domain.Entities.Vendors
         public string Name { get; set; }
         public Email Email { get; set; }
         public Address Address { get; set; }
-        public VendorStatus Status { get; set; }
+        public bool IsActive { get; set; }
 
     }
 
-    public enum VendorStatus
-    {
-        ACTIVE,
-        INACTIVE
-    }
 }
