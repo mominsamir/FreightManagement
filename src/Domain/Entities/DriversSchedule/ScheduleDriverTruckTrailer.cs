@@ -13,7 +13,7 @@ namespace FreightManagement.Domain.Entities.DriversSchedule
         public long Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public User Driver { get; set; }
+        public string Driver { get; set; }
         public Trailer Trailer { get; set; }
         public Truck Truck { get; set; }
 

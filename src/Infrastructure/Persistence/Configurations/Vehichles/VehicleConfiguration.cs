@@ -20,6 +20,11 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(t => t.VIN)
+                .HasColumnName("vin" )
+                .HasMaxLength(50)
+                .IsRequired();
+
             builder
                 .Property(t => t.Status)
                 .HasColumnName("status")

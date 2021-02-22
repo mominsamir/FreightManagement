@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Trailer.Commands.UpdateTrailer
+namespace FreightManagement.Application.Trailers.Commands.UpdateTrailer
 {
     public class UpdateTrailerCommand : IRequest
     {

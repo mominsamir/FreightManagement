@@ -5,28 +5,28 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Trucks.Commands.UpdateTruckStatus
+namespace FreightManagement.Application.Trailers.Commands.UpdateTrailerStatus
 {
-    public class UpdateTruckStatusCommand: IRequest<Unit>
+    public  class UpdateTrailerStatusCommand   : IRequest<Unit>
     {
         public long Id { get; set; }
         public VehicleStatus status { get; set; }
     }
 
-    public class UpdateTruckStatusCommandHandler : IRequestHandler<UpdateTruckStatusCommand, Unit>
+    public class UpdateTrailerStatusCommandHandler : IRequestHandler<UpdateTrailerStatusCommand, Unit>
     {
         private readonly IApplicationDbContext _contex;
 
-        public UpdateTruckStatusCommandHandler(IApplicationDbContext contex)
+        public UpdateTrailerStatusCommandHandler(IApplicationDbContext contex)
         {
             _contex = contex;
         }
 
-        public async Task<Unit> Handle(UpdateTruckStatusCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateTrailerStatusCommand request, CancellationToken cancellationToken)
         {
-            var truck = await _contex.Trucks.FindAsync(request.Id);
+            var truck = await _contex.Trailers.FindAsync(request.Id);
 
-            if( truck == null)
+            if (truck == null)
             {
                 throw new DllNotFoundException();
             }
@@ -38,5 +38,6 @@ namespace FreightManagement.Application.Trucks.Commands.UpdateTruckStatus
             return Unit.Value;
         }
     }
+
 
 }

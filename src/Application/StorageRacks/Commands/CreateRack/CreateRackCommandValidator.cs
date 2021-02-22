@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.Application.StorageRacks.Commands.CreateTerminal
 {
-    public class CreateRackCommandValidator : AbstractValidator<CreateTerminalCommand>
+    public class CreateRackCommandValidator : AbstractValidator<CreateRackCommand>
     {
         private readonly IApplicationDbContext _context;
 

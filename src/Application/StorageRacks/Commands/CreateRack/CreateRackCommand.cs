@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.Application.Terminal.Commands.CreateTerminal
 {
-    public class CreateTerminalCommand : IRequest<long>
+    public class CreateRackCommand : IRequest<long>
     {
         public string Name { get; set; }
         public string IRSCode { get; set; }
@@ -18,7 +18,7 @@ namespace FreightManagement.Application.Terminal.Commands.CreateTerminal
         public string ZipCode { get; set; }
     }
 
-    public class CreateTodoItemCommandHandler : IRequestHandler<CreateTerminalCommand, long>
+    public class CreateTodoItemCommandHandler : IRequestHandler<CreateRackCommand, long>
     {
         private readonly IApplicationDbContext _context;
 
@@ -27,7 +27,7 @@ namespace FreightManagement.Application.Terminal.Commands.CreateTerminal
             _context = context;
         }
 
-        public async Task<long> Handle(CreateTerminalCommand request, CancellationToken cancellationToken)
+        public async Task<long> Handle(CreateRackCommand request, CancellationToken cancellationToken)
         {
             var entity = new Rack
             {

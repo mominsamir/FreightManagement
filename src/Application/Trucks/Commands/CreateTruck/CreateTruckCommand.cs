@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Trucks.Commands.CreateTruckCommand
+namespace FreightManagement.Application.Trucks.Commands.CreateTruck
 {
     public class CreateTruckCommand : IRequest<long>
     {

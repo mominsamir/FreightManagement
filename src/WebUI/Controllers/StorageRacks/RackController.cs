@@ -18,7 +18,7 @@ namespace FreightManagement.WebUI.Controllers.Terminal
         }
 
         [HttpPost]
-        public async Task<ActionResult<long>> Create(CreateTerminalCommand command)
+        public async Task<ActionResult<long>> Create(CreateRackCommand command)
         {
             return await Mediator.Send(command);
         }

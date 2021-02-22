@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Trailer.Commands.CreateTrailer
+namespace FreightManagement.Application.Trailers.Commands.CreateTrailer
 {
     public class CreateTrailerCommand : IRequest<long>
     {
