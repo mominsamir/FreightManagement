@@ -37,6 +37,21 @@ namespace FreightManagement.Domain.Entities.Orders
             _orderItems.Add ( new OrderItem(product, location, qnt, loadCode, this));
         }
 
+        public void UpdateOrderItem(long Id, FuelProduct product, Location location, double qnt, string loadCode)
+        {
+
+            var orderItem = _orderItems.Find(i => i.Id == Id);
+
+            if(orderItem != null)
+            {
+                orderItem.FuelProduct= product;
+                orderItem.Location = location;
+                orderItem.Quantituy = qnt;
+                orderItem.LoadCode = loadCode;
+            }
+
+        }
+
         public void RemoveOrderItem(long orderItemId)
         {
             var index =  _orderItems.FindIndex(i => i.Id == orderItemId);

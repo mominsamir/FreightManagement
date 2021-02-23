@@ -4,6 +4,7 @@ using FreightManagement.Domain.Entities.Disptaches;
 using FreightManagement.Domain.Entities.DriversSchedule;
 using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Payables;
+using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
@@ -54,7 +55,9 @@ namespace FreightManagement.Application.Common.Interfaces
         public DbSet<Domain.Entities.Receivable.InvoiceItem> CustomerInvoiceItems { get; set; }
         public DbSet<Rack> Racks { get; set; }
 
+        public DbSet<Product> Products { get; set; }
 
+        public DbSet<FuelProduct> FuelProducts { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

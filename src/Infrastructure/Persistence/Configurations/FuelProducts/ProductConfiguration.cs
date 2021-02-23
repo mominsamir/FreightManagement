@@ -25,6 +25,11 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.FuelProduc
                 .HasMaxLength(200)
                 .IsRequired();
 
+            builder.Property(t => t.UOM)
+                .HasColumnName("uom")
+                .HasConversion<string>()
+                .IsRequired();
+
             builder.Property(t => t.IsActive)
                 .HasColumnName("is_active")
                 .IsRequired();

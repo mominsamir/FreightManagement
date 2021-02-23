@@ -9,7 +9,8 @@ namespace FreightManagement.Application.Products.Queries.GetFuelProduct
    {
         public long Id { get; set; }
         public string Name { get; set; }
-        public FuelGrade grade { get; set; }
+        public FuelGrade Grade { get; set; }
+        public UnitOfMeasure UOM { get; set; }
         public bool IsActive { get; set; }
 
         public void Mapping(Profile profile)

@@ -11,7 +11,16 @@ namespace FreightManagement.Domain.Entities.Products
 
         public bool IsActive { get; set; }
 
+        public UnitOfMeasure UOM { get; set; }
+
     }
 
+
+    public enum UnitOfMeasure
+    {
+        UNIT,
+        GALLON,
+        PACKAGE
+    }
 
 }

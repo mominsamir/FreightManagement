@@ -6,6 +6,7 @@ using FreightManagement.Domain.Entities.Disptaches;
 using FreightManagement.Domain.Entities.DriversSchedule;
 using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Payables;
+using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
@@ -83,11 +84,12 @@ namespace FreightManagement.Infrastructure.Persistence
         public DbSet<Domain.Entities.Receivable.InvoiceItem> CustomerInvoiceItems { get; set; }
         public DbSet<Rack> Racks { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<FuelProduct> FuelProducts { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-
-            _logger.LogInformation("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: {Name}",
-                _currentUserService.UserId);
 
             foreach (EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {
