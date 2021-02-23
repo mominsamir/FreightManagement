@@ -28,7 +28,7 @@ namespace FreightManagement.Application.Common.Interfaces
 
         public DbSet<Truck> Trucks { get; set; }
 
-        public DbSet<Domain.Entities.Vehicles.Trailer> Trailers { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
 
         public DbSet<Vendor> Vendors { get; set; }
 

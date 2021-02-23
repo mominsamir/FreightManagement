@@ -26,6 +26,7 @@ namespace FreightManagement.Domain.Entities.Payables
             _invoiceItem = new List<InvoiceItem>();
         }
 
+        // TODO: Why is this property made virtual ???
         public virtual IEnumerable<InvoiceItem> InvoiceItems { get { return _invoiceItem; } }
 
     }

@@ -15,8 +15,8 @@ namespace FreightManagement.Domain.Entities.Customers
 
         private List<Location> _locations;
 
-        public IEnumerable<Location> Locations { get { return _locations; } }
-        
+        public IEnumerable<Location> Locations => _locations;
+
         public Customer()
         {
             _locations = new List<Location>();

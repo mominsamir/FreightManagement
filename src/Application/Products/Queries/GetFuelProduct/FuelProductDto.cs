@@ -5,7 +5,8 @@ using FreightManagement.Domain.Entities.Products;
 
 namespace FreightManagement.Application.Products.Queries.GetFuelProduct
 {
-   public  class FuelProductDto : IMapFrom<FuelProductDto>
+    // TODO: Fixed mapping here 
+   public  class FuelProductDto : IMapFrom<FuelProduct>
    {
         public long Id { get; set; }
         public string Name { get; set; }
