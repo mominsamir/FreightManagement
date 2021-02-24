@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Vendors.Commands.CreateVendor
+namespace FreightManagement.Application.Customers.Commands.CreateLocation
 {
-    public class CreateVendorCommandValidator : AbstractValidator<CreateVendorCommand>
+    public class CreateLoactionCommandValiadtor : AbstractValidator<CreateLocationCommand>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IApplicationDbContext _contex;
 
-        public CreateVendorCommandValidator(IApplicationDbContext context)
+        public CreateLoactionCommandValiadtor(IApplicationDbContext contex)
         {
-            _context = context;
+            _contex = contex;
 
             RuleFor(v => v.Name)
-                .NotEmpty().WithMessage("Vendor name is required.")
-                .MaximumLength(200).WithMessage("Vendor name must not exceed 200 characters.")
-                .MustAsync(BeUniqueTitle).WithMessage("Vendor name must not exceed 200 characters.");
+                 .NotEmpty().WithMessage("Location name is required.")
+                 .MaximumLength(200).WithMessage("Location name must not exceed 200 characters.")
+                 .MustAsync(BeUniqueName).WithMessage("Location name must not exceed 200 characters.");
 
             RuleFor(v => v.Email)
                 .NotEmpty().WithMessage("Email is required.")
@@ -45,10 +45,9 @@ namespace FreightManagement.Application.Vendors.Commands.CreateVendor
                 .MaximumLength(20).WithMessage("Country must not exceed 20 characters.");
         }
 
-        public async Task<bool> BeUniqueTitle(string name, CancellationToken cancellationToken)
+        public async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
         {
-            return await _context.Vendors.AllAsync(l => l.Name != name,cancellationToken);
+            return await _contex.Locations.AllAsync(l => l.Name == name, cancellationToken);
         }
-
     }
 }

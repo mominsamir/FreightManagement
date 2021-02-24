@@ -20,7 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Orders\Queries\" />
+    <Folder Include="Customers\Commands\UpdateLocationStatus\" />
+    <Folder Include="Customers\Commands\UpdateCustomerStatus\" />
+    <Folder Include="Customers\Commands\RemoveTankFromLocation\" />
+    <Folder Include="Customers\Commands\UpdateLocation\" />
+    <Folder Include="Customers\Commands\UpdateCustomer\" />
+    <Folder Include="Customers\Queries\GetCustomerById\" />
+    <Folder Include="Customers\Queries\GetLocationById\" />
     <Folder Include="Vendors\Commands\UpdateStatusVendor\" />
   </ItemGroup>
 

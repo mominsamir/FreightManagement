@@ -16,12 +16,12 @@ namespace FreightManagement.Domain.Entities.Disptaches
 
         public DispatchStatus Status { get; set; } = DispatchStatus.RECEIVED;
 
-        public DateTime DispatchStartTime { get; set; }
-        public DateTime DispatchEndTime { get; set; }
-        public DateTime RackArrivalTime { get; set; }
-        public DateTime RackLeftOnTime { get; set; }
-        public DateTime LoadingStartTime { get; set; }
-        public DateTime LoadingEndTime { get; set; }
+        public DateTime DispatchStartTime { get; private set; }
+        public DateTime DispatchEndTime { get; private set; }
+        public DateTime RackArrivalTime { get; private set; }
+        public DateTime RackLeftOnTime { get; private set; }
+        public DateTime LoadingStartTime { get; private set; }
+        public DateTime LoadingEndTime { get; private set; }
 
 
         private List<DispatchLoading> _dispatchLoading;

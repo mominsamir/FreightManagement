@@ -10,7 +10,7 @@ namespace FreightManagement.Domain.Entities.Orders
         public long Id { get; set; }
         public Location Location { get; set; }
         public FuelProduct FuelProduct { get; set; }
-        public double Quantituy { get; set; } = 0;
+        public double Quantity { get; set; } = 0;
         public string LoadCode { get; set; }
         public Order Order { get; set; }
 
@@ -20,7 +20,7 @@ namespace FreightManagement.Domain.Entities.Orders
         {
             FuelProduct = product;
             Location = location;
-            Quantituy = qnt;
+            Quantity = qnt;
             LoadCode = loadCode;
             Order = order;
         }

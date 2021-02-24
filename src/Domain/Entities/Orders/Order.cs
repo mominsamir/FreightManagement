@@ -46,7 +46,7 @@ namespace FreightManagement.Domain.Entities.Orders
             {
                 orderItem.FuelProduct= product;
                 orderItem.Location = location;
-                orderItem.Quantituy = qnt;
+                orderItem.Quantity = qnt;
                 orderItem.LoadCode = loadCode;
             }
 
@@ -75,7 +75,7 @@ namespace FreightManagement.Domain.Entities.Orders
 
         public double TotalQuantity()
         {
-            return _orderItems.Sum(i => i.Quantituy);
+            return _orderItems.Sum(i => i.Quantity);
         }
 
     }

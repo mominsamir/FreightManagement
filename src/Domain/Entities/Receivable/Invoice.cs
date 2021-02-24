@@ -16,7 +16,7 @@ namespace FreightManagement.Domain.Entities.Receivable
         public double Taxes { get; set; }
         public double Total { get; set; }
         public string Notes { get; set; }
-        public InvoiceStatus Status { get; set; } = InvoiceStatus.RECEVIED;
+        public InvoiceStatus Status { get; set; }
 
         private List<InvoiceItem> _invoiceItem;
 

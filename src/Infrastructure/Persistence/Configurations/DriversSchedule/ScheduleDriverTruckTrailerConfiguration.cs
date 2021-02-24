@@ -23,11 +23,6 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSch
                 .IsRequired();
 
             builder
-                .HasOne(e => e.Driver)
-                .WithMany()
-                .IsRequired();
-
-            builder
                 .HasOne(e => e.Trailer)
                 .WithMany()
                 .IsRequired();

@@ -3,36 +3,23 @@ using System;
 using FreightManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210224034405_SampleMigration")]
+    partial class SampleMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
-
-            modelBuilder.Entity("CustomerLocation", b =>
-                {
-                    b.Property<long>("CustomersId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("LocationsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CustomersId", "LocationsId");
-
-                    b.HasIndex("LocationsId");
-
-                    b.ToTable("CustomerLocation");
-                });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
                 {
@@ -92,6 +79,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
 
+                    b.Property<long?>("CustomerId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -108,6 +98,8 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnName("location_name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("customer_locations");
                 });
@@ -1429,21 +1421,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("trucks");
                 });
 
-            modelBuilder.Entity("CustomerLocation", b =>
-                {
-                    b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FreightManagement.Domain.Entities.Customers.Location", null)
-                        .WithMany()
-                        .HasForeignKey("LocationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
                 {
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "BillingAddress", b1 =>
@@ -1497,6 +1474,10 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Location", b =>
                 {
+                    b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", null)
+                        .WithMany("Locations")
+                        .HasForeignKey("CustomerId");
+
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "DeliveryAddress", b1 =>
                         {
                             b1.Property<long>("LocationId")
@@ -1954,6 +1935,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasForeignKey("FreightManagement.Domain.Entities.Vehicles.Truck", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
+                {
+                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Location", b =>

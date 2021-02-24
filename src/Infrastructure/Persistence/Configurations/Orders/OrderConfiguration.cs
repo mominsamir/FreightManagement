@@ -28,9 +28,12 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Orders
                 .IsRequired();
 
             builder.Property(t => t.Status)
-                .HasColumnName("is_active")
+                .HasColumnName("status")
                 .HasMaxLength(20)
-                .HasConversion<string>()
+                .HasConversion(
+                    u => u.ToString(),
+                    u => Enum.Parse<OrderStatus>(u)
+                )
                 .IsRequired();
 
             builder

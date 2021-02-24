@@ -16,7 +16,7 @@ namespace FreightManagement.Domain.Entities.Payables
         public double Taxes { get; set; }
         public double Total { get; set; }
         public string Notes { get; set; }
-        public InvoiceStatus Status { get; set; } = InvoiceStatus.RECEVIED;
+        public InvoiceStatus Status { get; private set; }
 
 
         private List<InvoiceItem> _invoiceItem;
@@ -26,7 +26,7 @@ namespace FreightManagement.Domain.Entities.Payables
             _invoiceItem = new List<InvoiceItem>();
         }
 
-        public virtual IEnumerable<InvoiceItem> InvoiceItems { get { return _invoiceItem; } }
+        public IEnumerable<InvoiceItem> InvoiceItems { get { return _invoiceItem; } }
 
     }
 

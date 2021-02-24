@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Domain.Entities.Payables;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.Payables
 {
@@ -45,7 +46,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Payables
             builder.Property(t => t.Status)
                 .HasColumnName("status")
                 .IsRequired()
-                .HasConversion<string>();
+                .HasConversion(
+                     u => u.ToString(),
+                     u => Enum.Parse<InvoiceStatus>(u)
+                );
 
             builder
                 .HasOne(e => e.Vendor)

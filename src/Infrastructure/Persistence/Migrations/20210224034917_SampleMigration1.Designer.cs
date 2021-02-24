@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218204123_init")]
-    partial class init
+    [Migration("20210224034917_SampleMigration1")]
+    partial class SampleMigration1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,21 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+            modelBuilder.Entity("CustomerLocation", b =>
+                {
+                    b.Property<long>("CustomersId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LocationsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CustomersId", "LocationsId");
+
+                    b.HasIndex("LocationsId");
+
+                    b.ToTable("CustomerLocation");
+                });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
                 {
@@ -79,9 +94,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -98,8 +110,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnName("location_name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("customer_locations");
                 });
@@ -147,7 +157,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("customer_location_tanks");
+                    b.ToTable("location_tanks");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.Dispatch", b =>
@@ -392,7 +402,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
 
-                    b.Property<long>("DriverId")
+                    b.Property<long>("Driver")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("EndTime")
@@ -419,8 +429,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DriverId");
 
                     b.HasIndex("TrailerId");
 
@@ -470,7 +478,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
-                        .HasColumnName("is_active");
+                        .HasColumnName("status");
 
                     b.HasKey("Id");
 
@@ -519,7 +527,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("Quantituy")
+                    b.Property<double>("Quantity")
                         .HasColumnType("double precision")
                         .HasColumnName("quantity");
 
@@ -710,6 +718,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
                         .HasColumnName("product_name");
+
+                    b.Property<string>("UOM")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("uom");
 
                     b.HasKey("Id");
 
@@ -986,36 +999,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("TodoLists");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.Users.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
-                });
-
             modelBuilder.Entity("FreightManagement.Domain.Entities.Vehicles.Vehicle", b =>
                 {
                     b.Property<long>("Id")
@@ -1052,6 +1035,12 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("status");
+
+                    b.Property<string>("VIN")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("vin");
 
                     b.HasKey("Id");
 
@@ -1442,6 +1431,21 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("trucks");
                 });
 
+            modelBuilder.Entity("CustomerLocation", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FreightManagement.Domain.Entities.Customers.Location", null)
+                        .WithMany()
+                        .HasForeignKey("LocationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
                 {
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "BillingAddress", b1 =>
@@ -1495,57 +1499,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Location", b =>
                 {
-                    b.HasOne("FreightManagement.Domain.Entities.Customers.Customer", "Customer")
-                        .WithMany("Locations")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "BillingAddress", b1 =>
-                        {
-                            b1.Property<long>("LocationId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("b_city");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(20)
-                                .HasColumnType("character varying(20)")
-                                .HasColumnName("b_country");
-
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .HasMaxLength(25)
-                                .HasColumnType("character varying(25)")
-                                .HasColumnName("b_state");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("character varying(200)")
-                                .HasColumnName("b_street");
-
-                            b1.Property<string>("ZipCode")
-                                .IsRequired()
-                                .HasMaxLength(12)
-                                .HasColumnType("character varying(12)")
-                                .HasColumnName("b_zip_code");
-
-                            b1.HasKey("LocationId");
-
-                            b1.ToTable("customer_locations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("LocationId");
-                        });
-
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "DeliveryAddress", b1 =>
                         {
                             b1.Property<long>("LocationId")
@@ -1590,11 +1543,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("LocationId");
                         });
-
-                    b.Navigation("BillingAddress")
-                        .IsRequired();
-
-                    b.Navigation("Customer");
 
                     b.Navigation("DeliveryAddress")
                         .IsRequired();
@@ -1673,12 +1621,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
                 {
-                    b.HasOne("FreightManagement.Domain.Entities.Users.User", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FreightManagement.Domain.Entities.Vehicles.Trailer", "Trailer")
                         .WithMany()
                         .HasForeignKey("TrailerId")
@@ -1690,8 +1632,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasForeignKey("TruckId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Driver");
 
                     b.Navigation("Trailer");
 
@@ -2016,11 +1956,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasForeignKey("FreightManagement.Domain.Entities.Vehicles.Truck", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Customer", b =>
-                {
-                    b.Navigation("Locations");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Customers.Location", b =>

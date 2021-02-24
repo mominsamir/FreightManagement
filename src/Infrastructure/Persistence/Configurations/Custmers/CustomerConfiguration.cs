@@ -50,13 +50,12 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations
                         .HasColumnName("zip_code")
                         .HasMaxLength(12)
                         .IsRequired();
-                }).Navigation(p => p.BillingAddress).IsRequired();
+                }).Navigation(p => p.BillingAddress)
+                .IsRequired();
 
-            builder
-                .HasMany(l => l.Locations)
-                .WithOne(l => l.Customer)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                builder
+                    .HasMany(l => l.Locations)
+                    .WithMany(l => l.Customers);
 
         }
     }

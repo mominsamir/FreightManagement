@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FreightManagement.Infrastructure.Persistence.Migrations
 {
-    public partial class init : Migration
+    public partial class SampleMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -117,6 +117,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     product_name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     is_active = table.Column<bool>(type: "boolean", nullable: false),
+                    uom = table.Column<string>(type: "text", nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -170,30 +171,13 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "vehicles",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     number_plate = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    vin = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
@@ -377,12 +361,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     d_state = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     d_country = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     d_zip_code = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
-                    b_street = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    b_city = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    b_state = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    b_country = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    b_zip_code = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    CustomerId = table.Column<long>(type: "bigint", nullable: true),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -396,7 +375,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         column: x => x.CustomerId,
                         principalTable: "customers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -408,7 +387,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     CustomerId = table.Column<long>(type: "bigint", nullable: false),
                     order_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ship_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    is_active = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    status = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     last_modified_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -570,7 +549,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "customer_location_tanks",
+                name: "location_tanks",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -585,9 +564,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_customer_location_tanks", x => x.Id);
+                    table.PrimaryKey("PK_location_tanks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_customer_location_tanks_customer_locations_LocationId",
+                        name: "FK_location_tanks_customer_locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "customer_locations",
                         principalColumn: "Id",
@@ -641,7 +620,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     start_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     end_time = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    DriverId = table.Column<long>(type: "bigint", nullable: false),
+                    Driver = table.Column<long>(type: "bigint", nullable: false),
                     TrailerId = table.Column<long>(type: "bigint", nullable: false),
                     TruckId = table.Column<long>(type: "bigint", nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -662,12 +641,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         name: "FK_driver_truck_trailer_schedules_trucks_TruckId",
                         column: x => x.TruckId,
                         principalTable: "trucks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_driver_truck_trailer_schedules_User_DriverId",
-                        column: x => x.DriverId,
-                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -870,11 +843,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_customer_location_tanks_LocationId",
-                table: "customer_location_tanks",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_customer_locations_CustomerId",
                 table: "customer_locations",
                 column: "CustomerId");
@@ -921,11 +889,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 column: "ScheduleDriverTruckTrailerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_driver_truck_trailer_schedules_DriverId",
-                table: "driver_truck_trailer_schedules",
-                column: "DriverId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_driver_truck_trailer_schedules_TrailerId",
                 table: "driver_truck_trailer_schedules",
                 column: "TrailerId");
@@ -934,6 +897,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "IX_driver_truck_trailer_schedules_TruckId",
                 table: "driver_truck_trailer_schedules",
                 column: "TruckId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_location_tanks_LocationId",
+                table: "location_tanks",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_order_items_FuelProductId",
@@ -1025,9 +993,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 name: "customer_invoice_items");
 
             migrationBuilder.DropTable(
-                name: "customer_location_tanks");
-
-            migrationBuilder.DropTable(
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
@@ -1035,6 +1000,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "driver_check_lists");
+
+            migrationBuilder.DropTable(
+                name: "location_tanks");
 
             migrationBuilder.DropTable(
                 name: "order_items");
@@ -1098,9 +1066,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "trucks");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "vehicles");

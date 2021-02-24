@@ -11,7 +11,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Custmers
 
             base.Configure(builder);
 
-            builder.ToTable("customer_location_tanks");
+            builder.ToTable("location_tanks");
 
             builder.HasKey(x => x.Id);
 

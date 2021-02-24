@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Domain.Entities.Disptaches;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
 {
@@ -16,7 +17,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
 
             builder.Property(t => t.Status)
                 .HasColumnName("status")
-                .HasConversion<string>()
+                .HasConversion(
+                        s=> s.ToString(),
+                        s => Enum.Parse<DispatchStatus>(s)
+                    )
                 .IsRequired();
 
             builder.Property(t => t.DispatchDateTime)

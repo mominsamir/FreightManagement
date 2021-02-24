@@ -1,7 +1,7 @@
 ﻿using FreightManagement.Domain.Entities.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
+using System;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.FuelProducts
 {
@@ -17,7 +17,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.FuelProduc
             builder.Property(t => t.Grade)
                 .HasColumnName("fuel_grade")
                 .HasMaxLength(20)
-                .HasConversion<string>()
+                .HasConversion(
+                    u => u.ToString(),
+                    u => Enum.Parse<FuelGrade>(u)
+                )
                 .IsRequired();
 
         }

@@ -27,7 +27,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.FuelProduc
 
             builder.Property(t => t.UOM)
                 .HasColumnName("uom")
-                .HasConversion<string>()
+                .HasConversion(
+                    u => u.ToString(),
+                    u => Enum.Parse<UnitOfMeasure>(u)
+                )
                 .IsRequired();
 
             builder.Property(t => t.IsActive)

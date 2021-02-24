@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Domain.Entities.Vehicles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
 {
@@ -28,7 +29,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
             builder
                 .Property(t => t.Status)
                 .HasColumnName("status")
-                .HasConversion<string>()
+                .HasConversion(
+                    u => u.ToString(),
+                    u => Enum.Parse<VehicleStatus>(u)
+                )
                 .IsRequired();
 
 

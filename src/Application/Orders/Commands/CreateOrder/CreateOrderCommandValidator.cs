@@ -16,16 +16,18 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
 
             RuleFor(o => o.CustomerId)
                 .NotEmpty().WithMessage("Cusotmer is required")
-                .MustAsync(checkIfCustomerExist).WithMessage(o=> string.Format("Customer Id {0} does not exists", o.CustomerId));
+                .MustAsync(CheckIfCustomerExist).WithMessage(o=> string.Format("Customer Id {0} does not exists", o.CustomerId));
 
             RuleFor(o => o.OrderDate).NotEmpty().WithMessage("Order Date is required");
 
-            RuleFor(o => o.ShipDate).NotEmpty().WithMessage("Shipment Date is required");
+            RuleFor(o => o.ShipDate).NotEmpty().WithMessage("Delivery Date is required")
+                .GreaterThanOrEqualTo(s=> s.OrderDate)
+                .WithMessage("Delivery date must be on or after order date.");
 
             RuleForEach(o => o.OrderLines).NotEmpty().SetValidator(new OrderItemValidator(_context));
         }
 
-        public async Task<bool> checkIfCustomerExist(long customerId, CancellationToken cancellationToken)
+        public async Task<bool> CheckIfCustomerExist(long customerId, CancellationToken cancellationToken)
         {
             return await _context.Customers.AllAsync(l => l.Id == customerId, cancellationToken);
         }
@@ -51,6 +53,7 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
 
             RuleFor(o => o.Quantituy).GreaterThan(0.0).WithMessage("Quantity must be greater than Zero");
 
+            //TODO: check if location belongs to this customer 
 
         }
 

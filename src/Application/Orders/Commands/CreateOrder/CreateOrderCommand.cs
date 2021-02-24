@@ -51,7 +51,7 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
                 order.AddOrderItem(fuelProduct, location, l.Quantituy, l.LoadCode);
             });
 
-            await _context.Orders.AddAsync(order);
+            await _context.Orders.AddAsync(order,cancellationToken);
 
             await _context.SaveChangesAsync(cancellationToken);
 

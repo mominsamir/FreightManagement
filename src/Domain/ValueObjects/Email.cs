@@ -25,9 +25,7 @@ namespace FreightManagement.Domain.ValueObjects
 
         public override bool Equals(object obj)
         {
-            var other = obj as Email;
-
-            return other != null ? Equals(other) : Equals(obj as string);
+            return obj is Email other ? Equals(other) : Equals(obj as string);
         }
 
         public bool Equals(Email other) => other != null && Value == other.Value;

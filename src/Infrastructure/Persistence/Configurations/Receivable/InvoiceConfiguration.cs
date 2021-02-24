@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Domain.Entities.Receivable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.Receivable
 {
@@ -45,7 +46,10 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Receivable
             builder.Property(t => t.Status)
                 .HasColumnName("status")
                 .IsRequired()
-                .HasConversion<string>();
+                .HasConversion(
+                    u => u.ToString(),
+                    u => Enum.Parse<InvoiceStatus>(u)
+                );
 
             builder
                 .HasOne(e => e.Customer)

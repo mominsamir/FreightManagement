@@ -48,40 +48,9 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Custmers
                         .IsRequired();
                 }).Navigation(p => p.DeliveryAddress).IsRequired();
 
-
-            builder.OwnsOne(
-                o => o.BillingAddress,
-                a =>
-                {
-                    a.Property(p => p.Street)
-                        .HasColumnName("b_street")
-                        .HasMaxLength(200)
-                        .IsRequired();
-                    a.Property(p => p.City)
-                        .HasColumnName("b_city")
-                        .HasMaxLength(200)
-                        .IsRequired();
-                    a.Property(p => p.State)
-                        .HasColumnName("b_state")
-                        .HasMaxLength(25)
-                        .IsRequired();
-                    a.Property(p => p.Country)
-                        .HasColumnName("b_country")
-                        .HasMaxLength(20)
-                        .IsRequired();
-                    a.Property(p => p.ZipCode)
-                        .HasColumnName("b_zip_code")
-                        .HasMaxLength(12)
-                        .IsRequired();
-                }).Navigation(p => p.BillingAddress).IsRequired();
-
-
-           builder
-                .HasOne(s => s.Customer)
-                .WithMany(g => g.Locations)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
+                builder
+                .HasMany(l => l.Customers)
+                .WithMany(l => l.Locations);
 
         }
     }
