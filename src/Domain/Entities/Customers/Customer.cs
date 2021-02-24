@@ -14,10 +14,12 @@ namespace FreightManagement.Domain.Entities.Customers
         public bool IsActive { get; private set; } = true;
 
         private List<Location> _locations;
-        public IEnumerable<Location> Locations { get { return _locations; } }
-        
+
+        public IEnumerable<Location> Locations => _locations;
+
         public Customer()
         {
+            IsActive = true;
             _locations = new List<Location>();
         }
 

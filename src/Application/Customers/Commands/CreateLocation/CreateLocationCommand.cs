@@ -41,8 +41,8 @@ namespace FreightManagement.Application.Customers.Commands.CreateLocation
                              request.State,
                              request.Country,
                              request.ZipCode
-                         ),
-                IsActive = true
+                         )
+                
             };
 
             await _contex.Locations.AddAsync(location,cancellationToken);

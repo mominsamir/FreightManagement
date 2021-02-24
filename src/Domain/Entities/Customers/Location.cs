@@ -23,6 +23,7 @@ namespace FreightManagement.Domain.Entities.Customers
 
         public Location()
         {
+            IsActive = true;
             _tanks = new List<LocationTank>();
             _customers = new List<Customer>();
         }

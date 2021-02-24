@@ -40,8 +40,6 @@ namespace FreightManagement.Application.Customers.Commands.CreateCustomer
                              request.Country,
                              request.ZipCode
                          ),
-                IsActive = true
-                
             };
 
             await _contex.Customers.AddAsync(customer, cancellationToken);

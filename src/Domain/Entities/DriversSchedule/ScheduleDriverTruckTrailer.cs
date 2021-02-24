@@ -28,7 +28,9 @@ namespace FreightManagement.Domain.Entities.DriversSchedule
             _checkList.AddRange( checkLists.Select(s => new DriverCheckList(s, this)).ToList());
         }
 
-        public void ToogleCheckListItem(long itemUid)
+        // TODO: Misspelling 
+        // TODO : This method do not toggle anything, should review this implementation
+        public void ToggleCheckListItem(long itemUid)
         {
             _checkList.Where(i => i.Id == itemUid).Select(x=> x.IsChecked ?  false: true);
         }
