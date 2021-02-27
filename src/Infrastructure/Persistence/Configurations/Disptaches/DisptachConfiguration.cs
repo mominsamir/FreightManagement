@@ -59,7 +59,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
                  .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .HasOne(e => e.ScheduleDriverTruckTrailer)
+                .HasOne(e => e.DriverSchedule)
                 .WithMany()
                 .IsRequired();
 

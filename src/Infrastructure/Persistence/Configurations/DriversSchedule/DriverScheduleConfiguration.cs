@@ -1,12 +1,12 @@
-﻿using FreightManagement.Domain.Entities.DriversSchedule;
+﻿using FreightManagement.Domain.Entities.DriversSchedules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSchedule
 {
-    public class ScheduleDriverTruckTrailerConfiguration : BaseEntityConfigurations<ScheduleDriverTruckTrailer>
+    public class DriverScheduleConfiguration : BaseEntityConfigurations<DriverSchedule>
     {
-        public override void Configure(EntityTypeBuilder<ScheduleDriverTruckTrailer> builder)
+        public override void Configure(EntityTypeBuilder<DriverSchedule> builder)
         {
             base.Configure(builder);
 
@@ -16,11 +16,16 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSch
 
             builder.Property(t => t.StartTime)
                 .HasColumnName("start_time")
+                .HasColumnType("timestamp with time zone")
                 .IsRequired();
 
             builder.Property(t => t.EndTime)
                 .HasColumnName("end_time")
-                .IsRequired();
+                .HasColumnType("timestamp with time zone");
+
+            builder.Property(t => t.Status)
+                .HasColumnName("status")
+                .HasConversion<string>();
 
             builder
                 .HasOne(e => e.Trailer)
@@ -34,7 +39,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSch
 
             builder
                 .HasMany(s => s.CheckList)
-                .WithOne(g => g.ScheduleDriverTruckTrailer)
+                .WithOne(g => g.DriverSchedule)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 

@@ -26,6 +26,19 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
 
+
+
+                    builder.OwnsOne(t => t.Email,
+                                a => {
+                                    a.Property(e=> e.Value)
+                                    .HasColumnName("email")
+                                    .HasMaxLength(200)
+                                    .IsRequired();
+                                }).Navigation(p => p.Email)
+                                .IsRequired();
+
+
+
             builder.OwnsOne(
                 o => o.BillingAddress,
                 a =>

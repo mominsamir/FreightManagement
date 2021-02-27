@@ -35,8 +35,14 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
                 )
                 .IsRequired();
 
+            builder
+                .HasMany(t => t.CheckLists)
+                .WithOne(t => t.Vehicle)
+                .IsRequired();
+
 
             builder.HasIndex(c => c.NumberPlate).IsUnique();
+            builder.HasIndex(c => c.VIN).IsUnique();
 
         }
     }

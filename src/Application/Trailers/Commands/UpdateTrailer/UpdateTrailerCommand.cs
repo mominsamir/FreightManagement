@@ -2,9 +2,6 @@
 using FreightManagement.Domain.Entities.Vehicles;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +26,7 @@ namespace FreightManagement.Application.Trailers.Commands.UpdateTrailer
         }
         public async Task<Unit> Handle(UpdateTrailerCommand request, CancellationToken cancellationToken)
         {
-            var trailer = await _context.Trailers.FindAsync(request.Id);
+            var trailer = await _context.Trailers.FindAsync(new Object[] { request.Id }, cancellationToken);
 
             if(trailer == null)
             {
@@ -40,7 +37,6 @@ namespace FreightManagement.Application.Trailers.Commands.UpdateTrailer
             trailer.NumberPlate = request.NumberPlate;
             trailer.Capacity = request.Capacity;
             trailer.Compartment = request.Compartment;
-            trailer.Status = request.Status;
 
             await _context.SaveChangesAsync(cancellationToken);
 

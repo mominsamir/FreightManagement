@@ -584,7 +584,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TrailerDto"
+                  "$ref": "#/components/schemas/ModelViewOfTrailerDto"
                 }
               }
             }
@@ -821,7 +821,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TruckDto"
+                  "$ref": "#/components/schemas/ModelViewOfTruckDto"
                 }
               }
             }
@@ -1257,7 +1257,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FuelProductDto"
+                  "$ref": "#/components/schemas/ModelViewOfFuelProductDto"
                 }
               }
             }
@@ -1380,7 +1380,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductDto"
+                  "$ref": "#/components/schemas/ModelViewOfProductDto"
                 }
               }
             }
@@ -2023,6 +2023,29 @@
           }
         }
       },
+      "ModelViewOfTrailerDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TrailerDto"
+              }
+            ]
+          },
+          "isEditable": {
+            "type": "boolean"
+          },
+          "isDeletable": {
+            "type": "boolean"
+          },
+          "addNew": {
+            "type": "boolean"
+          }
+        }
+      },
       "TrailerDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2085,6 +2108,13 @@
           "compartment": {
             "type": "integer",
             "format": "int32"
+          },
+          "checkList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -2117,6 +2147,29 @@
           }
         }
       },
+      "ModelViewOfTruckDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TruckDto"
+              }
+            ]
+          },
+          "isEditable": {
+            "type": "boolean"
+          },
+          "isDeletable": {
+            "type": "boolean"
+          },
+          "addNew": {
+            "type": "boolean"
+          }
+        }
+      },
       "TruckDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2132,6 +2185,10 @@
           "vin": {
             "type": "string",
             "nullable": true
+          },
+          "nextMaintanceDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "status": {
             "$ref": "#/components/schemas/VehicleStatus"
@@ -2149,6 +2206,13 @@
           "vin": {
             "type": "string",
             "nullable": true
+          },
+          "checkList": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -2271,6 +2335,29 @@
           }
         }
       },
+      "ModelViewOfFuelProductDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FuelProductDto"
+              }
+            ]
+          },
+          "isEditable": {
+            "type": "boolean"
+          },
+          "isDeletable": {
+            "type": "boolean"
+          },
+          "addNew": {
+            "type": "boolean"
+          }
+        }
+      },
       "FuelProductDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2355,12 +2442,37 @@
             "nullable": true
           },
           "grade": {
-            "$ref": "#/components/schemas/FuelGrade"
+            "type": "integer",
+            "format": "int32"
           },
           "uom": {
-            "$ref": "#/components/schemas/UnitOfMeasure"
+            "type": "integer",
+            "format": "int32"
           },
           "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ModelViewOfProductDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProductDto"
+              }
+            ]
+          },
+          "isEditable": {
+            "type": "boolean"
+          },
+          "isDeletable": {
+            "type": "boolean"
+          },
+          "addNew": {
             "type": "boolean"
           }
         }
@@ -2455,7 +2567,7 @@
             "type": "integer",
             "format": "int64"
           },
-          "quantituy": {
+          "quantity": {
             "type": "number",
             "format": "double"
           },

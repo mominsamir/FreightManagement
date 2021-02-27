@@ -15,7 +15,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Orders
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(t => t.Quantity)
+            builder.Property(t => t.OrderedQuantity)
                 .HasColumnName("quantity")
                 .IsRequired();
 

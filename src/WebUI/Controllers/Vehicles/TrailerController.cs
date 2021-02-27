@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Trailers.Commands.CreateTrailer;
+﻿using FreightManagement.Application.Common.Models;
+using FreightManagement.Application.Trailers.Commands.CreateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailerStatus;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
@@ -13,7 +14,7 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
     public class TrailerController : ApiControllerBase
     {
         [HttpGet("{id}")]
-        public async Task<ActionResult<TrailerDto>> GetRack(long id)
+        public async Task<ActionResult<ModelView<TrailerDto>>> GetRack(long id)
         {
             return await Mediator.Send(new GetTrailerById { Id = id });
         }

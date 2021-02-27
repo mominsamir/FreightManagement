@@ -19,7 +19,7 @@ namespace FreightManagement.Domain.Entities.Payables
         public InvoiceStatus Status { get; private set; }
 
 
-        private List<InvoiceItem> _invoiceItem;
+        private readonly List<InvoiceItem> _invoiceItem;
 
         public Invoice()
         {

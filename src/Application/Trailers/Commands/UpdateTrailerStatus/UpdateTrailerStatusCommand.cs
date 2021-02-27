@@ -24,14 +24,25 @@ namespace FreightManagement.Application.Trailers.Commands.UpdateTrailerStatus
 
         public async Task<Unit> Handle(UpdateTrailerStatusCommand request, CancellationToken cancellationToken)
         {
-            var truck = await _contex.Trailers.FindAsync(request.Id);
+            var truck = await _contex.Trailers.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if (truck == null)
             {
                 throw new DllNotFoundException();
             }
 
-            truck.Status = request.status;
+            switch (request.status)
+            {
+                case VehicleStatus.ACTIVE:
+                    truck.MakeActive();
+                    break;
+                case VehicleStatus.OUT_OF_SERVICE:
+                    truck.MakeOutOfService();
+                    break;
+                case VehicleStatus.UNDER_MAINTNCE:
+                    truck.MakeUnderMaintanace();
+                    break;
+            }
 
             await _contex.SaveChangesAsync(cancellationToken);
 

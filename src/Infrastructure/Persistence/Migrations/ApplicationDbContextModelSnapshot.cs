@@ -92,6 +92,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -132,6 +135,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
+
+                    b.Property<int>("FuelGrade")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
@@ -187,6 +193,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("disptach_start_time");
 
+                    b.Property<long>("DriverScheduleId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -204,6 +213,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("loading_start_time");
 
+                    b.Property<double>("Miles")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTime>("RackArrivalTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rack_arrived_on");
@@ -212,9 +224,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("rack_left_on");
 
-                    b.Property<long>("ScheduleDriverTruckTrailerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text")
@@ -222,7 +231,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ScheduleDriverTruckTrailerId");
+                    b.HasIndex("DriverScheduleId");
 
                     b.ToTable("disptaches");
                 });
@@ -252,15 +261,6 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Property<long>("DispatchId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("FuelProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<double>("GrossQnt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("double precision")
-                        .HasDefaultValue(0.0)
-                        .HasColumnName("gross_qnt");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_on");
@@ -270,16 +270,25 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("updated_by");
 
-                    b.Property<string>("LoadCode")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("load_code");
+                    b.Property<double>("LoadedQuantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("double precision")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("loaded_quantity");
+
+                    b.Property<long>("OrderItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("RackId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DispatchId");
 
-                    b.HasIndex("FuelProductId");
+                    b.HasIndex("OrderItemId");
+
+                    b.HasIndex("RackId");
 
                     b.ToTable("disptache_loadings");
                 });
@@ -306,6 +315,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("double precision")
                         .HasDefaultValue(0.0)
                         .HasColumnName("delivered_qnt");
+
+                    b.Property<int>("DeliveryType")
+                        .HasColumnType("integer");
 
                     b.Property<long>("DispatchLoadingId")
                         .HasColumnType("bigint");
@@ -337,18 +349,15 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.ToTable("disptache_deliveries");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.DriverCheckList", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedules.DriverCheckList", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
-                    b.Property<string>("CheckListItem")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("checklist_item");
+                    b.Property<long>("CheckListId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone")
@@ -359,6 +368,9 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasColumnName("created_by");
+
+                    b.Property<long>("DriverScheduleId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsChecked")
                         .HasColumnType("boolean")
@@ -373,17 +385,16 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("updated_by");
 
-                    b.Property<long>("ScheduleDriverTruckTrailerId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ScheduleDriverTruckTrailerId");
+                    b.HasIndex("CheckListId");
+
+                    b.HasIndex("DriverScheduleId");
 
                     b.ToTable("driver_check_lists");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedules.DriverSchedule", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -404,7 +415,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_time");
 
                     b.Property<DateTime?>("LastModified")
@@ -417,8 +428,13 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .HasColumnName("updated_by");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_time");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<long>("TrailerId")
                         .HasColumnType("bigint");
@@ -525,7 +541,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("Quantity")
+                    b.Property<double>("OrderedQuantity")
                         .HasColumnType("double precision")
                         .HasColumnName("quantity");
 
@@ -1045,7 +1061,56 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.HasIndex("NumberPlate")
                         .IsUnique();
 
+                    b.HasIndex("VIN")
+                        .IsUnique();
+
                     b.ToTable("vehicles");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Vehicles.VehicleCheckList", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("created_by");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_on");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("updated_by");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("note");
+
+                    b.Property<long>("VehicleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("vehichle_check_lists");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Vendors.Vendor", b =>
@@ -1426,6 +1491,10 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                 {
                     b.HasBaseType("FreightManagement.Domain.Entities.Vehicles.Vehicle");
 
+                    b.Property<DateTime>("NextMaintanceDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("next_maintance_date");
+
                     b.ToTable("trucks");
                 });
 
@@ -1491,7 +1560,31 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("CustomerId");
                         });
 
+                    b.OwnsOne("FreightManagement.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<long>("CustomerId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("email");
+
+                            b1.HasKey("CustomerId");
+
+                            b1.ToTable("customers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CustomerId");
+                        });
+
                     b.Navigation("BillingAddress")
+                        .IsRequired();
+
+                    b.Navigation("Email")
                         .IsRequired();
                 });
 
@@ -1542,7 +1635,31 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                                 .HasForeignKey("LocationId");
                         });
 
+                    b.OwnsOne("FreightManagement.Domain.ValueObjects.Email", "Email", b1 =>
+                        {
+                            b1.Property<long>("LocationId")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("email");
+
+                            b1.HasKey("LocationId");
+
+                            b1.ToTable("customer_locations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LocationId");
+                        });
+
                     b.Navigation("DeliveryAddress")
+                        .IsRequired();
+
+                    b.Navigation("Email")
                         .IsRequired();
                 });
 
@@ -1559,13 +1676,13 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.Dispatch", b =>
                 {
-                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", "ScheduleDriverTruckTrailer")
+                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedules.DriverSchedule", "DriverSchedule")
                         .WithMany()
-                        .HasForeignKey("ScheduleDriverTruckTrailerId")
+                        .HasForeignKey("DriverScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ScheduleDriverTruckTrailer");
+                    b.Navigation("DriverSchedule");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DispatchLoading", b =>
@@ -1576,15 +1693,21 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FreightManagement.Domain.Entities.Products.FuelProduct", "FuelProduct")
+                    b.HasOne("FreightManagement.Domain.Entities.Orders.OrderItem", "OrderItem")
                         .WithMany()
-                        .HasForeignKey("FuelProductId")
+                        .HasForeignKey("OrderItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FreightManagement.Domain.Entities.StorageRack.Rack", "Rack")
+                        .WithMany()
+                        .HasForeignKey("RackId");
+
                     b.Navigation("Dispatch");
 
-                    b.Navigation("FuelProduct");
+                    b.Navigation("OrderItem");
+
+                    b.Navigation("Rack");
                 });
 
             modelBuilder.Entity("FreightManagement.Domain.Entities.Disptaches.DisptachDelivery", b =>
@@ -1606,18 +1729,26 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.DriverCheckList", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedules.DriverCheckList", b =>
                 {
-                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", "ScheduleDriverTruckTrailer")
-                        .WithMany("CheckList")
-                        .HasForeignKey("ScheduleDriverTruckTrailerId")
+                    b.HasOne("FreightManagement.Domain.Entities.Vehicles.VehicleCheckList", "CheckList")
+                        .WithMany()
+                        .HasForeignKey("CheckListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ScheduleDriverTruckTrailer");
+                    b.HasOne("FreightManagement.Domain.Entities.DriversSchedules.DriverSchedule", "DriverSchedule")
+                        .WithMany("CheckList")
+                        .HasForeignKey("DriverScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CheckList");
+
+                    b.Navigation("DriverSchedule");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedules.DriverSchedule", b =>
                 {
                     b.HasOne("FreightManagement.Domain.Entities.Vehicles.Trailer", "Trailer")
                         .WithMany()
@@ -1803,6 +1934,17 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Colour");
                 });
 
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Vehicles.VehicleCheckList", b =>
+                {
+                    b.HasOne("FreightManagement.Domain.Entities.Vehicles.Vehicle", "Vehicle")
+                        .WithMany("CheckLists")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("FreightManagement.Domain.Entities.Vendors.Vendor", b =>
                 {
                     b.OwnsOne("FreightManagement.Domain.ValueObjects.Address", "Address", b1 =>
@@ -1971,7 +2113,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     b.Navigation("Deliveries");
                 });
 
-            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedule.ScheduleDriverTruckTrailer", b =>
+            modelBuilder.Entity("FreightManagement.Domain.Entities.DriversSchedules.DriverSchedule", b =>
                 {
                     b.Navigation("CheckList");
                 });
@@ -1994,6 +2136,11 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("FreightManagement.Domain.Entities.TodoList", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("FreightManagement.Domain.Entities.Vehicles.Vehicle", b =>
+                {
+                    b.Navigation("CheckLists");
                 });
 #pragma warning restore 612, 618
         }

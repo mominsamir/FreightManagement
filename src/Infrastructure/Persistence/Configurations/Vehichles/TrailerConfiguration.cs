@@ -23,6 +23,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
                 .HasDefaultValue(0.0)
                 .IsRequired();
 
+
         }
     }
 }

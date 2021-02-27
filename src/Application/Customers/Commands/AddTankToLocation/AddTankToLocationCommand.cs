@@ -24,7 +24,7 @@ namespace FreightManagement.Application.Customers.Commands.AddTankToLocation
         }
         public async Task<Unit> Handle(AddTankToLocationCommand request, CancellationToken cancellationToken)
         {
-            var location = await _contex.Locations.FindAsync(request.LocationId, cancellationToken);
+            var location = await _contex.Locations.FindAsync(new object[] { request.LocationId }, cancellationToken);
 
             location.AddNewTank(request.Name,request.fuelGrade, request.Capactity);
 

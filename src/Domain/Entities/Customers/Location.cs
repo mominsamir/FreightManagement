@@ -13,9 +13,9 @@ namespace FreightManagement.Domain.Entities.Customers
         public bool IsActive { get; private set; }
         public Address DeliveryAddress { get; set; }
 
-        private List<LocationTank> _tanks;
+        private readonly List<LocationTank> _tanks;
 
-        private List<Customer> _customers;
+        private readonly List<Customer> _customers;
 
         public IEnumerable<LocationTank> Tanks { get { return _tanks; } }
         public IEnumerable<Customer> Customers { get { return _customers; } }

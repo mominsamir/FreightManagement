@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Trucks.Commands.CreateTruck;
+﻿using FreightManagement.Application.Common.Models;
+using FreightManagement.Application.Trucks.Commands.CreateTruck;
 using FreightManagement.Application.Trucks.Commands.UpdateTruck;
 using FreightManagement.Application.Trucks.Commands.UpdateTruckStatus;
 using FreightManagement.Application.Trucks.Queries;
@@ -13,9 +14,9 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
     public class TruckController : ApiControllerBase
     {
         [HttpGet("{id}")]
-        public async Task<ActionResult<TruckDto>> GetRack(long id)
+        public async Task<ActionResult<ModelView<TruckDto>>> GetRack(long id)
         {
-            return await Mediator.Send(new GetTruckById { Id = id });
+            return await Mediator.Send(new GetTruckById (id));
         }
         
         [HttpPost]

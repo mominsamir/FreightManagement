@@ -3,7 +3,7 @@ using FreightManagement.Domain.Common;
 using FreightManagement.Domain.Entities;
 using FreightManagement.Domain.Entities.Customers;
 using FreightManagement.Domain.Entities.Disptaches;
-using FreightManagement.Domain.Entities.DriversSchedule;
+using FreightManagement.Domain.Entities.DriversSchedules;
 using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Payables;
 using FreightManagement.Domain.Entities.Products;
@@ -53,7 +53,7 @@ namespace FreightManagement.Infrastructure.Persistence
         public DbSet<Truck> Trucks { get; set; }
         public DbSet<Trailer> Trailers { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
-        public DbSet<ScheduleDriverTruckTrailer> DriverTruckTrailerSchedules { get; set; }
+        public DbSet<DriverSchedule> DriverScheduleLists { get; set; }
         public DbSet<DriverCheckList> DriverCheckLists { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }

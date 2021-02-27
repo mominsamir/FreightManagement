@@ -51,7 +51,7 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
                 .MustAsync(CheckIfLocationExist)
                 .WithMessage(o => string.Format("Location Id {0} does not exists", o.FuelProductId));
 
-            RuleFor(o => o.Quantituy).GreaterThan(0.0).WithMessage("Quantity must be greater than Zero");
+            RuleFor(o => o.Quantity).GreaterThan(0.0).WithMessage("OrderedQuantity must be greater than Zero");
 
             //TODO: check if location belongs to this customer 
 

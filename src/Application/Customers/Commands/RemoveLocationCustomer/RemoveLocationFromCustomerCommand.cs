@@ -22,7 +22,7 @@ namespace FreightManagement.Application.Customers.Commands.RemoveLocationCustome
         }
         public async Task<Unit> Handle(RemoveLocationFromCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(request.customerId, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.customerId }, cancellationToken);
             if (customer == null)
             {
                 throw new NotFoundException(string.Format("Customer with Id {0} not found", request.customerId));

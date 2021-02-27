@@ -9,9 +9,16 @@ namespace FreightManagement.Application.Products.Commands.CreateFuelProduct
 {
    public class CreateFuelProductCommand : IRequest<long> 
    {
-        public string Name;
-        public FuelGrade Grade;
-        public UnitOfMeasure uom;
+        public CreateFuelProductCommand(string name, FuelGrade grade, UnitOfMeasure uom)
+        {
+            Name = name;
+            Grade = grade;
+            UOM = uom;
+        }
+
+        public string Name { get; }
+        public FuelGrade Grade { get; }
+        public UnitOfMeasure UOM { get; }
 
     }
 
@@ -29,7 +36,7 @@ namespace FreightManagement.Application.Products.Commands.CreateFuelProduct
             {
                 Name = request.Name,
                 Grade = request.Grade,
-                UOM = request.uom,
+                UOM = request.UOM,
             };
 
             _context.FuelProducts.Add(product);

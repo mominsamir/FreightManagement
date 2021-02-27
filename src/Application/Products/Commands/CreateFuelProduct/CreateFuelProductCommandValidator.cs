@@ -15,15 +15,16 @@ namespace FreightManagement.Application.Products.Commands.CreateFuelProduct
             _context = context;
 
             RuleFor(v => v.Name)
-                .NotEmpty().WithMessage("Fuel Product Name is required.")
-                .MaximumLength(200).WithMessage("Fuel Product Name should not be more than 200.")
-                .MustAsync(BeUniqueName).WithMessage("Fuel Product Name must be Unique.");
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage("Name is required.")
+                .MaximumLength(200).WithMessage("Name should not be more than 200.")
+                .MustAsync(BeUniqueName).WithMessage("Name must be Unique.");
 
             RuleFor(v => v.Grade)
-                .NotEmpty().WithMessage("Fuel Grade is required.");
+                .NotNull().WithMessage("Fuel Grade is required.");
 
-            RuleFor(v => v.uom)
-                .NotEmpty().WithMessage("UOM is required.");
+            RuleFor(v => v.UOM)
+                .NotNull().WithMessage("UOM is required.");
         }
 
         public async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)

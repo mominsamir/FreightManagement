@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Products.Commands.CreateFuelProduct;
+﻿using FreightManagement.Application.Common.Models;
+using FreightManagement.Application.Products.Commands.CreateFuelProduct;
 using FreightManagement.Application.Products.Commands.UpdateFuelProduct;
 using FreightManagement.Application.Products.Queries.GetFuelProduct;
 using Microsoft.AspNetCore.Authorization;
@@ -11,9 +12,9 @@ namespace FreightManagement.WebUI.Controllers.Products
     public class FuelProductController : ApiControllerBase
     {
         [HttpGet("{id}")]
-        public async Task<ActionResult<FuelProductDto>> GetRack(long id)
+        public async Task<ActionResult<ModelView<FuelProductDto>>> GetRack(long id)
         {
-            return await Mediator.Send(new GetFuelProductById { Id = id });
+            return await Mediator.Send(new GetFuelProductById ( id ));
         }
 
         [HttpPost]

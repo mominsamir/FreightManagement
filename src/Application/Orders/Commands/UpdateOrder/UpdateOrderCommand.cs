@@ -35,7 +35,7 @@ namespace FreightManagement.Application.Orders.Commands.UpdateOrder
 
         public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = await _context.Orders.FindAsync(request.Id,cancellationToken);
+            var order = await _context.Orders.FindAsync(new object[] { request.Id },cancellationToken);
 
             if(order == null)
             {

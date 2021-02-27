@@ -22,8 +22,7 @@
   <ItemGroup>
     <Folder Include="Customers\Commands\UpdateLocation\" />
     <Folder Include="Customers\Commands\UpdateCustomer\" />
-    <Folder Include="Customers\Queries\GetCustomerById\" />
-    <Folder Include="Customers\Queries\GetLocationById\" />
+    <Folder Include="Dispatches\Queries\" />
     <Folder Include="Vendors\Commands\UpdateStatusVendor\" />
   </ItemGroup>
 

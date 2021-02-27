@@ -22,7 +22,7 @@ namespace FreightManagement.Application.Customers.Commands.UpdateCustomerStatus
 
         public async Task<Unit> Handle(UpdateCustomerStatusCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(request.customerId, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.customerId }, cancellationToken);
 
             if (customer == null)
             {

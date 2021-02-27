@@ -15,8 +15,8 @@ namespace FreightManagement.Application.Products.Commands.UpdateFuelProduct
     {
         public long Id;
         public string Name;
-        public FuelGrade Grade;
-        public UnitOfMeasure uom;
+        public int Grade;
+        public int uom;
         public bool IsActive;
     }
 
@@ -39,8 +39,8 @@ namespace FreightManagement.Application.Products.Commands.UpdateFuelProduct
             }
 
             fuelProduct.Name = request.Name;
-            fuelProduct.Grade = request.Grade;
-            fuelProduct.UOM = request.uom;
+            fuelProduct.Grade = (FuelGrade)request.Grade;
+            fuelProduct.UOM = (UnitOfMeasure)request.uom;
             fuelProduct.IsActive = request.IsActive;
 
             await _context.SaveChangesAsync(cancellationToken);

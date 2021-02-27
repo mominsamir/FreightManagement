@@ -1,6 +1,8 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Entities.Vehicles;
 using MediatR;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +12,7 @@ namespace FreightManagement.Application.Trucks.Commands.CreateTruck
     {
         public string NumberPlate { get; set; }
         public string VIN { get; set; }
+        public IEnumerable<string> CheckList { get; set; }
     }
 
     public class CreateTruckCommandHandler : IRequestHandler<CreateTruckCommand, long>
@@ -25,8 +28,13 @@ namespace FreightManagement.Application.Trucks.Commands.CreateTruck
             var truck = new Truck {
                 NumberPlate = request.NumberPlate,
                 VIN = request.VIN,
-                Status = VehicleStatus.ACTIVE
+                NextMaintanceDate = DateTime.Now
             };
+
+            foreach(var note in request.CheckList)
+            {
+                truck.AddNewCheckListItem(note);
+            }
 
             _context.Trucks.Add(truck);
 

@@ -14,18 +14,13 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(t => t.GrossQnt)
-                .HasColumnName("gross_qnt")
-                .IsRequired()
-                .HasDefaultValue(0.0);
-
-            builder.Property(t => t.LoadCode)
-                .HasColumnName("load_code")
-                .HasMaxLength(50);
-
             builder.Property(t => t.BillOfLoading)
                 .HasColumnName("bill_of_lading")
                 .HasMaxLength(50);
+
+            builder.Property(t => t.LoadedQuantity)
+                .HasColumnName("loaded_quantity")
+                .HasDefaultValue(0);
 
             builder
                  .HasMany(s => s.Deliveries)
@@ -41,7 +36,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
                  .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .HasOne(e => e.FuelProduct)
+                .HasOne(e => e.OrderItem)
                 .WithMany()
                 .IsRequired();
 

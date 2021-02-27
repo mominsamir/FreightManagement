@@ -15,7 +15,7 @@ namespace FreightManagement.Domain.Entities.Orders
         public DateTime ShipDate { get; set; }
         public OrderStatus Status { get; private set; } = OrderStatus.Received;
 
-        private List<OrderItem> _orderItems;
+        private readonly List<OrderItem> _orderItems;
 
         public IEnumerable<OrderItem> OrderItems { get { return _orderItems; } }
 
@@ -46,7 +46,7 @@ namespace FreightManagement.Domain.Entities.Orders
             {
                 orderItem.FuelProduct= product;
                 orderItem.Location = location;
-                orderItem.Quantity = qnt;
+                orderItem.OrderedQuantity = qnt;
                 orderItem.LoadCode = loadCode;
             }
 
@@ -75,7 +75,7 @@ namespace FreightManagement.Domain.Entities.Orders
 
         public double TotalQuantity()
         {
-            return _orderItems.Sum(i => i.Quantity);
+            return _orderItems.Sum(i => i.OrderedQuantity);
         }
 
     }

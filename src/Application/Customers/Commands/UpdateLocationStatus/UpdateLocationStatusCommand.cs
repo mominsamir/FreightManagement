@@ -22,7 +22,7 @@ namespace FreightManagement.Application.Customers.Commands.UpdateLocationStatus
 
         public async Task<Unit> Handle(UpdateLocationStatusCommand request, CancellationToken cancellationToken)
         {
-            var location = await _context.Locations.FindAsync(request.locationId, cancellationToken);
+            var location = await _context.Locations.FindAsync(new object[] { request.locationId }, cancellationToken);
 
             if (location == null)
             {

@@ -13,7 +13,7 @@ namespace FreightManagement.Domain.Entities.Customers
         public Address BillingAddress { get; set; }
         public bool IsActive { get; private set; } = true;
 
-        private List<Location> _locations;
+        private readonly List<Location> _locations;
 
         public IEnumerable<Location> Locations => _locations;
 

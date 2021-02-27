@@ -44,18 +44,12 @@ namespace FreightManagement.Application.Orders.Queries
                         l.Id,
                         l.Location,
                         l.FuelProduct, 
-                        l.Quantity,
+                        l.OrderedQuantity,
                         l.LoadCode
                     )).ToList()
             );
 
-           return new ModelView<OrderDto>
-            {
-                Model = orderDto,
-                IsEditable = order.Status == OrderStatus.Received,
-                IsDeletable = false,
-                AddNew = true,
-            };
+            return new ModelView<OrderDto>(orderDto, order.Status == OrderStatus.Received, false, true);
 
         }
     }

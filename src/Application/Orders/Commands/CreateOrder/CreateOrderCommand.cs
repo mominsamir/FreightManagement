@@ -16,12 +16,11 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
         public List<CreateOrderLine> OrderLines = new List<CreateOrderLine>();
     }
 
-    // TODO: Misspelling of the word Quantity requires database update seems like
     public class CreateOrderLine
     {
         public long LocationId;
         public long FuelProductId;
-        public double Quantituy= 0; // Misspelling on Quantity see below
+        public double Quantity= 0; 
         public string LoadCode;
     }
 
@@ -36,7 +35,7 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
 
         public async Task<long> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(request.CustomerId, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.CustomerId }, cancellationToken);
 
             var order = new Order
             {
@@ -49,10 +48,8 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
             {
                 var fuelProduct = await _context.FuelProducts.FindAsync(l.FuelProductId, cancellationToken);
                 var location = await _context.Locations.FindAsync(l.FuelProductId, cancellationToken);
-                order.AddOrderItem(fuelProduct, location, l.Quantituy, l.LoadCode);
-                //                                            ^   
-                // I would have rename this ------------------|
-                // but it requires to create a migration for the database too 
+                order.AddOrderItem(fuelProduct, location, l.Quantity, l.LoadCode);
+
             });
 
             await _context.Orders.AddAsync(order, cancellationToken);

@@ -824,7 +824,7 @@ export class VendorClient implements IVendorClient {
 }
 
 export interface ITrailerClient {
-    getRack(id: number): Observable<TrailerDto>;
+    getRack(id: number): Observable<ModelViewOfTrailerDto>;
     update(id: number, command: UpdateTrailerCommand): Observable<FileResponse>;
     create(command: CreateTrailerCommand): Observable<number>;
     activateTerminal(id: number): Observable<FileResponse>;
@@ -845,7 +845,7 @@ export class TrailerClient implements ITrailerClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getRack(id: number): Observable<TrailerDto> {
+    getRack(id: number): Observable<ModelViewOfTrailerDto> {
         let url_ = this.baseUrl + "/api/Trailer/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -867,14 +867,14 @@ export class TrailerClient implements ITrailerClient {
                 try {
                     return this.processGetRack(<any>response_);
                 } catch (e) {
-                    return <Observable<TrailerDto>><any>_observableThrow(e);
+                    return <Observable<ModelViewOfTrailerDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TrailerDto>><any>_observableThrow(response_);
+                return <Observable<ModelViewOfTrailerDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRack(response: HttpResponseBase): Observable<TrailerDto> {
+    protected processGetRack(response: HttpResponseBase): Observable<ModelViewOfTrailerDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -885,7 +885,7 @@ export class TrailerClient implements ITrailerClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TrailerDto.fromJS(resultData200);
+            result200 = ModelViewOfTrailerDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -893,7 +893,7 @@ export class TrailerClient implements ITrailerClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TrailerDto>(<any>null);
+        return _observableOf<ModelViewOfTrailerDto>(<any>null);
     }
 
     update(id: number, command: UpdateTrailerCommand): Observable<FileResponse> {
@@ -1150,7 +1150,7 @@ export class TrailerClient implements ITrailerClient {
 }
 
 export interface ITruckClient {
-    getRack(id: number): Observable<TruckDto>;
+    getRack(id: number): Observable<ModelViewOfTruckDto>;
     update(id: number, command: UpdateTruckCommand): Observable<FileResponse>;
     create(command: CreateTruckCommand): Observable<number>;
     activateTerminal(id: number): Observable<FileResponse>;
@@ -1171,7 +1171,7 @@ export class TruckClient implements ITruckClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getRack(id: number): Observable<TruckDto> {
+    getRack(id: number): Observable<ModelViewOfTruckDto> {
         let url_ = this.baseUrl + "/api/Truck/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1193,14 +1193,14 @@ export class TruckClient implements ITruckClient {
                 try {
                     return this.processGetRack(<any>response_);
                 } catch (e) {
-                    return <Observable<TruckDto>><any>_observableThrow(e);
+                    return <Observable<ModelViewOfTruckDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TruckDto>><any>_observableThrow(response_);
+                return <Observable<ModelViewOfTruckDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRack(response: HttpResponseBase): Observable<TruckDto> {
+    protected processGetRack(response: HttpResponseBase): Observable<ModelViewOfTruckDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1211,7 +1211,7 @@ export class TruckClient implements ITruckClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TruckDto.fromJS(resultData200);
+            result200 = ModelViewOfTruckDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1219,7 +1219,7 @@ export class TruckClient implements ITruckClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TruckDto>(<any>null);
+        return _observableOf<ModelViewOfTruckDto>(<any>null);
     }
 
     update(id: number, command: UpdateTruckCommand): Observable<FileResponse> {
@@ -1752,7 +1752,7 @@ export class RackClient implements IRackClient {
 }
 
 export interface IFuelProductClient {
-    getRack(id: number): Observable<FuelProductDto>;
+    getRack(id: number): Observable<ModelViewOfFuelProductDto>;
     update(id: number, command: UpdateFuelProductCommand): Observable<FileResponse>;
     create(command: CreateFuelProductCommand): Observable<number>;
 }
@@ -1770,7 +1770,7 @@ export class FuelProductClient implements IFuelProductClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getRack(id: number): Observable<FuelProductDto> {
+    getRack(id: number): Observable<ModelViewOfFuelProductDto> {
         let url_ = this.baseUrl + "/api/FuelProduct/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1792,14 +1792,14 @@ export class FuelProductClient implements IFuelProductClient {
                 try {
                     return this.processGetRack(<any>response_);
                 } catch (e) {
-                    return <Observable<FuelProductDto>><any>_observableThrow(e);
+                    return <Observable<ModelViewOfFuelProductDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FuelProductDto>><any>_observableThrow(response_);
+                return <Observable<ModelViewOfFuelProductDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRack(response: HttpResponseBase): Observable<FuelProductDto> {
+    protected processGetRack(response: HttpResponseBase): Observable<ModelViewOfFuelProductDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1810,7 +1810,7 @@ export class FuelProductClient implements IFuelProductClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FuelProductDto.fromJS(resultData200);
+            result200 = ModelViewOfFuelProductDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1818,7 +1818,7 @@ export class FuelProductClient implements IFuelProductClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FuelProductDto>(<any>null);
+        return _observableOf<ModelViewOfFuelProductDto>(<any>null);
     }
 
     update(id: number, command: UpdateFuelProductCommand): Observable<FileResponse> {
@@ -1928,7 +1928,7 @@ export class FuelProductClient implements IFuelProductClient {
 }
 
 export interface IProductClient {
-    getRack(id: number): Observable<ProductDto>;
+    getRack(id: number): Observable<ModelViewOfProductDto>;
     update(id: number, command: UpdateProductCommand): Observable<FileResponse>;
     create(command: CreateProductCommand): Observable<number>;
 }
@@ -1946,7 +1946,7 @@ export class ProductClient implements IProductClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    getRack(id: number): Observable<ProductDto> {
+    getRack(id: number): Observable<ModelViewOfProductDto> {
         let url_ = this.baseUrl + "/api/Product/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -1968,14 +1968,14 @@ export class ProductClient implements IProductClient {
                 try {
                     return this.processGetRack(<any>response_);
                 } catch (e) {
-                    return <Observable<ProductDto>><any>_observableThrow(e);
+                    return <Observable<ModelViewOfProductDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ProductDto>><any>_observableThrow(response_);
+                return <Observable<ModelViewOfProductDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRack(response: HttpResponseBase): Observable<ProductDto> {
+    protected processGetRack(response: HttpResponseBase): Observable<ModelViewOfProductDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1986,7 +1986,7 @@ export class ProductClient implements IProductClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ProductDto.fromJS(resultData200);
+            result200 = ModelViewOfProductDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1994,7 +1994,7 @@ export class ProductClient implements IProductClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ProductDto>(<any>null);
+        return _observableOf<ModelViewOfProductDto>(<any>null);
     }
 
     update(id: number, command: UpdateProductCommand): Observable<FileResponse> {
@@ -3115,6 +3115,54 @@ export interface IUpdateVendorCommand {
     isActive?: boolean;
 }
 
+export class ModelViewOfTrailerDto implements IModelViewOfTrailerDto {
+    model?: TrailerDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+
+    constructor(data?: IModelViewOfTrailerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.model = _data["model"] ? TrailerDto.fromJS(_data["model"]) : <any>undefined;
+            this.isEditable = _data["isEditable"];
+            this.isDeletable = _data["isDeletable"];
+            this.addNew = _data["addNew"];
+        }
+    }
+
+    static fromJS(data: any): ModelViewOfTrailerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModelViewOfTrailerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
+        data["isEditable"] = this.isEditable;
+        data["isDeletable"] = this.isDeletable;
+        data["addNew"] = this.addNew;
+        return data; 
+    }
+}
+
+export interface IModelViewOfTrailerDto {
+    model?: TrailerDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+}
+
 export class TrailerDto implements ITrailerDto {
     id?: number;
     numberPlate?: string | undefined;
@@ -3182,6 +3230,7 @@ export class CreateTrailerCommand implements ICreateTrailerCommand {
     vin?: string | undefined;
     capacity?: number;
     compartment?: number;
+    checkList?: string[] | undefined;
 
     constructor(data?: ICreateTrailerCommand) {
         if (data) {
@@ -3198,6 +3247,11 @@ export class CreateTrailerCommand implements ICreateTrailerCommand {
             this.vin = _data["vin"];
             this.capacity = _data["capacity"];
             this.compartment = _data["compartment"];
+            if (Array.isArray(_data["checkList"])) {
+                this.checkList = [] as any;
+                for (let item of _data["checkList"])
+                    this.checkList!.push(item);
+            }
         }
     }
 
@@ -3214,6 +3268,11 @@ export class CreateTrailerCommand implements ICreateTrailerCommand {
         data["vin"] = this.vin;
         data["capacity"] = this.capacity;
         data["compartment"] = this.compartment;
+        if (Array.isArray(this.checkList)) {
+            data["checkList"] = [];
+            for (let item of this.checkList)
+                data["checkList"].push(item);
+        }
         return data; 
     }
 }
@@ -3223,6 +3282,7 @@ export interface ICreateTrailerCommand {
     vin?: string | undefined;
     capacity?: number;
     compartment?: number;
+    checkList?: string[] | undefined;
 }
 
 export class UpdateTrailerCommand implements IUpdateTrailerCommand {
@@ -3281,10 +3341,59 @@ export interface IUpdateTrailerCommand {
     status?: VehicleStatus;
 }
 
+export class ModelViewOfTruckDto implements IModelViewOfTruckDto {
+    model?: TruckDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+
+    constructor(data?: IModelViewOfTruckDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.model = _data["model"] ? TruckDto.fromJS(_data["model"]) : <any>undefined;
+            this.isEditable = _data["isEditable"];
+            this.isDeletable = _data["isDeletable"];
+            this.addNew = _data["addNew"];
+        }
+    }
+
+    static fromJS(data: any): ModelViewOfTruckDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModelViewOfTruckDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
+        data["isEditable"] = this.isEditable;
+        data["isDeletable"] = this.isDeletable;
+        data["addNew"] = this.addNew;
+        return data; 
+    }
+}
+
+export interface IModelViewOfTruckDto {
+    model?: TruckDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+}
+
 export class TruckDto implements ITruckDto {
     id?: number;
     numberPlate?: string | undefined;
     vin?: string | undefined;
+    nextMaintanceDate?: Date;
     status?: VehicleStatus;
 
     constructor(data?: ITruckDto) {
@@ -3301,6 +3410,7 @@ export class TruckDto implements ITruckDto {
             this.id = _data["id"];
             this.numberPlate = _data["numberPlate"];
             this.vin = _data["vin"];
+            this.nextMaintanceDate = _data["nextMaintanceDate"] ? new Date(_data["nextMaintanceDate"].toString()) : <any>undefined;
             this.status = _data["status"];
         }
     }
@@ -3317,6 +3427,7 @@ export class TruckDto implements ITruckDto {
         data["id"] = this.id;
         data["numberPlate"] = this.numberPlate;
         data["vin"] = this.vin;
+        data["nextMaintanceDate"] = this.nextMaintanceDate ? this.nextMaintanceDate.toISOString() : <any>undefined;
         data["status"] = this.status;
         return data; 
     }
@@ -3326,12 +3437,14 @@ export interface ITruckDto {
     id?: number;
     numberPlate?: string | undefined;
     vin?: string | undefined;
+    nextMaintanceDate?: Date;
     status?: VehicleStatus;
 }
 
 export class CreateTruckCommand implements ICreateTruckCommand {
     numberPlate?: string | undefined;
     vin?: string | undefined;
+    checkList?: string[] | undefined;
 
     constructor(data?: ICreateTruckCommand) {
         if (data) {
@@ -3346,6 +3459,11 @@ export class CreateTruckCommand implements ICreateTruckCommand {
         if (_data) {
             this.numberPlate = _data["numberPlate"];
             this.vin = _data["vin"];
+            if (Array.isArray(_data["checkList"])) {
+                this.checkList = [] as any;
+                for (let item of _data["checkList"])
+                    this.checkList!.push(item);
+            }
         }
     }
 
@@ -3360,6 +3478,11 @@ export class CreateTruckCommand implements ICreateTruckCommand {
         data = typeof data === 'object' ? data : {};
         data["numberPlate"] = this.numberPlate;
         data["vin"] = this.vin;
+        if (Array.isArray(this.checkList)) {
+            data["checkList"] = [];
+            for (let item of this.checkList)
+                data["checkList"].push(item);
+        }
         return data; 
     }
 }
@@ -3367,6 +3490,7 @@ export class CreateTruckCommand implements ICreateTruckCommand {
 export interface ICreateTruckCommand {
     numberPlate?: string | undefined;
     vin?: string | undefined;
+    checkList?: string[] | undefined;
 }
 
 export class UpdateTruckCommand implements IUpdateTruckCommand {
@@ -3589,6 +3713,54 @@ export interface IUpdateRackCommand {
     zipCode?: string | undefined;
 }
 
+export class ModelViewOfFuelProductDto implements IModelViewOfFuelProductDto {
+    model?: FuelProductDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+
+    constructor(data?: IModelViewOfFuelProductDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.model = _data["model"] ? FuelProductDto.fromJS(_data["model"]) : <any>undefined;
+            this.isEditable = _data["isEditable"];
+            this.isDeletable = _data["isDeletable"];
+            this.addNew = _data["addNew"];
+        }
+    }
+
+    static fromJS(data: any): ModelViewOfFuelProductDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModelViewOfFuelProductDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
+        data["isEditable"] = this.isEditable;
+        data["isDeletable"] = this.isDeletable;
+        data["addNew"] = this.addNew;
+        return data; 
+    }
+}
+
+export interface IModelViewOfFuelProductDto {
+    model?: FuelProductDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+}
+
 export class FuelProductDto implements IFuelProductDto {
     id?: number;
     name?: string | undefined;
@@ -3702,8 +3874,8 @@ export interface ICreateFuelProductCommand {
 export class UpdateFuelProductCommand implements IUpdateFuelProductCommand {
     id?: number;
     name?: string | undefined;
-    grade?: FuelGrade;
-    uom?: UnitOfMeasure;
+    grade?: number;
+    uom?: number;
     isActive?: boolean;
 
     constructor(data?: IUpdateFuelProductCommand) {
@@ -3746,9 +3918,57 @@ export class UpdateFuelProductCommand implements IUpdateFuelProductCommand {
 export interface IUpdateFuelProductCommand {
     id?: number;
     name?: string | undefined;
-    grade?: FuelGrade;
-    uom?: UnitOfMeasure;
+    grade?: number;
+    uom?: number;
     isActive?: boolean;
+}
+
+export class ModelViewOfProductDto implements IModelViewOfProductDto {
+    model?: ProductDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
+
+    constructor(data?: IModelViewOfProductDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.model = _data["model"] ? ProductDto.fromJS(_data["model"]) : <any>undefined;
+            this.isEditable = _data["isEditable"];
+            this.isDeletable = _data["isDeletable"];
+            this.addNew = _data["addNew"];
+        }
+    }
+
+    static fromJS(data: any): ModelViewOfProductDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModelViewOfProductDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
+        data["isEditable"] = this.isEditable;
+        data["isDeletable"] = this.isDeletable;
+        data["addNew"] = this.addNew;
+        return data; 
+    }
+}
+
+export interface IModelViewOfProductDto {
+    model?: ProductDto | undefined;
+    isEditable?: boolean;
+    isDeletable?: boolean;
+    addNew?: boolean;
 }
 
 export class ProductDto implements IProductDto {
@@ -3946,7 +4166,7 @@ export interface ICreateOrderCommand {
 export class CreateOrderLine implements ICreateOrderLine {
     locationId?: number;
     fuelProductId?: number;
-    quantituy?: number;
+    quantity?: number;
     loadCode?: string | undefined;
 
     constructor(data?: ICreateOrderLine) {
@@ -3962,7 +4182,7 @@ export class CreateOrderLine implements ICreateOrderLine {
         if (_data) {
             this.locationId = _data["locationId"];
             this.fuelProductId = _data["fuelProductId"];
-            this.quantituy = _data["quantituy"];
+            this.quantity = _data["quantity"];
             this.loadCode = _data["loadCode"];
         }
     }
@@ -3978,7 +4198,7 @@ export class CreateOrderLine implements ICreateOrderLine {
         data = typeof data === 'object' ? data : {};
         data["locationId"] = this.locationId;
         data["fuelProductId"] = this.fuelProductId;
-        data["quantituy"] = this.quantituy;
+        data["quantity"] = this.quantity;
         data["loadCode"] = this.loadCode;
         return data; 
     }
@@ -3987,7 +4207,7 @@ export class CreateOrderLine implements ICreateOrderLine {
 export interface ICreateOrderLine {
     locationId?: number;
     fuelProductId?: number;
-    quantituy?: number;
+    quantity?: number;
     loadCode?: string | undefined;
 }
 

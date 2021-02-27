@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
+using FreightManagement.Application.Common.Models;
 using FreightManagement.Domain.Entities.Vehicles;
 using MediatR;
 using System.Threading;
@@ -8,12 +9,17 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.Application.Trucks.Queries
 {
-    public class GetTruckById : IRequest<TruckDto>
+    public class GetTruckById : IRequest<ModelView<TruckDto>>
     {
-        public long Id { get; set; }
+        public GetTruckById(long id)
+        {
+            Id = id;
+        }
+
+        public long Id { get;  }
 
     }
-    public class GetTruckByIdHandler : IRequestHandler<GetTruckById, TruckDto>
+    public class GetTruckByIdHandler : IRequestHandler<GetTruckById, ModelView<TruckDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -24,23 +30,23 @@ namespace FreightManagement.Application.Trucks.Queries
             _mapper = mapper;
         }
 
-        public async Task<TruckDto> Handle(GetTruckById request, CancellationToken cancellationToken)
+        public async Task<ModelView<TruckDto>> Handle(GetTruckById request, CancellationToken cancellationToken)
         {
-            var trailer = await _context.Trailers.FindAsync(request.Id);
+            var trailer = await _context.Trucks.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if (trailer == null)
             {
                 throw new NotFoundException(nameof(Truck), request.Id);
             }
 
-            /*            return _mapper.Map<RackDto>(rack);*/
-            return new TruckDto
-            {
-                Id = trailer.Id,
-                VIN = trailer.VIN,
-                NumberPlate = trailer.NumberPlate,
-                Status = trailer.Status,
-            };
+            return new ModelView<TruckDto>(
+                    new TruckDto{
+                    Id = trailer.Id,
+                    VIN = trailer.VIN,
+                    NumberPlate = trailer.NumberPlate,
+                    Status = trailer.Status}
+                    ,true,false, true
+            );
         }
     }
 

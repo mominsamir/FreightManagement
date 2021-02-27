@@ -10,6 +10,12 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Vehichles
         {
             base.Configure(builder);
             builder.ToTable("trucks");
-        }
+
+            builder.Property(t => t.NextMaintanceDate)
+                .HasColumnName("next_maintance_date")
+                .HasColumnType("timestamp with time zone")
+                .IsRequired();
+
+         }
     }
 }

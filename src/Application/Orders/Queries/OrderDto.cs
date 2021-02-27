@@ -16,6 +16,8 @@ namespace FreightManagement.Application.Orders.Queries
         public DateTime ShipDate { get; }
         public OrderStatus Status { get; }
         public IEnumerable<OrderItemDto> OrderItems { get; }
+
+        public OrderDto() { }
         public OrderDto(long id, Customer customer, DateTime orderDate, DateTime shipDate, OrderStatus status, IEnumerable<OrderItemDto> orderItems)
         {
             Id = id;

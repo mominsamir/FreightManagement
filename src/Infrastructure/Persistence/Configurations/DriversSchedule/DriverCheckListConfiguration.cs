@@ -1,4 +1,4 @@
-﻿using FreightManagement.Domain.Entities.DriversSchedule;
+﻿using FreightManagement.Domain.Entities.DriversSchedules;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,13 +18,12 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSch
                 .HasColumnName("is_checked")
                 .IsRequired();
 
-            builder.Property(t => t.CheckListItem)
-                .HasColumnName("checklist_item")
-                .HasMaxLength(200)
+            builder.HasOne(s => s.CheckList)
+                .WithMany()
                 .IsRequired();
 
             builder
-                .HasOne(e => e.ScheduleDriverTruckTrailer)
+                .HasOne(e => e.DriverSchedule)
                 .WithMany(e=> e.CheckList)
                 .IsRequired();
 
