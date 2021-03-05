@@ -1,4 +1,5 @@
 ﻿using FreightManagement.Domain.Entities;
+using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.ValueObjects;
 using FreightManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ namespace FreightManagement.Infrastructure.Persistence
 {
     public static class ApplicationDbContextSeed
     {
-        public static async Task SeedDefaultUserAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedDefaultUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             var administratorRole = new IdentityRole("Administrator");
 
@@ -20,11 +21,11 @@ namespace FreightManagement.Infrastructure.Persistence
 
             var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
 
-            if (userManager.Users.All(u => u.UserName != administrator.UserName))
+/*            if (userManager.Users.All(u => u.Email != administrator.UserName))
             {
                 await userManager.CreateAsync(administrator, "Administrator1!");
                 await userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
-            }
+            }*/
         }
 
         public static async Task SeedSampleDataAsync(ApplicationDbContext context)
@@ -47,6 +48,21 @@ namespace FreightManagement.Infrastructure.Persistence
                         new TodoItem { Title = "Tuna" },
                         new TodoItem { Title = "Water" }
                     }
+                });
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.AllUsers.Any())
+            {
+                context.AllUsers.Add(new User
+                {
+                    FirstName ="samir",
+                    LastName ="Momin",
+                    Email ="mominsamir1@gmail.com",
+                    Password ="samir123",
+                    Role = "manager",
+                    CreatedBy ="e4234"
                 });
 
                 await context.SaveChangesAsync();

@@ -6,6 +6,7 @@ using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Payables;
 using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
+using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
 using Microsoft.EntityFrameworkCore;
@@ -56,8 +57,9 @@ namespace FreightManagement.Application.Common.Interfaces
         public DbSet<Rack> Racks { get; set; }
 
         public DbSet<Product> Products { get; set; }
-
         public DbSet<FuelProduct> FuelProducts { get; set; }
+        public DbSet<User> AllUsers { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

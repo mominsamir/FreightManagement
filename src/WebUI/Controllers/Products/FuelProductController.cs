@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.WebUI.Controllers.Products
 {
-    [Authorize]
+    [Authorize(Roles = "manager")]
     public class FuelProductController : ApiControllerBase
     {
         [HttpGet("{id}")]

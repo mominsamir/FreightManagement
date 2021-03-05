@@ -3,7 +3,6 @@ using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,18 +28,21 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
                 .Where(c => c.Id == request.Id).SingleOrDefaultAsync(cancellationToken);
 
             if(customer == null)
-            {
-                throw new NotFoundException(string.Format("Customer not found with id {0}",request.Id));
-            }
+                throw new NotFoundException($"Customer not found with id {request.Id}");
 
-            return new ModelView<CustomerDto>(new CustomerDto(
+            return new ModelView<CustomerDto>(
+                new CustomerDto(
                     customer.Id,
                     customer.Name,
                     customer.Email,
                     customer.BillingAddress,
                     customer.IsActive,
                     customer.Locations
-                ), true, false, true);
+                ), 
+                true, 
+                false, 
+                true
+            );
         }
     }
 }

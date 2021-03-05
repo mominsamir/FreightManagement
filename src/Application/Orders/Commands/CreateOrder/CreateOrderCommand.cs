@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Entities.Orders;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading;

@@ -127,6 +127,10 @@ namespace FreightManagement.WebUI.Filters
 
         private void HandleUnknownException(ExceptionContext context)
         {
+
+            Console.WriteLine($"Message <==> ${context.Exception.Message}");
+            Console.WriteLine(context.Exception.StackTrace);
+
             var details = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,

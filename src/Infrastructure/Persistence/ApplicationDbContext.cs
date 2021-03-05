@@ -8,11 +8,11 @@ using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Payables;
 using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
+using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
 using FreightManagement.Infrastructure.Identity;
-using IdentityServer4.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
         private readonly ICurrentUserService _currentUserService;
         private readonly IDateTime _dateTime;
@@ -33,11 +33,10 @@ namespace FreightManagement.Infrastructure.Persistence
 
         public ApplicationDbContext(
             DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions,
             ICurrentUserService currentUserService,
             IDomainEventService domainEventService,
             IDateTime dateTime,
-            ILogger<ApplicationDbContext> logger) : base(options, operationalStoreOptions)
+            ILogger<ApplicationDbContext> logger) : base(options)
         {
             _currentUserService = currentUserService;
             _domainEventService = domainEventService;
@@ -67,9 +66,11 @@ namespace FreightManagement.Infrastructure.Persistence
         public DbSet<Rack> Racks { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<FuelProduct> FuelProducts { get; set; }
+        public DbSet<User> AllUsers { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
+            _logger.LogInformation($"XXXXXXXXXXXXXXXXXXXXX <==> {_currentUserService.UserId} <==> XXXXXXXXXXXXXXXXXXXXX ");
 
             foreach (EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {

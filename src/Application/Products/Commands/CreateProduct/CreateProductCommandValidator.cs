@@ -32,7 +32,7 @@ namespace FreightManagement.Application.Products.Commands.CreateProduct
 
         public async Task<bool> BeUniqueName(string name, CancellationToken cancellationToken)
         {
-            return await _context.Products.AllAsync(l => l.Name == name, cancellationToken);
+            return await _context.Products.AllAsync(l => l.Name != name, cancellationToken);
         }
     }
 }

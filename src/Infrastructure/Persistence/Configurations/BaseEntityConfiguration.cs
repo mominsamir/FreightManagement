@@ -13,8 +13,7 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations
             //CreatedDate 
             builder.Property(x => x.CreatedBy)
                 .HasColumnName("created_by")
-                .HasMaxLength(50)
-                .IsRequired();
+                .HasMaxLength(50);
 
             builder.Property(x => x.LastModifiedBy)
                 .HasMaxLength(50)
