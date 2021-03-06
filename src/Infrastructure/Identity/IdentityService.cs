@@ -1,9 +1,6 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FreightManagement.Infrastructure.Identity

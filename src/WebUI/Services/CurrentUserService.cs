@@ -24,5 +24,9 @@ namespace FreightManagement.WebUI.Services
         }
 
         public string UserId => GetUser();
+
+        public string UserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.GivenName);
+
+        public string UserRole => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
     }
 }

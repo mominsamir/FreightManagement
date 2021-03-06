@@ -1,7 +1,6 @@
 ﻿using FreightManagement.Domain.Entities;
 using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.ValueObjects;
-using FreightManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,7 +60,7 @@ namespace FreightManagement.Infrastructure.Persistence
                     LastName ="Momin",
                     Email ="mominsamir1@gmail.com",
                     Password ="samir123",
-                    Role = "manager",
+                    Role = Role.ADMIN,
                     CreatedBy ="e4234"
                 });
 

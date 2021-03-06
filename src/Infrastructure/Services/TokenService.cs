@@ -1,5 +1,4 @@
-﻿using FreightManagement.Application.Users.Queries;
-using FreightManagement.Domain.Entities.Users;
+﻿using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;

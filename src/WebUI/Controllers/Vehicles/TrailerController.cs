@@ -3,6 +3,7 @@ using FreightManagement.Application.Trailers.Commands.CreateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailerStatus;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,25 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
     public class TrailerController : ApiControllerBase
     {
         [HttpGet("{id}")]
+        [Authorize(Roles = Role.DRIVER)]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult<ModelView<TrailerDto>>> GetRack(long id)
         {
             return await Mediator.Send(new GetTrailerById { Id = id });
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult<long>> Create(CreateTrailerCommand command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> Update(int id, UpdateTrailerCommand command)
         {
             if (id != command.Id)
@@ -39,6 +47,8 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
         }
 
         [HttpPut("{id}/activate")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> ActivateTerminal(int id)
         {
             var command = new UpdateTrailerStatusCommand
@@ -52,6 +62,8 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
         }
 
         [HttpPut("{id}/under_maintanace")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> UnderMaintanance(int id)
         {
             var command = new UpdateTrailerStatusCommand
@@ -65,6 +77,8 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
         }
 
         [HttpPut("{id}/out_of_service")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> OutOfService(int id)
         {
             var command = new UpdateTrailerStatusCommand

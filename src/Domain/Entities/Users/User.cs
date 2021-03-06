@@ -12,6 +12,12 @@ namespace FreightManagement.Domain.Entities.Users
         public string Password { get; set; }
         public string Role { get; set; }
 
+    }
 
+    public class Role
+    {
+        public const string ADMIN = "ADMIN";
+        public const string DISPATCHER = "DISPATCHER";
+        public const string DRIVER = "DRIVER";
     }
 }

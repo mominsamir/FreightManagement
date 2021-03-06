@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+    server:
+        image: gasjobber-api:latest
+        depends_on:
+            - db
+        volumes:
+            - server_logs:/home/server/logs
+            - ftp_uploads:/home/server/ftp_uploads
+        links:
+            - db:database
+        env_file: ./conf/env_${MY_ENV}
+    web:
+        image: gasjobber-web-ui:latest
+        depends_on:
+            - server
+            - admin-ui
+            - customer-ui
+        links:
+            - server
+            - admin-ui
+            - customer-ui
+        env_file: ./conf/env_${MY_ENV}
+    admin-ui:
+        image: gasjobber-admin-ui:latest
+        depends_on:
+            - server
+        links:
+            - server
+        env_file: ./conf/env_${MY_ENV}
+    customer-ui:
+        image: gasjobber-customer-ui:latest
+        depends_on:
+            - server
+        links:
+            - server
+        env_file: ./conf/env_${MY_ENV}
+    db:
+        image: postgres:9.6.3
+        env_file: ./conf/env_${MY_ENV}
+        volumes:
+            - db_data:/var/lib/postgresql/data
+volumes:
+    db_data:
+        external:
+            name: ${COMPOSE_PROJECT_NAME}_db_data_${MY_ENV}
+    server_logs:
+        external:
+            name: ${COMPOSE_PROJECT_NAME}_server_logs_${MY_ENV}
+    ftp_uploads:
+        external:
+            name: ${COMPOSE_PROJECT_NAME}_ftp_uploads_${MY_ENV}
+
+networks:
+    default:
+        external:
+            name: ${NETWORK}

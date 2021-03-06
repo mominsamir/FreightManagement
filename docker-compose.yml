@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  webui:
+    image: ${DOCKER_REGISTRY-}webui
+    depends_on:
+        - db
+    volumes:
+        - server_logs:/home/server/logs
+        - ~/.aspnet/https:/https:ro
+    ports:
+     - 80:80
+     - 443:443
+    build:
+      context: .
+      dockerfile: src/WebUI/Dockerfile
+    links:
+        - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=abcd1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+  db:
+     image: postgres:9.6.3
+     volumes:
+        - db_data:/var/lib/postgresql/data     
+     ports:
+      - "5432:5432"
+     environment:
+      - POSTGRES_DB=freight_management
+      - POSTGRES_USER=gasjobber
+      - POSTGRES_PASSWORD=gasjobber
+volumes:
+    db_data:
+        external:
+            name: fm_db_data
+    server_logs:
+        external:
+            name: fm_server_logs
+
+networks:
+    default:
+        external:
+            name: fmnetwork

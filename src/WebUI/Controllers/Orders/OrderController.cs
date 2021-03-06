@@ -2,6 +2,7 @@
 using FreightManagement.Application.Orders.Commands.CreateOrderItem;
 using FreightManagement.Application.Orders.Commands.RemoveOrderItem;
 using FreightManagement.Application.Orders.Commands.UpdateOrder;
+using FreightManagement.Domain.Entities.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,12 +20,16 @@ namespace FreightManagement.WebUI.Controllers.Orders
         }
 */
         [HttpPost]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult<long>> Create(CreateOrderCommand command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> Update(int id, UpdateOrderCommand command)
         {
             if (id != command.Id)
@@ -38,6 +43,8 @@ namespace FreightManagement.WebUI.Controllers.Orders
         }
 
         [HttpPut("addOrderItem")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> AddOrderItem(CreateOrderItemCommand command)
         {
             await Mediator.Send(command);
@@ -46,6 +53,8 @@ namespace FreightManagement.WebUI.Controllers.Orders
         }
 
         [HttpDelete("{OrderId}/{OrderItemId}")]
+        [Authorize(Roles = Role.ADMIN)]
+        [Authorize(Roles = Role.DISPATCHER)]
         public async Task<ActionResult> RemoveOrderItem(int OrderId, long OrderItemId)
         {
             await Mediator.Send(new RemoveOrderItemCommand

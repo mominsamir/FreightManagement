@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Users.Queries;
+﻿using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
+using FreightManagement.Application.Users.Queries.UserConfiguration;
 using FreightManagement.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,7 @@ namespace FreightManagement.WebUI.Controllers
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<ActionResult<dynamic>> Authenticate([FromBody] ConfirmUserIdentify model)
+        public async Task<ActionResult<dynamic>> Authenticate([FromBody] QueryConfirmUserIdentify model)
         {
             var user = await Mediator.Send(model);
 
@@ -29,9 +30,16 @@ namespace FreightManagement.WebUI.Controllers
             var token = TokenService.CreateToken(user);
             return new
             {
-                user = user,
                 token = token
             };
+        }
+
+        [HttpGet]
+        [Route("user-configration")]
+        [Authorize]
+        public async Task<ActionResult<UserConfigurationDto>> GetUserConfiguration()
+        {
+            return await Mediator.Send(new QueryUserConfiguration());
         }
 
         [HttpGet]
