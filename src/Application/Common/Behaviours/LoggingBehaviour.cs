@@ -10,13 +10,13 @@ namespace FreightManagement.Application.Common.Behaviours
     {
         private readonly ILogger _logger;
         private readonly ICurrentUserService _currentUserService;
-        private readonly IIdentityService _identityService;
+/*        private readonly IIdentityService _identityService;*/
 
-        public LoggingBehaviour(ILogger<TRequest> logger, ICurrentUserService currentUserService, IIdentityService identityService)
+        public LoggingBehaviour(ILogger<TRequest> logger, ICurrentUserService currentUserService)
         {
             _logger = logger;
             _currentUserService = currentUserService;
-            _identityService = identityService;
+/*            _identityService = identityService;*/
         }
 
         public async Task Process(TRequest request, CancellationToken cancellationToken)
@@ -27,7 +27,7 @@ namespace FreightManagement.Application.Common.Behaviours
 
             if (!string.IsNullOrEmpty(userId))
             {
-                userName = await _identityService.GetUserNameAsync(userId);
+/*                userName = await _identityService.GetUserNameAsync(userId);*/
             }
 
             _logger.LogInformation("FreightManagement Request: {Name} {@UserId} {@UserName} {@Request}",

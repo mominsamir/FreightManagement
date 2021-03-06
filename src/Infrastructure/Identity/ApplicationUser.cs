@@ -2,7 +2,7 @@
 
 namespace FreightManagement.Infrastructure.Identity
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser 
     {
     }
 }

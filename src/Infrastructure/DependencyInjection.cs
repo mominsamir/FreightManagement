@@ -35,9 +35,9 @@ namespace FreightManagement.Infrastructure
 
             services.AddScoped<IDomainEventService, DomainEventService>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+//            services.AddIdentity<ApplicationUser, IdentityRole>()
+//                .AddEntityFrameworkStores<ApplicationDbContext>()
+//                .AddDefaultTokenProviders();
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>

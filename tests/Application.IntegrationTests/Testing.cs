@@ -101,7 +101,7 @@ public class Testing
 
         var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
 
-        var user = new ApplicationUser { UserName = userName, Email = userName };
+        var user = new ApplicationUser ();
 
         var result = await userManager.CreateAsync(user, password);
 
@@ -119,7 +119,7 @@ public class Testing
 
         if (result.Succeeded)
         {
-            _currentUserId = user.Id;
+            //_currentUserId = user.Id;
 
             return _currentUserId;
         }
