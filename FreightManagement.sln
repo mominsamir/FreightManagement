@@ -23,6 +23,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.IntegrationTest
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2A15B94D-973E-4BCB-B066-7F09AA520CB6}"
 EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AdminUI", "src\AdminUI\", "{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_53942"
+		Debug.AspNetCompiler.PhysicalPath = "src\AdminUI\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53942\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_53942"
+		Release.AspNetCompiler.PhysicalPath = "src\AdminUI\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_53942\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "53942"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +81,10 @@ Global
 		{2A15B94D-973E-4BCB-B066-7F09AA520CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A15B94D-973E-4BCB-B066-7F09AA520CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A15B94D-973E-4BCB-B066-7F09AA520CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +97,7 @@ Global
 		{DEFF4009-1FAB-4392-80B6-707E2DC5C00B} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{DC37FD87-552C-4613-9F16-1537CA522898} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
 		{277029AF-D9E1-4B75-9F11-48FEA7345AD7} = {664D406C-2F83-48F0-BFC3-408D5CB53C65}
+		{C1D30D6D-3AD7-4DF6-B1A7-4FF2149BDC5B} = {6ED356A7-8B47-4613-AD01-C85CF28491BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3CB609D9-5D54-4C11-A371-DAAC8B74E430}

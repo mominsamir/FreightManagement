@@ -21,6 +21,17 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_Kestrel__Certificates__Default__Password=abcd1234
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+  admin-ui:
+      image: fm-admin-ui
+      depends_on:
+        - webui
+      links:
+        - webui
+      ports:
+        - 9000:9000
+      build:
+       context: src/AdminUI
+       dockerfile: ./Docker/Dockerfile
   db:
      image: postgres:9.6.3
      volumes:
