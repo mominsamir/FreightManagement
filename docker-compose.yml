@@ -29,6 +29,10 @@ services:
         - webui
       ports:
         - 9000:9000
+      expose:
+        - 9000
+      volumes:
+        - admin_ui_src:/home/webuser/app/src
       build:
        context: src/AdminUI
        dockerfile: ./Docker/Dockerfile
@@ -37,7 +41,7 @@ services:
      volumes:
         - db_data:/var/lib/postgresql/data     
      ports:
-      - "5432:5432"
+      - 5432:5432
      environment:
       - POSTGRES_DB=freight_management
       - POSTGRES_USER=gasjobber
@@ -49,6 +53,9 @@ volumes:
     server_logs:
         external:
             name: fm_server_logs
+    admin_ui_src:
+        external:
+            name: fm_admin_ui_src
 
 networks:
     default:
