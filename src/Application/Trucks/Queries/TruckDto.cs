@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using FreightManagement.Application.Common.Mappings;
-using FreightManagement.Domain.Entities.Vehicles;
+﻿using FreightManagement.Domain.Entities.Vehicles;
 using System;
 
 namespace FreightManagement.Application.Trucks.Queries
 {
-    public class TruckDto : IMapFrom<Truck>
+    public class TruckDto 
     {
         public long Id { get; set; }
         public string NumberPlate { get; set; }
@@ -13,10 +11,25 @@ namespace FreightManagement.Application.Trucks.Queries
         public DateTime NextMaintanceDate { get; set; }
         public VehicleStatus Status { get; set; }
 
-        public void Mapping(Profile profile)
+
+    }
+
+    public class TruckListDto 
+    {
+        public TruckListDto(long id, string numberPlate, string vIN, DateTime nextMaintanceDate, string status)
         {
-            profile.CreateMap<Truck, TruckDto>()
-                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id));
+            Id = id;
+            NumberPlate = numberPlate;
+            VIN = vIN;
+            NextMaintanceDate = nextMaintanceDate;
+            Status = status;
         }
+
+        public long Id { get;  }
+        public string NumberPlate { get;}
+        public string VIN { get;  }
+        public DateTime NextMaintanceDate { get;  }
+        public string Status { get; }
+
     }
 }

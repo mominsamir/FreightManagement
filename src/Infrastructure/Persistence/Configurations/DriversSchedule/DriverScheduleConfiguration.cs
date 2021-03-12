@@ -38,6 +38,11 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.DriversSch
                 .IsRequired();
 
             builder
+                .HasOne(e => e.Driver)
+                .WithMany()
+                .IsRequired();
+
+            builder
                 .HasMany(s => s.CheckList)
                 .WithOne(g => g.DriverSchedule)
                 .IsRequired()

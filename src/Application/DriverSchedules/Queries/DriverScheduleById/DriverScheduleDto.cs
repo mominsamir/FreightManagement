@@ -1,6 +1,7 @@
 ﻿using FreightManagement.Application.Common.Mappings;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
 using FreightManagement.Application.Trucks.Queries;
+using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using FreightManagement.Domain.Entities.DriversSchedules;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,16 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
         public long Id { get; }
         public DateTime StartTime { get; }
         public DateTime EndTime { get;  }
-        public long Driver { get;  }
+        public UserDto Driver { get;  }
         public TrailerDto Trailer { get;  }
         public TruckDto Truck { get;  }
         public DriverScheduleStatus Status { get; }
         public IEnumerable<DriverCheckListDto> CheckList { get; }
-        public DriverScheduleDto() { }
         public DriverScheduleDto(
             long id, 
             DateTime startTime, 
-            DateTime endTime, 
-            long driver, 
+            DateTime endTime,
+            UserDto driver, 
             TrailerDto trailer, 
             TruckDto truck, 
             DriverScheduleStatus status, 
@@ -37,7 +37,6 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
             Status = status;
             CheckList = checkList;
         }
-
     }
 
     public class DriverCheckListDto {
@@ -52,4 +51,35 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
             IsChecked = isChecked;
         }
     }
+
+    public class DriverScheduleListDto : IMapFrom<DriverSchedule>
+    {
+        public long Id { get; }
+        public DateTime StartTime { get; }
+        public DateTime EndTime { get; }
+        public UserDto Driver { get; }
+        public TrailerListDto Trailer { get; }
+        public TruckListDto Truck { get; }
+        public string Status { get; }
+
+        public DriverScheduleListDto(
+            long id,
+            DateTime startTime,
+            DateTime endTime,
+            UserDto driver,
+            TrailerListDto trailer,
+            TruckListDto truck,
+            string status
+        )
+        {
+            Id = id;
+            StartTime = startTime;
+            EndTime = endTime;
+            Driver = driver;
+            Trailer = trailer;
+            Truck = truck;
+            Status = status;
+        }
+    }
+
 }

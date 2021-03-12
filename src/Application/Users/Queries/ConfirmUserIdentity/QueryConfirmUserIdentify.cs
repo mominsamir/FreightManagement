@@ -1,5 +1,6 @@
 ﻿using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
+using FreightManagement.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,19 +35,19 @@ namespace FreightManagement.Application.Users.Queries.ConfirmUserIdentity
 
         public async Task<UserDto> Handle(QueryConfirmUserIdentify request, CancellationToken cancellationToken)
         {
-            var user = await _context.AllUsers.FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password,cancellationToken);
+            var user = await _context.AllUsers.FirstOrDefaultAsync(u => u.Email == request.Email,cancellationToken);
 
             if (user is null)
             {
-                throw new NotFoundException($"User Id Or Password does not match");
+                throw new ForbiddenAccessException();
             }
 
-            if (user.Password == request.Password) {
-                return new UserDto(user.Id,user.FirstName,user.LastName,user.Email,user.Role);
+            if (PasswordEncoder.ComparePassword(request.Password, user.Password)) {
+                return new UserDto(user.Id,user.FirstName,user.LastName,user.Email,user.Role,user.IsActive);
             }
             else
             {
-                return null;
+                throw new ForbiddenAccessException();
             }
         }
     }

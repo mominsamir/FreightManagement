@@ -1,17 +1,15 @@
-﻿using FreightManagement.Application.Common.Mappings;
-using FreightManagement.Domain.Entities.Users;
-
-namespace FreightManagement.Application.Users.Queries.ConfirmUserIdentity
+﻿namespace FreightManagement.Application.Users.Queries.ConfirmUserIdentity
 {
-    public class UserDto : IMapFrom<User>
+    public class UserDto
     {
-        public UserDto(long id, string firstName, string lastName, string email, string role)
+        public UserDto(long id, string firstName, string lastName, string email, string role, bool isActive)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Role = role;
+            IsActive = isActive;
         }
 
         public long Id { get;  }
@@ -19,6 +17,13 @@ namespace FreightManagement.Application.Users.Queries.ConfirmUserIdentity
         public string LastName { get; }
         public string Email { get;  }
         public string Role { get; }
+        public bool IsActive { get; }
 
+        /*        public void Mapping(Profile profile)
+                {
+                    profile.CreateMap<User, UserDto>()
+                        .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id));
+                }
+        */
     }
 }

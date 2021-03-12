@@ -12,6 +12,11 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
     public class QueryCustomerById : IRequest<ModelView<CustomerDto>> 
     {
         public long Id;
+
+        public QueryCustomerById(long id)
+        {
+            Id = id;
+        }
     }
 
     public class QueryCustomerByIdHandler : IRequestHandler<QueryCustomerById, ModelView<CustomerDto>>

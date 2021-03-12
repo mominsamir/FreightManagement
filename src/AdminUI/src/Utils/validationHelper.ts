@@ -8,7 +8,7 @@ export interface ValidationError {
   errorMessages: Record<string, any>;
 }
 
-const GLOBAL_ERRORS = 'globalErrors';
+const GLOBAL_ERRORS = 'errors';
 
 const displayValidationErrors = (form: FormInstance, payload: ValidationError): Array<string> => {
   let errors = flattenObject(payload.validationErrors);

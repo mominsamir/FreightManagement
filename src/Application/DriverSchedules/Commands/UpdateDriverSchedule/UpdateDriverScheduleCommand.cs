@@ -27,24 +27,16 @@ namespace FreightManagement.Application.DriverSchedules.Commands.UpdateDriverSch
         {
             var schedule =await _contex.DriverScheduleLists.FindAsync(new object[] { request.Id }, cancellationToken);
             if(schedule == null)
-                 throw new NotFoundException(string.Format("Schedule not found with id {0}", request.Id));
+                 throw new NotFoundException($"Schedule not found with id {request.Id}");
 
 
             var truck = await _contex.Trucks.FindAsync(new object[] { request.TruckId }, cancellationToken);
-            if (truck == null)
-                throw new NotFoundException(string.Format("Truck not found with id {0}", request.TruckId));
-
             var trailer = await _contex.Trailers.FindAsync(new object[] { request.TrailerId }, cancellationToken);
-
-            if (trailer == null)
-                throw new NotFoundException(string.Format("Trailer not found with id {0}", request.TruckId));
-
-
-            //TODO:: once user instace is implemeneted , query using driver id and set object to user
-
+            
             schedule.EndTime = request.EndTime;
-            schedule.Truck = truck;
-            schedule.Trailer = trailer;
+
+            schedule.Truck = truck ?? throw new NotFoundException($"Truck not found with id {request.TruckId}");
+            schedule.Trailer = trailer ?? throw new NotFoundException($"Trailer not found with id {request.TruckId}");
 
             await _contex.SaveChangesAsync(cancellationToken);
 

@@ -63,13 +63,20 @@ namespace FreightManagement.Application.Users.Queries.UserConfiguration
 
             var vendorMenu = new Menu
             {
-                Item = new MenuItem { Label = "Vendors & Customers", Key = "vendors", URL = "/", Icon = "" },
-                Children = new List<MenuItem>() {
-                    new MenuItem { Label = "Vendors", Key = "vendorsList", URL="/dispatch/vendors" },
-                    new MenuItem { Label = "Customers", Key = "customerList", URL="/dispatch/customers" }
-                }
+                Item = new MenuItem { Label = "Vendors", Key = "vendorLists", URL = "/dispatch/vendors", Icon = "" },
+                Children = new List<MenuItem>() {}
             };
             menus.Add(vendorMenu);
+
+            var customerMenu = new Menu
+            {
+                Item = new MenuItem { Label = "Customers", Key = "customerLists", URL = "/", Icon = "" },
+                Children = new List<MenuItem>() {
+                    new MenuItem { Label = "Customers", Key = "customerList", URL="/dispatch/customers" },
+                    new MenuItem { Label = "Locations", Key = "locationList", URL="/dispatch/locations" }
+                }
+            };
+            menus.Add(customerMenu);
 
             var userMenu = new Menu
             {

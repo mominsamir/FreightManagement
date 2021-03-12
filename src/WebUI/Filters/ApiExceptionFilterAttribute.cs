@@ -55,10 +55,11 @@ namespace FreightManagement.WebUI.Filters
 
             var details = new ValidationProblemDetails(exception.Errors)
             {
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+                Status = 422
             };
 
-            context.Result = new BadRequestObjectResult(details);
+            context.Result = new UnprocessableEntityObjectResult(details);
 
             context.ExceptionHandled = true;
         }

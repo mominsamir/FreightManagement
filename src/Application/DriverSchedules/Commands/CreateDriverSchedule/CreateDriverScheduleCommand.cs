@@ -31,14 +31,21 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
 
             var truck = await _contex.Trucks.Include(i=> i.CheckLists)
                 .Where(t=> t.Id == request.TruckId ).SingleOrDefaultAsync(cancellationToken);
+
             if (truck == null)
-                throw new NotFoundException(string.Format("Truck not found with id {0}", request.TruckId));
+                throw new NotFoundException($"Truck not found with id {request.TruckId}");
 
             var trailer = await _contex.Trailers.Include(i => i.CheckLists)
                 .Where(t => t.Id == request.TruckId).SingleOrDefaultAsync(cancellationToken); 
 
             if (trailer == null)
-                throw new NotFoundException(string.Format("Trailer not found with id {0}", request.TruckId));
+                throw new NotFoundException($"Trailer not found with id {request.TruckId}");
+
+            var driver = await _contex.AllUsers
+                .Where(t => t.Id == request.DriverId).SingleOrDefaultAsync(cancellationToken);
+
+            if (driver == null)
+                throw new NotFoundException($"Driver not found with id {request.DriverId}");
 
 
             //TODO:: once user instace is implemeneted , query using driver id and set object to user
@@ -47,7 +54,7 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
             var scheduleDriver = new DriverSchedule
             {
                 StartTime = request.StartTime,
-                Driver = request.DriverId,
+                Driver = driver,
                 Truck = truck,
                 Trailer = trailer,
             };

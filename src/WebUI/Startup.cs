@@ -14,6 +14,10 @@ using Microsoft.Extensions.Hosting;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using System.Linq;
+using FreightManagement.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace FreightManagement.WebUI
 {
@@ -53,25 +57,20 @@ namespace FreightManagement.WebUI
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            // In production, the Angular files will be served from this directory
-/*            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });*/
 
-            services.AddOpenApiDocument(configure =>
-            {
-                configure.Title = "FreightManagement API";
-                configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-                {
-                    Type = OpenApiSecuritySchemeType.ApiKey,
-                    Name = "Authorization",
-                    In = OpenApiSecurityApiKeyLocation.Header,
-                    Description = "Type into the textbox: Bearer {your JWT token}."
-                });
+            /*            services.AddOpenApiDocument(configure =>
+                        {
+                            configure.Title = "FreightManagement API";
+                            configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                            {
+                                Type = OpenApiSecuritySchemeType.ApiKey,
+                                Name = "Authorization",
+                                In = OpenApiSecurityApiKeyLocation.Header,
+                                Description = "Type into the textbox: Bearer {your JWT token}."
+                            });
 
-                configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-            });
+                            configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                        });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

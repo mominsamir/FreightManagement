@@ -48,11 +48,11 @@ namespace FreightManagement.Application.StorageRacks.Commands.CreateTerminal
 
         public async Task<bool> BeUniqueName(UpdateRackCommand command, CancellationToken cancellationToken)
         {
-            return await _context.Racks.AllAsync(r => r.Name != command.Name && r.Id != command.Id);
+            return await _context.Racks.AnyAsync(l => l.Name == command.Name && l.Id != command.Id, cancellationToken);
         }
         public async Task<bool> BeUniqueIRSCode(UpdateRackCommand command, CancellationToken cancellationToken)
         {
-            return await _context.Racks.AllAsync(r => r.IRSCode != command.IRSCode && r.Id != command.Id);
+            return await _context.Racks.AnyAsync(l => l.IRSCode == command.IRSCode && l.Id != command.Id, cancellationToken);
         }
 
     }

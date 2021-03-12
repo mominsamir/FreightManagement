@@ -19,9 +19,9 @@ namespace FreightManagement.Infrastructure.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.GivenName, $"{user.LastName} {user.LastName}"),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(EXPIRE_HOURS),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

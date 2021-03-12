@@ -57,7 +57,7 @@ namespace FreightManagement.WebUI.Controllers
 
         [HttpGet]
         [Route("manager")]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = "ADMIN")]
         public string Manager() => "Manager";
     }
 }

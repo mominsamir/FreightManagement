@@ -2,6 +2,7 @@
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
 using FreightManagement.Application.Trucks.Queries;
+using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -12,7 +13,12 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
 {
     public class QueryDriverScheduleById : IRequest<ModelView<DriverScheduleDto>>
     {
-        public long Id;
+        public QueryDriverScheduleById(long id)
+        {
+            Id = id;
+        }
+
+        public long Id { get; }
     }
 
     public class QueryDriverScheduleByIdHandler : IRequestHandler<QueryDriverScheduleById, ModelView<DriverScheduleDto>>
@@ -32,7 +38,14 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
                 schedule.Id,
                 schedule.StartTime,
                 schedule.EndTime,
-                schedule.Driver,
+                new UserDto(
+                    schedule.Driver.Id,
+                    schedule.Driver.FirstName,
+                    schedule.Driver.LastName,
+                    schedule.Driver.Email,
+                    schedule.Driver.Role,
+                    schedule.Driver.IsActive
+                ),
                 new TrailerDto
                 {
                     Id = schedule.Trailer.Id,

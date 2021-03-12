@@ -1,4 +1,5 @@
 ﻿using FreightManagement.Domain.Common;
+using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace FreightManagement.Domain.Entities.DriversSchedules
         public long Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public long Driver { get; set; }
+        public User Driver { get; set; }
         public Trailer Trailer { get; set; }
         public Truck Truck { get; set; }
         public DriverScheduleStatus Status { get; private set; }

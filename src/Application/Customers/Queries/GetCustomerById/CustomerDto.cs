@@ -34,6 +34,19 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
                 .ToList();
         }
 
+        public CustomerDto(long id,
+            string name,
+            Email email,
+            Address billingAddress,
+            bool isActive)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            BillingAddress = billingAddress;
+            IsActive = isActive;
+        }
+
     }
 
     public class LocationDto

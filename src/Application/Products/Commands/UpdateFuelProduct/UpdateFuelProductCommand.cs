@@ -2,10 +2,6 @@
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Entities.Products;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +27,7 @@ namespace FreightManagement.Application.Products.Commands.UpdateFuelProduct
 
         public async Task<Unit> Handle(UpdateFuelProductCommand request, CancellationToken cancellationToken)
         {
-            var  fuelProduct = await _context.FuelProducts.FindAsync(request.Id, cancellationToken);
+            var  fuelProduct = await _context.FuelProducts.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if(fuelProduct == null)
             {

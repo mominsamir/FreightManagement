@@ -36,7 +36,7 @@ namespace FreightManagement.Application.Users.Queries.UserConfiguration
 
             return new UserConfigurationDto
             {
-                User = new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role),
+                User = new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role,user.IsActive),
                 Menus = MenuService.Get(user.Role)
             };
         }

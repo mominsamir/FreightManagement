@@ -39,6 +39,7 @@ const App: React.FC = () => {
 
   const goBack = () => {
     history.goBack();
+  
   }
 
   useEffect(() => {
@@ -128,7 +129,13 @@ const App: React.FC = () => {
                   <Route path="/dispatch/home" component={pages.Homepage} />
                   <Route path="/dispatch/products" exact component={pages.Homepage} />
                   <Route path="/dispatch/products/add"  exact component={pages.Homepage} />                  
-                  <Route path="/forgot-password" component={pages.ForgetPassword} />                  
+                  <Route path="/forgot-password" component={pages.ForgetPassword} />
+                  <Route path="/dispatch/Users" component={pages.UserPages.List} />
+                  <Route path="/dispatch/fuelProducts" component={pages.ProductPages.List} />
+                  <Route path="/dispatch/racks" component={pages.RackPages.List} />
+                  <Route path="/dispatch/trailers" component={pages.TrailerPages.List} />
+                  <Route path="/dispatch/trucks" component={pages.TruckPages.List} />
+                  <Route path="/dispatch/vendors" component={pages.VendorPages.List} />                  
                   <Route path="/unknown-error" component={pages.ErrorPages.UnknownError} />
                   <Route path="/not-authorized" component={pages.ErrorPages.NotAuthorized} />
                   <Route path="*" component={pages.ErrorPages.NotFound} />

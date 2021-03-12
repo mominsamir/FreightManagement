@@ -10,7 +10,12 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
 {
     public class QueryLocationById : IRequest<ModelView<LocationDto>>
     {
-        public long Id;
+        public long Id { get; }
+
+        public QueryLocationById(long id)
+        {
+            Id = id;
+        }
     }
 
     public class QueryLocationByIdHandler : IRequestHandler<QueryLocationById, ModelView<LocationDto>>

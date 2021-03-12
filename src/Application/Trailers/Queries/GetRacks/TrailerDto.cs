@@ -21,4 +21,26 @@ namespace FreightManagement.Application.Trailers.Queries.GetRacks
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id));
         }
     }
+
+    public class TrailerListDto 
+    {
+        public TrailerListDto(long id, string numberPlate, string vIN, double capacity, int compartment, string status)
+        {
+            Id = id;
+            NumberPlate = numberPlate;
+            VIN = vIN;
+            Capacity = capacity;
+            Compartment = compartment;
+            Status = status;
+        }
+
+        public long Id { get; }
+        public string NumberPlate { get; }
+        public string VIN { get;  }
+        public double Capacity { get;  }
+        public int Compartment { get; }
+        public string Status { get; }
+
+    }
+
 }

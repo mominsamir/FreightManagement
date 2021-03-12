@@ -24,7 +24,7 @@ namespace FreightManagement.Application.Common.Behaviours
             catch (Exception ex)
             {
                 var requestName = typeof(TRequest).Name;
-
+                _logger.LogError(ex.StackTrace);
                 _logger.LogError(ex, "FreightManagement Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;

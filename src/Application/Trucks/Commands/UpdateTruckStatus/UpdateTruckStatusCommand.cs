@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Exceptions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Entities.Vehicles;
 using MediatR;
 using System;
@@ -28,7 +29,7 @@ namespace FreightManagement.Application.Trucks.Commands.UpdateTruckStatus
 
             if( truck == null)
             {
-                throw new DllNotFoundException();
+                throw new NotFoundException($"Truck not found with id {request.Id}");
             }
 
             switch (request.status)

@@ -40,6 +40,11 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Users
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.Property(t => t.IsActive)
+                .HasColumnName("active")
+                .HasDefaultValue(true)
+                .IsRequired();
+
             builder.HasIndex(c => c.Email).IsUnique();
 
         }

@@ -26,7 +26,7 @@ const fetchPost = function (url: string, payload: object) {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',      
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
     },
     body: JSON.stringify(payload),
   })
@@ -40,7 +40,7 @@ const fetchPostFormData = function (url: string, payload: FormData) {
     method: 'POST',
     cache: 'no-cache',
     headers: {
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
     },
     body: payload,
   })
@@ -56,7 +56,7 @@ const fetchPut = function (url: string, payload: object) {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
     },
     body: JSON.stringify(payload),
   })
@@ -71,7 +71,7 @@ const fetchDelete = function (url: string, payload: object) {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
     },
     body: JSON.stringify(payload),
   })
@@ -86,7 +86,7 @@ const fetchPostDownload = async function (url: string, payload: object) {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',      
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
       'responseType': 'blob' 
     },
     body: JSON.stringify(payload),
@@ -106,7 +106,7 @@ const fileXLSDownload = async function (url: string,  payload: object) {
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + Cookies.get('TOKEN') || '',
+      'Authorization': Cookies.get('TOKEN') || '',
     },
     body: JSON.stringify(payload),
   });

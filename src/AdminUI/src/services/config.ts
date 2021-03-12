@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 
 const login = async (user :UserIdendity): Promise<ApiResponse> => {
   let resp: any = await fetchApi.post('/api/Authentication/login', user);
-  Cookies.set('TOKEN',`Bearer  ${resp.token}`);    
+  Cookies.set('TOKEN',`Bearer ${resp.token}`);    
   return resp as ApiResponse;
 };
 

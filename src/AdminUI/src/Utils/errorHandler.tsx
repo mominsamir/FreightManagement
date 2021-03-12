@@ -14,7 +14,7 @@ const handleError = (err: ApiError) => {
       return '/not-authorized';
     case 404:
       return '/page-not-found';
-    case 422:
+    case 400:
       return null;
     default:
       return '/unknown-error';
@@ -31,7 +31,7 @@ const handleErrorAndRedirect = (err: ApiError, history: History) => {
 
 const handleFormSubmitError = (form: FormInstance, err: ApiError, history: History) => {
   let status = handleErrorAndRedirect(err, history);
-  if (status === 422 && err.response && typeof err.response !== 'string') {
+  if (status === 400 && err.response && typeof err.response !== 'string') {
     return displayValidationErrors(form, err.response);
   } else {
     return [];
@@ -44,7 +44,7 @@ const handleErrors = (err: ApiError, history: History, dispatch: AppDispatch, fo
         globalErrors = handleFormSubmitError(form, err, history);
       } else {
         let status = handleErrorAndRedirect(err, history);
-        if (status === 422) {
+        if (status === 400) {
           globalErrors = getGlobalErrors(err);
         }
       }

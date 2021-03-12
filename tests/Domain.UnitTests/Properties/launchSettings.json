@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Domain.UnitTests": {
+      "commandName": "Project",
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "localhost"
+    }
+  }
+}

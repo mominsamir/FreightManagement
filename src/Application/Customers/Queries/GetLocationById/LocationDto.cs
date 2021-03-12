@@ -16,7 +16,6 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
         public Address DeliveryAddress { get;  }
         public IEnumerable<LocationTanksDto> Tanks { get; }
 
-        public LocationDto() { }
         public LocationDto(long id, string name, Email email, bool isActive, Address deliveryAddress, IEnumerable<LocationTank> tanks)
         {
             Id = id;
@@ -25,6 +24,15 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
             IsActive = isActive;
             DeliveryAddress = deliveryAddress;
             Tanks = tanks.Select(t => new LocationTanksDto(t.Id, t.Name, t.FuelGrade, t.Capactity)).ToList();
+        }
+
+        public LocationDto(long id, string name, Email email, bool isActive, Address deliveryAddress)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            IsActive = isActive;
+            DeliveryAddress = deliveryAddress;
         }
 
     }
