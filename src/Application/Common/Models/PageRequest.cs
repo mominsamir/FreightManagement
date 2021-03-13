@@ -3,9 +3,17 @@ namespace FreightManagement.Application.Common.Models
 {
     public class Filter
     {
-        public string Name;
-        public string Value;
+        public string Name { get; }
+        public string Value { get; }
         public FieldOperator Operator { get; } = 0;
+
+
+        public Filter(string name, string value, FieldOperator @operator)
+        {
+            Name = name;
+            Value = value;
+            Operator = @operator;
+        }
 
     }
 

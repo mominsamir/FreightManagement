@@ -48,12 +48,10 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
                 throw new NotFoundException($"Driver not found with id {request.DriverId}");
 
 
-            //TODO:: once user instace is implemeneted , query using driver id and set object to user
-
-
             var scheduleDriver = new DriverSchedule
             {
                 StartTime = request.StartTime,
+                EndTime = request.StartTime.AddHours(8),
                 Driver = driver,
                 Truck = truck,
                 Trailer = trailer,

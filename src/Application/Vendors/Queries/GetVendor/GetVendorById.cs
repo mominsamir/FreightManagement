@@ -9,7 +9,12 @@ namespace FreightManagement.Application.Vendors.Queries.GetVendor
 {
     public class GetVendorById : IRequest<VendorDto>
     {
-        public long Id { get; set; }
+        public GetVendorById(long id)
+        {
+            Id = id;
+        }
+
+        public long Id { get;}
     }
 
     public class GetVendorByIdHandler : IRequestHandler<GetVendorById, VendorDto>
@@ -36,6 +41,7 @@ namespace FreightManagement.Application.Vendors.Queries.GetVendor
             {
                 Id = vendor.Id,
                 Name = vendor.Name,
+                Email = vendor.Email.ToString(),
                 IsActive = vendor.IsActive,
                 Address = vendor.Address
             };

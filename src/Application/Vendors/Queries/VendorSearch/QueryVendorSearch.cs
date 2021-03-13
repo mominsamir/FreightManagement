@@ -57,6 +57,7 @@ namespace FreightManagement.Application.Vendors.Queries.VendorSearch
                         {
                             Id = t.Id,
                             Name = t.Name,
+                            Email = t.Email.ToString(),
                             Address = t.Address,
                             IsActive = t.IsActive
                         }

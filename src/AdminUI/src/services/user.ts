@@ -19,6 +19,11 @@ const find = async (id: number): Promise<User> => {
   return apiResp.model as User;
 };
 
+const findDriverByName = async (name: string): Promise<User[]> => {
+  let apiResp: any = await fetchApi.get(`${BASE_URL}/${name}/drivers`);
+  return apiResp.items.map((driver:User) => driver);
+};
+
 
 const create = async (vendor: User): Promise<ApiResponse> => {
 let resp = await fetchApi.post(`${BASE_URL}/`, vendor);
@@ -51,6 +56,8 @@ const changePassword = async (id: number, changePassword: ChangePassword): Promi
 
 
 
+
+
 const userService = {
     search,
     find,
@@ -58,7 +65,8 @@ const userService = {
     update,
     markActive,
     markInActive,
-    changePassword
+    changePassword,
+    findDriverByName
 }
 
 export default userService;

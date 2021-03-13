@@ -18,7 +18,7 @@ namespace FreightManagement.WebUI.Controllers.Vendors
         [Authorize(Roles = "ADMIN,DISPATCHER")]
         public async Task<ActionResult<VendorDto>> GetVendor(long id)
         {
-            return await Mediator.Send(new GetVendorById { Id= id});
+            return await Mediator.Send(new GetVendorById ( id));
         }
 
         [HttpPost]

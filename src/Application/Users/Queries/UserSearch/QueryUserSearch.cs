@@ -1,12 +1,17 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
+using FreightManagement.Domain.Entities.Users;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using FreightManagement.Application.Common.Extentions;
+using Microsoft.Extensions.Logging;
 
 
 //https://www.codeproject.com/Articles/5260863/Translating-Csharp-Lambda-Expressions-to-General-P
@@ -18,8 +23,8 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
         public QueryUserSearch(
             int page, 
             int pageSize,
-            IEnumerable<Dictionary<string, string>> sortData, 
-            IEnumerable<Filter> filterData
+            IEnumerable<Filter> filterData,
+            IEnumerable<Dictionary<string, string>> sortData 
         )
         {
             Page = page;
@@ -37,61 +42,92 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
     public class QueryUserSearchHandler : IRequestHandler<QueryUserSearch, PaginatedList<UserDto>>
     {
         private readonly IApplicationDbContext _contex;
+        private readonly ILogger _logger;
 
-        public QueryUserSearchHandler(IApplicationDbContext contex)
+        public QueryUserSearchHandler(IApplicationDbContext contex, ILogger<QueryUserSearch> logger)
         {
             _contex = contex;
+            _logger = logger;
         }
 
         public async Task<PaginatedList<UserDto>> Handle(QueryUserSearch request, CancellationToken cancellationToken)
         {
 
-            /*            return await _contex.AllUsers
-                            .OrderBy(x => x.FirstName)
-                            .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
-                            .PaginatedListAsync(request.Page, request.PageSize);
-            */
+            _logger.LogError($"User search Paging Request => {request.Page}=> {request.PageSize} => {request.FilterData.Count()}");
+
             var query = _contex.AllUsers;
 
             // add where clause
-/*                query.Where(FilterByPk());*/
-                        // add sort clause
+            foreach(var f in request.FilterData)
+            {
+                _logger.LogDebug($"XXXXXXXXXXXXXXXXXXXXXXXX => {f.Name}=> {f.Operator} => {f.Value} XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            }
+            // add sort clause
 
-                        var data =  await query.Skip((request.Page - 1)* request.PageSize)
-                            .Take(request.PageSize)
-                            .Select(user=> 
-                                new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role,user.IsActive)
-                             )
-                            .ToListAsync(cancellationToken: cancellationToken);
 
-                        var count = await query.CountAsync(cancellationToken: cancellationToken);
+            var queryFields = query.AsQueryable().Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize);
 
-                        return new PaginatedList<UserDto>(data, count, 1, 1);
+            if (!request.FilterData.Any())
+            {
+//                queryFields = queryFields;
+            }
+            else
+            {
+                queryFields = queryFields.WhereRules(request.FilterData);
+            }
+
+
+            var result = await queryFields
+                    .WhereRules(new List<Filter>() { new Filter(nameof(User.FirstName), "Samir", FieldOperator.EQUAL) })
+                    .ToListAsync(cancellationToken: cancellationToken);
+
+            var count = await queryFields.CountAsync(cancellationToken: cancellationToken);
+
+            return new PaginatedList<UserDto>(result.Select(user =>
+                    new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role, user.IsActive)
+                 ).ToList()
+                 , count, 1, 1);
             
         }
-
-        /*        protected Expression<Func<T, bool>> FilterByPk(T t, string field, string value)
-                {
-                     var bools = String.Contains("");
-                    ParameterExpression entity = Expression.Parameter(typeof(t), "entity");
-                    Expression keyValue = Expression.Property(entity,"Field");
-                    Expression pkValue = Expression.Call(keyValue, typeof(string).GetMethod("Contaiain",
-                                    new[] { typeof(string) }));
-                    Expression body = Expression.Equal(keyValue,pkValue);
-                    return Expression.Lambda<Func<User, bool>>(body, entity);
-                }
-
-                private void buildFilters(T entity, IEnumerable<Filter> filterData)
-                {
-                    foreach(var data in filterData){
-
-                    }
-                }
-        */
-
 
     }
 
 
 
 }
+
+/*
+Here's an example using System.Linq.Expressions. Although the example here is specific to your Claim class you can make functions like this generic and then use them to build predicates dynamically for all your entities. I've been using recently to provide users with a flexible search for entities on any entity property (or groups of properties) function without having to hard code all the queries.
+
+public Expression<Func<Claim, Boolean>> GetClaimWherePredicate(String name, String ssn)
+{
+  //the 'IN' parameter for expression ie claim=> condition
+  ParameterExpression pe = Expression.Parameter(typeof(Claim), "Claim");
+
+  //Expression for accessing last name property
+  Expression eLastName = Expression.Property(pe, "ClaimantLastName");
+
+  //Expression for accessing ssn property
+  Expression eSsn = Expression.Property(pe, "ClaimantSSN");
+
+  //the name constant to match 
+  Expression cName = Expression.Constant(name);
+
+  //the ssn constant to match 
+  Expression cSsn = Expression.Constant(ssn);
+
+  //the first expression: ClaimantLastName = ?
+  Expression e1 = Expression.Equal(eLastName, cName);
+
+  //the second expression:  ClaimantSSN = ?
+  Expression e2 = Expression.Equal(eSsn, cSsn);
+
+  //combine them with and
+  Expression combined = Expression.And(e1, e2);
+
+  //create and return the predicate
+  return Expression.Lambda<Func<Claim, Boolean>>(combined, new ParameterExpression[] { pe });
+}
+
+*/

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Datatable } from 'components';
-import userServices from 'services/user';
+import driverScheduleServices from 'services/driverSchedule';
 import { Row, Col, Button } from 'antd';
 import { EditFilled  } from '@ant-design/icons';
 import { DataTableFilterOption, FieldType } from 'components/Datatable/filter';
@@ -11,14 +11,18 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import { handleErrors } from 'Utils/errorHandler';
-import CreateUpdateUser from '../Add';
+import { Moment } from 'moment-timezone';
+import {  toDateTimeString } from 'Utils/dateUtils';
+import { Trailer, Truck } from 'types/vehicle';
+import { DriverSchedule } from 'types/driverSchedule';
+import CreateSchedule from '../Add';
 
-const UserList: React.FC = () => {
+const DriverScheduleList: React.FC = () => {
 
   const [key, setKey] = useState<number>(1);
-  const [user, setUser] = useState<User>();
+  const [schedule, setSchedule] = useState<DriverSchedule>();
   const [mode, setMode] = useState<'ADD'|'EDIT'>('ADD');
-  const [editedUserId, setEditUserId] = useState<number>(0);
+  const [editedId, setEditId] = useState<number>(0);
   const [showCreateModel, setShowCreateModel] = useState<boolean>(false);
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();  
@@ -26,43 +30,51 @@ const UserList: React.FC = () => {
 
   const columns: Column[] = [
     {
-      title: 'First Name',
-      dataIndex: 'firstName',
-      sorter: true
+      title: 'Driver',
+      dataIndex: 'driver',
+      sorter: true,
+      render: (driver: User) => `${driver.firstName} ${driver.lastName}`
     },
     {
-        title: 'Last Name',
-        dataIndex: 'lastName',
+        title: 'Start Date',
+        dataIndex: 'startTime',
         sorter: true,
-        render: (_,record: User) => `${record.lastName}`
+        render: (startTime: Moment) => toDateTimeString(startTime)
+    },
+    {
+        title: 'End Date',
+        dataIndex: 'endTime',
+        sorter: true,
+        render: (endTime: Moment) => toDateTimeString(endTime)
     },    
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: 'Truck',
+      dataIndex: 'truck',
       sorter: true,
+      render: (truck: Truck) => `${truck.numberPlate}`      
+    },    
+    {
+      title: 'Trailer',
+      dataIndex: 'trailer',
+      sorter: true,
+      render: (trailer: Trailer) => `${trailer.numberPlate}`      
     },
     {
-      title: 'Role',
-      dataIndex: 'role',
-      sorter: true,
-    },
-    {
-      title: 'Active',
-      dataIndex: 'isActive',
-      sorter: true,
-      render: (isActive: boolean) => `${isActive ? 'Yes':'No'}` 
+      title: 'Status',
+      dataIndex: 'status',
+      sorter: true
     },
     {
       title: 'Actions',
       dataIndex: 'uid',
       sorter: false,
-      render: (_: any, record: User) => {
+      render: (_: any, record: DriverSchedule) => {
         return (
           <React.Fragment>
             <Button
               icon={<EditFilled/>}
               onClick={() => {
-                setEditUserId(record.id);
+                setEditId(record.id);
               }}
             />
           </React.Fragment>
@@ -73,18 +85,23 @@ const UserList: React.FC = () => {
 
   const filterOptions: DataTableFilterOption[] = [
     {
-      title: 'First Name',
-      field: 'FirstName',
+      title: 'Bank Name',
+      field: 'bankName',
       fieldType: FieldType.STRING,
     },
     {
-        title: 'Last Name',
-        field: 'LastName',
+        title: 'Account Name',
+        field: 'name',
         fieldType: FieldType.STRING,
     },
     {
-      title: 'Email',
-      field: 'Email',
+      title: 'Routing #',
+      field: 'routingNumber',
+      fieldType: FieldType.STRING,
+    },
+    {
+      title: 'Account #',
+      field: 'accountNumber',
       fieldType: FieldType.STRING,
     }
   ];
@@ -99,9 +116,9 @@ const UserList: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        if(editedUserId !== 0){
-            var user = await userServices.find(editedUserId);
-            setUser(user);
+        if(editedId !== 0){
+            var ds = await driverScheduleServices.find(editedId);
+            setSchedule(ds);
             setMode('EDIT');
             toogleModel();
         }
@@ -109,12 +126,12 @@ const UserList: React.FC = () => {
         handleErrors(error, history, dispatch);
       }
     })();
-  }, [dispatch, history,editedUserId]);
+  }, [dispatch, history,editedId]);
 
 
   const addNewUser = () => {
     setMode('ADD');
-    setUser(undefined);
+    setSchedule(undefined);
     toogleModel();
   };  
 
@@ -124,8 +141,8 @@ const UserList: React.FC = () => {
       <React.Fragment>
         <Datatable
           key={key}
-          searchApi={userServices.search}
-          title ={"Application User"}
+          searchApi={driverScheduleServices.search}
+          title ={"Driver Schedules"}
           filters={filterOptions}
           columns={columns}
           actions={
@@ -141,14 +158,15 @@ const UserList: React.FC = () => {
         />
       </React.Fragment>
       {showCreateModel &&
-        <CreateUpdateUser 
-          user={user} 
-          mode={mode} 
+        <CreateSchedule 
           cancel={toogleModel}>
-        </CreateUpdateUser>
+        </CreateSchedule>
       }      
     </div>
   );
 };
 
-export default UserList;
+export default DriverScheduleList;
+/*
+
+*/

@@ -13,7 +13,6 @@ export interface  Rack {
 
   
 export const jsonToRack = (json: any) => {
-  console.log(json.address)
   return Object.assign({}, json, {
     street: json.address.street,
     city: json.address.city,

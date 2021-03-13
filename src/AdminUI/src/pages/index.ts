@@ -8,6 +8,7 @@ import RackPages from './rack/index';
 import TrailerPages from './trailer/index';
 import TruckPages from './truck/index';
 import VendorPages from './vendor/index';
+import DriverScheduleList from './driverSchedule/index';
 
 const pages = { 
     Homepage, 
@@ -19,7 +20,8 @@ const pages = {
     RackPages,
     TrailerPages,
     TruckPages,
-    VendorPages
+    VendorPages,
+    DriverScheduleList
 };
 
 export default pages;

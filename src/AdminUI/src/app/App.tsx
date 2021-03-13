@@ -135,7 +135,8 @@ const App: React.FC = () => {
                   <Route path="/dispatch/racks" component={pages.RackPages.List} />
                   <Route path="/dispatch/trailers" component={pages.TrailerPages.List} />
                   <Route path="/dispatch/trucks" component={pages.TruckPages.List} />
-                  <Route path="/dispatch/vendors" component={pages.VendorPages.List} />                  
+                  <Route path="/dispatch/vendors" component={pages.VendorPages.List} />        
+                  <Route path="/dispatch/schedules" component={pages.DriverScheduleList.List} />        
                   <Route path="/unknown-error" component={pages.ErrorPages.UnknownError} />
                   <Route path="/not-authorized" component={pages.ErrorPages.NotAuthorized} />
                   <Route path="*" component={pages.ErrorPages.NotFound} />

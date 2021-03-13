@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace FreightManagement.Application.Customers.Queries.GetLocationById
 {
-    public class LocationDto :IMapFrom<LocationDto>
+    public class LocationDto :IMapFrom<Location>
     {
         public long Id { get;  }
         public string Name { get; }

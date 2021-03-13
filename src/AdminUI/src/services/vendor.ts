@@ -1,12 +1,12 @@
 import fetchApi, { ApiResponse } from 'Utils/fetchApi';
-import { Vendor } from 'types/vendor';
+import { jsonToVendor, Vendor } from 'types/vendor';
 import { PaginatedSearchResult, SearchParams } from 'types/dataTable';
 
 const BASE_URL = '/api/Vendor'; 
 
 const find = async (id: number): Promise<Vendor> => {
     let apiResp = await fetchApi.get(`${BASE_URL}/${id}`);
-    return apiResp as Vendor;
+    return jsonToVendor(apiResp);
 };
   
 const search = async function (searchParams: SearchParams): Promise<PaginatedSearchResult<Vendor>> {
@@ -15,7 +15,7 @@ const search = async function (searchParams: SearchParams): Promise<PaginatedSea
     recordsTotal: response.totalCount as number,
     draw: 1,
     recordsFiltered: response.totalCount as number,
-    data: response.items.map((bt: Vendor) => bt),
+    data: response.items.map((bt: any) => jsonToVendor(bt)),
   };
 };
 

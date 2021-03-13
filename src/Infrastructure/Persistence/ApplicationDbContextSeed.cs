@@ -1,5 +1,7 @@
 ﻿using FreightManagement.Application.Common.Security;
 using FreightManagement.Domain.Entities;
+using FreightManagement.Domain.Entities.Customers;
+using FreightManagement.Domain.Entities.DriversSchedules;
 using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
 using FreightManagement.Domain.Entities.Users;
@@ -70,9 +72,53 @@ namespace FreightManagement.Infrastructure.Persistence
                 IsActive = true
             };
 
+            var user1 = new User
+            {
+                FirstName = "dispatch",
+                LastName = "dispatch",
+                Email = "dispatch@admin.com",
+                Password = PasswordEncoder.ConvertPasswordToHash("Welcome123"),
+                Role = Role.DISPATCHER,
+                CreatedBy = "0",
+                IsActive = true
+            };
+
+            var user2 = new User
+            {
+                FirstName = "Driver",
+                LastName = "Driver",
+                Email = "Driver@admin.com",
+                Password = PasswordEncoder.ConvertPasswordToHash("Welcome123"),
+                Role = Role.DRIVER,
+                CreatedBy = "0",
+                IsActive = true
+            };
+
+            var user3 = new User
+            {
+                FirstName = "Driver1",
+                LastName = "Driver1",
+                Email = "Driver1@admin.com",
+                Password = PasswordEncoder.ConvertPasswordToHash("Welcome123"),
+                Role = Role.DRIVER,
+                CreatedBy = "0",
+                IsActive = true
+            };
+
+            var user4 = new User
+            {
+                FirstName = "Driver3",
+                LastName = "Driver3",
+                Email = "Driver3@admin.com",
+                Password = PasswordEncoder.ConvertPasswordToHash("Welcome123"),
+                Role = Role.DRIVER,
+                CreatedBy = "0",
+                IsActive = true
+            };
+
             if (!context.AllUsers.Any())
             {
-                context.AllUsers.Add(user);
+                await context.AllUsers.AddRangeAsync(user, user1, user2, user3, user4);
                 await context.SaveChangesAsync();
             }
 
@@ -214,9 +260,109 @@ namespace FreightManagement.Infrastructure.Persistence
                     CreatedBy = user.Id.ToString(),
                 });
                 await context.SaveChangesAsync();
+            }
 
+            if (!context.Locations.Any())
+            {
+                var loc = new Location
+                {
+                    Name = "Bass Mini Mart",
+                    Email = new Email("miniMart@gmail.com"),
+                    CreatedBy = user.Id.ToString(),
+                    DeliveryAddress = new Address("51 tes street", "Houston", "TX", "USA", "00120"),
+                };
+                loc.AddNewTank("Tank1", FuelGrade.REGULAR, 5000);
+                loc.AddNewTank("Tank2", FuelGrade.PLUS, 2000);
+                loc.AddNewTank("Tank3", FuelGrade.SUPER, 1000);
 
+                var loc1 = new Location
+                {
+                    Name = "Phillips Food mart",
+                    Email = new Email("phllips@gmail.com"),
+                    CreatedBy = user.Id.ToString(),
+                    DeliveryAddress = new Address("52 tes street", "Houston", "TX", "USA", "00120"),
+                };
+                loc1.AddNewTank("Tank1", FuelGrade.REGULAR, 5000);
+                loc1.AddNewTank("Tank2", FuelGrade.SUPER, 2000);
+                loc1.AddNewTank("Tank3", FuelGrade.DIESEL_CLR, 1000);
 
+                var loc2 = new Location
+                {
+                    Name = "FoodWay mart",
+                    Email = new Email("foodWay@gmail.com"),
+                    CreatedBy = user.Id.ToString(),
+                    DeliveryAddress = new Address("53 tes street", "Houston", "TX", "USA", "00120"),
+                };
+                loc2.AddNewTank("Tank1", FuelGrade.REGULAR, 5000);
+                loc2.AddNewTank("Tank3", FuelGrade.DIESEL_CLR, 4000);
+
+                context.Locations.AddRange(loc, loc1, loc2);
+                await context.SaveChangesAsync();
+
+                if (!context.Customers.Any())
+                {
+                    var cus = new Customer
+                    {
+                        Name = "Potent Petrolium",
+                        Email = new Email("pttt@gmail.com"),
+                        CreatedBy = user.Id.ToString(),
+                        BillingAddress = new Address("1010 street", "Houston", "TX", "USA", "00120"),
+                    };
+                    cus.AddLocation(loc);
+                    cus.AddLocation(loc1);
+                    cus.AddLocation(loc2);
+
+                    var cus1 = new Customer
+                    {
+                        Name = "Campbell Oil",
+                        Email = new Email("campbell@gmail.com"),
+                        CreatedBy = user.Id.ToString(),
+                        BillingAddress = new Address("2020 street", "Houston", "TX", "USA", "00120"),
+                    };
+                    cus1.AddLocation(loc);
+                    cus1.AddLocation(loc2);
+
+                    var cus2 = new Customer
+                    {
+                        Name = "Startex oil inc",
+                        Email = new Email("star@gmail.com"),
+                        CreatedBy = user.Id.ToString(),
+                        BillingAddress = new Address("5030 street", "Houston", "TX", "USA", "00120"),
+                    };
+                    cus2.AddLocation(loc);
+
+                    context.Customers.AddRange(cus, cus1, cus2);
+                    await context.SaveChangesAsync();
+                }
+            }
+
+            if (!context.DriverScheduleLists.Any())
+            {
+                var drivers = context.AllUsers.Where(u => u.Role == Role.DRIVER);
+
+                var trailers = context.Trailers.ToList();
+                var trucks = context.Trucks.ToList();
+                var schedules = new List<DriverSchedule>();
+                var select = false;
+                foreach (var d in drivers){
+                    var truck = trucks.ElementAt(select ? 1 : 0);
+                    var trailer = trailers.ElementAt(select ? 1 : 0);
+                    var driverSchedule = new DriverSchedule
+                    {
+                        Driver = d,
+                        StartTime = DateTime.Now,
+                        EndTime = DateTime.Now.AddHours(10),
+                        Truck = truck,
+                        Trailer = trailer,
+                    };
+
+                    driverSchedule.AddCheckListNotes(truck.CheckLists);
+                    driverSchedule.AddCheckListNotes(trailer.CheckLists);
+                    await context.DriverScheduleLists.AddAsync(driverSchedule);
+                    select = !select;
+
+                }
+                await context.SaveChangesAsync();
 
             }
         }

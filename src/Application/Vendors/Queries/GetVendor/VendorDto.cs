@@ -12,6 +12,8 @@ namespace FreightManagement.Application.Vendors.Queries.GetVendor
 
         public string Name { get; set; }
 
+        public string Email { get; set; }
+
         public Address Address { get; set; }
 
         public bool IsActive { get; set; }

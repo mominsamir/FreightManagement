@@ -5,10 +5,12 @@ using FreightManagement.Application.Users.Commands.UpdateUser;
 using FreightManagement.Application.Users.Commands.UpdateUserStatus;
 using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using FreightManagement.Application.Users.Queries.UserById;
+using FreightManagement.Application.Users.Queries.UserByNameAndRole;
 using FreightManagement.Application.Users.Queries.UserSearch;
 using FreightManagement.Domain.Entities.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FreightManagement.WebUI.Controllers.Users
@@ -29,6 +31,14 @@ namespace FreightManagement.WebUI.Controllers.Users
         public async Task<ActionResult<PaginatedList<UserDto>>> Search(QueryUserSearch query)
         {
             return await Mediator.Send(query);
+        }
+
+        [HttpGet]
+        [Route("{name}/drivers")]
+        [Authorize(Roles = "ADMIN,DISPATCHER")]
+        public async Task<ActionResult<PaginatedList<UserByRoleDto>>> SearchDrivers(string name)
+        {
+            return await Mediator.Send(new QueryUserByNameAndRole(name, Role.DRIVER));
         }
 
         [HttpPut("{id}")]
