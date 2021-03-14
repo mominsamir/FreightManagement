@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Extentions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
 using MediatR;
@@ -15,7 +16,7 @@ namespace FreightManagement.Application.Trailers.Queries.TrailerSearch
         public QueryTrailerSearch(
             int page,
             int pageSize,
-            IEnumerable<Dictionary<string, string>> sortData,
+            IEnumerable<Sort> sortData,
             IEnumerable<Filter> filterData
         )
         {
@@ -27,7 +28,7 @@ namespace FreightManagement.Application.Trailers.Queries.TrailerSearch
 
         public int Page { get; } = 1;
         public int PageSize { get; } = 10;
-        public IEnumerable<Dictionary<string, string>> SortData { get; }
+        public IEnumerable<Sort> SortData { get; }
         public IEnumerable<Filter> FilterData { get; } = new List<Filter>();
     }
 
@@ -43,15 +44,13 @@ namespace FreightManagement.Application.Trailers.Queries.TrailerSearch
         public async Task<PaginatedList<TrailerListDto>> Handle(QueryTrailerSearch request, CancellationToken cancellationToken)
         {
 
-            var query = _contex.Trailers.AsNoTracking();
-
-            // add where clause
-
-            // add sort clause
-
-            var data = await query.Skip((request.Page - 1) * request.PageSize)
-                .OrderByDescending(i => i.NumberPlate)
+            var query = _contex.Trailers.AsNoTracking().AsQueryable()
+                .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
+                .WhereRules(request.FilterData)
+                .OrderByColumns(request.SortData);
+
+            var data = await query
                 .Select(t=>
                         new TrailerListDto(
                             t.Id,

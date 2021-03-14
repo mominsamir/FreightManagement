@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Extentions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Customers.Queries.GetCustomerById;
 using MediatR;
@@ -15,7 +16,7 @@ namespace FreightManagement.Application.Orders.Queries.OrderSearch
         public QueryOrderSearch(
             int page,
             int pageSize,
-            IEnumerable<Dictionary<string, string>> sortData,
+            IEnumerable<Sort> sortData,
             IEnumerable<Filter> filterData
         )
         {
@@ -27,7 +28,7 @@ namespace FreightManagement.Application.Orders.Queries.OrderSearch
 
         public int Page { get; } = 1;
         public int PageSize { get; } = 10;
-        public IEnumerable<Dictionary<string, string>> SortData { get; }
+        public IEnumerable<Sort> SortData { get; }
         public IEnumerable<Filter> FilterData { get; } = new List<Filter>();
     }
 
@@ -44,7 +45,11 @@ namespace FreightManagement.Application.Orders.Queries.OrderSearch
         {
             var query = _contex.Orders
                 .Include(b => b.Customer)
-                .Include(b=> b.OrderItems).AsNoTracking();
+                .Include(b=> b.OrderItems).AsNoTracking().AsNoTracking().AsQueryable()
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .WhereRules(request.FilterData)
+                .OrderByColumns(request.SortData);
 
         // add where clause
 

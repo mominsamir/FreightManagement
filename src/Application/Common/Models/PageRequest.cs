@@ -36,4 +36,10 @@ namespace FreightManagement.Application.Common.Models
         public string SortOrder { get; }
 
     }
+
+    public enum SortDirection
+    {
+        Ascending = 0,
+        Descending = 1
+    }
 }

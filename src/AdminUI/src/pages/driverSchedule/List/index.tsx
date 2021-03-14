@@ -14,7 +14,7 @@ import { handleErrors } from 'Utils/errorHandler';
 import { Moment } from 'moment-timezone';
 import {  toDateTimeString } from 'Utils/dateUtils';
 import { Trailer, Truck } from 'types/vehicle';
-import { DriverSchedule } from 'types/driverSchedule';
+import { DriverSchedule, scheduleStatusMap } from 'types/driverSchedule';
 import CreateSchedule from '../Add';
 
 const DriverScheduleList: React.FC = () => {
@@ -85,24 +85,25 @@ const DriverScheduleList: React.FC = () => {
 
   const filterOptions: DataTableFilterOption[] = [
     {
-      title: 'Bank Name',
-      field: 'bankName',
+      title: 'Driver Name',
+      field: 'Driver.Name',
       fieldType: FieldType.STRING,
     },
     {
-        title: 'Account Name',
-        field: 'name',
-        fieldType: FieldType.STRING,
+        title: 'Start Date',
+        field: 'StartTime',
+        fieldType: FieldType.DATETIME,
     },
     {
-      title: 'Routing #',
-      field: 'routingNumber',
-      fieldType: FieldType.STRING,
+      title: 'End Date',
+      field: 'EndTime',
+      fieldType: FieldType.DATETIME,
     },
     {
-      title: 'Account #',
-      field: 'accountNumber',
-      fieldType: FieldType.STRING,
+      title: 'Status',
+      field: 'Status',
+      fieldType: FieldType.OPTION,
+      fieldOptions: scheduleStatusMap
     }
   ];
 

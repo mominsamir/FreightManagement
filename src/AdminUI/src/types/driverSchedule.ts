@@ -57,3 +57,12 @@ export interface  DriverSchedule {
       trailerId : number;
       truckId: number;      
     }
+
+
+    
+  export const scheduleStatusMap : Record<string, string> = {
+    "0": 'Scheduled',
+    "1": 'Checked In',
+    "2": 'Completed'       
+ }
+

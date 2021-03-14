@@ -148,6 +148,6 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
     </Layout>
   );
 };
-//          onChange={onChange}
+
 
 export default DataTable;

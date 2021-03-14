@@ -1,31 +1,57 @@
-﻿using System.Linq;
+﻿using FreightManagement.Application.Common.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace FreightManagement.Application.Common.Extentions
 {
-    public static class OrderByExtention
+    public static class QueryableExtensions
     {
-            /// <summary>
-            /// Order the IQueryable by the given property or field.
-            /// </summary>
-            /// <typeparam name="T">The type of the IQueryable being ordered.</typeparam>
-            /// <param name="queryable">The IQueryable being ordered.</param>
-            /// <param name="propertyOrFieldName">The name of the property or field to order by.</param>
-            /// <param name="ascending"></param>
-            /// <returns>Returns an IQueryable ordered by the specified field.</returns>
-            public static IQueryable<T> OrderByPropertyOrField<T>(this IQueryable<T> queryable, string propertyOrFieldName, bool ascending = true)
+        public static IQueryable<TModel> OrderByColumns<TModel>(
+            this IQueryable<TModel> collection,
+            IEnumerable<Sort> sortedColumns)
+        {
+
+            bool firstTime = true;
+
+            // The type that represents each row in the table
+            var itemType = typeof(TModel);
+
+            // Name the parameter passed into the lamda "x", of the type TModel
+            var parameter = Expression.Parameter(itemType, "x");
+
+            // Loop through the sorted columns to build the expression tree
+            foreach (var sortedColumn in sortedColumns)
             {
-                var elementType = typeof(T);
-                var orderByMethodName = ascending ? "OrderBy" : "OrderByDescending";
+                // Get the property from the TModel, based on the key
+                var prop = Expression.Property(parameter, sortedColumn.Column);
 
-                var parameterExpression = Expression.Parameter(elementType);
-                var propertyOrFieldExpression = Expression.PropertyOrField(parameterExpression, propertyOrFieldName);
-                var selector = Expression.Lambda(propertyOrFieldExpression, parameterExpression);
+                // Build something like x => x.Cassette or x => x.SlotNumber
+                var exp = Expression.Lambda(prop, parameter);
 
-                var orderByExpression = Expression.Call(typeof(Queryable), orderByMethodName,
-                    new[] { elementType, propertyOrFieldExpression.Type }, queryable.Expression, selector);
+                // Based on the sorting direction, get the right method
+                string method = String.Empty;
+                if (firstTime)
+                {
+                    method = sortedColumn.SortOrder == "ascend" ? "OrderBy" : "OrderByDescending";
 
-                return queryable.Provider.CreateQuery<T>(orderByExpression);
+                    firstTime = false;
+                }
+                else
+                {
+                    method = sortedColumn.SortOrder == "ascend" ? "ThenBy" : "ThenByDescending";
+                }
+
+                Type[] types = new Type[] { itemType, exp.Body.Type };
+
+                var mce = Expression.Call(typeof(Queryable), method, types, collection.Expression, exp);
+
+                collection = collection.Provider.CreateQuery<TModel>(mce);
             }
+
+            return collection;
+        }
     }
+
 }

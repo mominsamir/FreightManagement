@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Extentions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Products.Queries.GetFuelProduct;
 using MediatR;
@@ -15,7 +16,7 @@ namespace FreightManagement.Application.Products.Queries.ProductSearch
         public QueryFuelProductSearch(
             int page,
             int pageSize,
-            IEnumerable<Dictionary<string, string>> sortData,
+            IEnumerable<Sort> sortData,
             IEnumerable<Filter> filterData
         )
         {
@@ -27,7 +28,7 @@ namespace FreightManagement.Application.Products.Queries.ProductSearch
 
         public int Page { get; } = 1;
         public int PageSize { get; } = 10;
-        public IEnumerable<Dictionary<string, string>> SortData { get; }
+        public IEnumerable<Sort> SortData { get; }
         public IEnumerable<Filter> FilterData { get; } = new List<Filter>();
     }
 
@@ -43,7 +44,11 @@ namespace FreightManagement.Application.Products.Queries.ProductSearch
         public async Task<PaginatedList<FuelProductListDto>> Handle(QueryFuelProductSearch request, CancellationToken cancellationToken)
         {
 
-            var query = _contex.FuelProducts;
+            var query = _contex.FuelProducts.AsNoTracking().AsQueryable()
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .WhereRules(request.FilterData)
+                .OrderByColumns(request.SortData); 
 
             // add where clause
 
@@ -68,5 +73,7 @@ namespace FreightManagement.Application.Products.Queries.ProductSearch
             return new PaginatedList<FuelProductListDto>(data, count, 1, 1);
 
         }
+
+
     }
 }

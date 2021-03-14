@@ -5,6 +5,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
+//TODO: dot notation properties filtering https://stackoverflow.com/questions/47364344/filtering-but-property-and-child-entity-property
+//TODO: In clause implementation
+//TODO: is Null or is not null implementation
+//TODO: Date Between to be implemented
+//TODO: Number filter to be tested.
+
+
 namespace FreightManagement.Application.Common.Extentions
 {
     public static class BuildWhereExtention
@@ -22,7 +29,43 @@ namespace FreightManagement.Application.Common.Extentions
             {
                 var prop = Expression.Property(parameter, filter.Name);
                 var value = Expression.Constant(filter.Value);
-                BinaryExpression newBinary = GetBinaryExpression(filter, prop, value);
+                var property = typeof(T).GetProperty(filter.Name);
+                BinaryExpression newBinary = null;
+
+
+                if (prop.Type == typeof(string))
+                {
+                    newBinary = GetBinaryExpression(filter, prop, value);
+                } else if (prop.Type == typeof(DateTime))
+                {
+                    var date  = DateTime.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(date));
+                }else if (prop.Type == typeof(decimal))
+                {
+                    var number = decimal.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
+                }
+                else if (prop.Type == typeof(int))
+                {
+                    var number = int.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
+                }
+                else if (prop.Type == typeof(long))
+                {
+                    var number = long.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
+                }
+                else if (prop.Type == typeof(bool))
+                {
+                    var boolValue = bool.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(boolValue));
+                }
+                else if (prop.Type.IsEnum)
+                {
+                    var number = int.Parse(filter.Value);
+                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
+                }
+
 
                 if (newBinary is not null)
                     binaryExpression = binaryExpression == null
@@ -34,6 +77,7 @@ namespace FreightManagement.Application.Common.Extentions
 			var _where = Expression.Lambda<Func<T, bool>>(binaryExpression, parameter);
 			return source.Where(_where);
 		}
+
 
         private static BinaryExpression GetBinaryExpression(Filter filter, MemberExpression prop, ConstantExpression value)
         {
@@ -52,7 +96,7 @@ namespace FreightManagement.Application.Common.Extentions
                 case "CONTAIN":
                     method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
                     zero = Expression.Constant(true);
-                    result = Expression.Call(prop, method,value);
+                    result = Expression.Call(prop, method, value);
                     return Expression.MakeBinary(ExpressionType.Equal, result, zero);
                 case "DOES_NOT_CONTAIN":
                     method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
@@ -83,6 +127,7 @@ namespace FreightManagement.Application.Common.Extentions
             return null;
         }
 
+
         private static ExpressionType GetExpression(string operation)
         {
             return operation switch
@@ -104,6 +149,24 @@ namespace FreightManagement.Application.Common.Extentions
             };
         }
 
+        private static Expression GetConvertedSource(ParameterExpression sourceParameter, PropertyInfo sourceProperty, TypeCode typeCode)
+        {
+            var sourceExpressionProperty = Expression.Property(sourceParameter, sourceProperty);
+
+            var changeTypeCall = Expression.Call(typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(TypeCode) }), sourceExpressionProperty, Expression.Constant(typeCode));
+
+            Expression convert = Expression.Convert(changeTypeCall, Type.GetType("System." + typeCode));
+
+            var convertExpr = Expression.Condition(Expression.Equal(sourceExpressionProperty,
+                                                    Expression.Constant(null, sourceProperty.PropertyType)),
+                                                    Expression.Default(Type.GetType("System." + typeCode)),
+                                                    convert);
+
+
+
+            return convertExpr;
+        }
+
         public static Expression IsDateBetween<TElement>(this IQueryable<TElement> queryable,
                                                        Expression<Func<TElement, DateTime>> fromDate,
                                                        Expression<Func<TElement, DateTime>> toDate,
@@ -115,16 +178,16 @@ namespace FreightManagement.Application.Common.Extentions
             Expression fromExpression = Expression.Property(member, (fromDate.Body as MemberExpression).Member.Name);
             Expression toExpression = Expression.Property(member, (toDate.Body as MemberExpression).Member.Name);
 
-            var after = Expression.LessThanOrEqual(fromExpression,
-                 Expression.Constant(date, typeof(DateTime)));
+            var after = Expression.LessThanOrEqual(fromExpression, Expression.Constant(date, typeof(DateTime)));
 
-            var before = Expression.GreaterThanOrEqual(
-                toExpression, Expression.Constant(date, typeof(DateTime)));
+            var before = Expression.GreaterThanOrEqual( toExpression, Expression.Constant(date, typeof(DateTime)));
 
             Expression body = Expression.And(after, before);
 
             return Expression.Lambda<Func<TElement, bool>>(body, p);
         }
+
+
     }
 
 

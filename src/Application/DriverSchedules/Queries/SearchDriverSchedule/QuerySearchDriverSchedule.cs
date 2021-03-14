@@ -1,4 +1,5 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Extentions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.DriverSchedules.Queries.DriverScheduleById;
 using FreightManagement.Application.Trailers.Queries.GetRacks;
@@ -18,7 +19,7 @@ namespace FreightManagement.Application.DriverSchedules.Queries.SearchDriverSche
         public QuerySearchDriverSchedule(
             int page,
             int pageSize,
-            IEnumerable<Dictionary<string, string>> sortData,
+            IEnumerable<Sort> sortData,
             IEnumerable<Filter> filterData
         )
         {
@@ -30,7 +31,7 @@ namespace FreightManagement.Application.DriverSchedules.Queries.SearchDriverSche
 
         public int Page { get; } = 1;
         public int PageSize { get; } = 10;
-        public IEnumerable<Dictionary<string, string>> SortData { get; }
+        public IEnumerable<Sort> SortData { get; }
         public IEnumerable<Filter> FilterData { get; } = new List<Filter>();
     }
 
@@ -46,7 +47,11 @@ namespace FreightManagement.Application.DriverSchedules.Queries.SearchDriverSche
         public async Task<PaginatedList<DriverScheduleListDto>> Handle(QuerySearchDriverSchedule request, CancellationToken cancellationToken)
         {
 
-            var query = _contex.DriverScheduleLists.AsNoTracking();
+            var query = _contex.DriverScheduleLists.AsNoTracking().AsQueryable()
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .WhereRules(request.FilterData)
+                .OrderByColumns(request.SortData);
 
             // add where clause
 
