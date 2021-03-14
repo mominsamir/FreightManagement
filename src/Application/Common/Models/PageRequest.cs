@@ -5,10 +5,9 @@ namespace FreightManagement.Application.Common.Models
     {
         public string Name { get; }
         public string Value { get; }
-        public FieldOperator Operator { get; } = 0;
+        public string Operator { get; }
 
-
-        public Filter(string name, string value, FieldOperator @operator)
+        public Filter(string name, string value, string @operator)
         {
             Name = name;
             Value = value;
@@ -23,5 +22,18 @@ namespace FreightManagement.Application.Common.Models
         NOT_EQUAL = 1,
         CONTAINT = 2,
         NOT_CONTAINT = 3
+    }
+
+    public class Sort
+    {
+        public Sort(string column, string sortOrder)
+        {
+            Column = column;
+            SortOrder = sortOrder;
+        }
+
+        public string Column { get; }
+        public string SortOrder { get; }
+
     }
 }

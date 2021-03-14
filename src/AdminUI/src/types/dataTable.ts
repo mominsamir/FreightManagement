@@ -23,7 +23,6 @@ export interface SearchParams {
   pageSize: number;
   sortData: SortColumn[];
   filterData: FilterData[];
-  additionalCols: string[];
 }
 
 export interface FilterData {

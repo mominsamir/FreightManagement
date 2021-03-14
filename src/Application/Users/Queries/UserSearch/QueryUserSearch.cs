@@ -24,7 +24,7 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
             int page, 
             int pageSize,
             IEnumerable<Filter> filterData,
-            IEnumerable<Dictionary<string, string>> sortData 
+            IEnumerable<Sort> sortData 
         )
         {
             Page = page;
@@ -35,7 +35,7 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
 
         public int Page { get; } = 1;
         public int PageSize { get; } = 10;
-        public IEnumerable<Dictionary<string, string>> SortData { get; }
+        public IEnumerable<Sort> SortData { get; }
         public IEnumerable<Filter> FilterData { get; } = new List<Filter>();
     }
 
@@ -53,20 +53,26 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
         public async Task<PaginatedList<UserDto>> Handle(QueryUserSearch request, CancellationToken cancellationToken)
         {
 
-            _logger.LogError($"User search Paging Request => {request.Page}=> {request.PageSize} => {request.FilterData.Count()}");
+            _logger.LogError($"User search Paging Request => {request.Page} => {request.PageSize} => {request.FilterData.Count()}");
 
             var query = _contex.AllUsers;
 
             // add where clause
-            foreach(var f in request.FilterData)
+            foreach (var f in request.SortData)
             {
-                _logger.LogDebug($"XXXXXXXXXXXXXXXXXXXXXXXX => {f.Name}=> {f.Operator} => {f.Value} XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                _logger.LogDebug($"SORT ORDER XXXXXXXXXXXXXXXXXXXXXXXX => {f.Column}=> {f.SortOrder} XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            }
+            foreach (var f in request.FilterData)
+            {
+                _logger.LogDebug($" FILTER XXXXXXXXXXXXXXXXXXXXXXXX => {f.Name}=> {f.Operator} => {f.Value} XXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             }
             // add sort clause
 
 
             var queryFields = query.AsQueryable().Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize);
+                .Take(request.PageSize)
+                .WhereRules(request.FilterData)
+                .OrderByPropertyOrField(nameof(User.FirstName),false);
 
             if (!request.FilterData.Any())
             {
@@ -74,12 +80,11 @@ namespace FreightManagement.Application.Users.Queries.UserSearch
             }
             else
             {
-                queryFields = queryFields.WhereRules(request.FilterData);
+//                queryFields = queryFields.WhereRules(request.FilterData);
             }
 
 
             var result = await queryFields
-                    .WhereRules(new List<Filter>() { new Filter(nameof(User.FirstName), "Samir", FieldOperator.EQUAL) })
                     .ToListAsync(cancellationToken: cancellationToken);
 
             var count = await queryFields.CountAsync(cancellationToken: cancellationToken);

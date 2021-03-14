@@ -53,8 +53,7 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
           page: page,
           pageSize: DEF_PAGE_SIZE,
           sortData: sorts ? [sorts] : [],
-          filterData: filterData ? filterData : [],
-          additionalCols: additionalCols ? additionalCols : [],
+          filterData: filterData ? filterData : []
         });
         setLoading(false);
         setData(response.data);
@@ -65,11 +64,7 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
     })();
   }, [filterData, dispatch, history, page, searchApi, sorts, additionalCols]);
 
-  const onChange = (
-    pagination: TablePaginationConfig,
-    filters: Record<string, React.ReactText[] | null>,
-    sorter: SorterResult<any> | SorterResult<any>[]
-  ) => {
+  const onChange = ( pagination: TablePaginationConfig, filters: Record<string, any | null>, sorter: SorterResult<any> | SorterResult<any>[]) => {
     if (!Array.isArray(sorter) && sorter.order && sorter.column) {
       let sortKey = getSortKey(sorter.column as Column);
       let sortOrder = getSortOrder(sorter.order);
@@ -96,8 +91,7 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
           page: page,
           pageSize: DEF_PAGE_SIZE,
           sortData: sorts ? [sorts] : [],
-          filterData: filterData ? filterData : [],
-          additionalCols: additionalCols ? additionalCols : [],
+          filterData: filterData ? filterData : []
         }) : 
         setLoading(false);
         setLoading(false);
@@ -143,6 +137,7 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
           columns={columns}
           dataSource={data}
           rowKey={(record) => record[rowKey]}
+          onChange={onChange}
           pagination={{
             pageSize: DEF_PAGE_SIZE,
             total: totalRecords,
