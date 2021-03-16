@@ -42,6 +42,7 @@ namespace FreightManagement.Domain.Entities.DriversSchedules
                 else
                     checkListItem.Uncheck();
             }
+            TryCompleteCheckList();
         }
         
         public void TryCompleteCheckList()
@@ -56,9 +57,17 @@ namespace FreightManagement.Domain.Entities.DriversSchedules
 
         public void TryCompletedSchedule()
         {
-            if (Status!=DriverScheduleStatus.CHECKLIST_COMPLETE)
+            if (Status == DriverScheduleStatus.CHECKLIST_COMPLETE)
             {
                 Status = DriverScheduleStatus.SCHEDULE_COMPLETED;
+            }
+        }
+
+        public void CancelSchedule()
+        {
+            if (Status != DriverScheduleStatus.SCHEDULE_COMPLETED)
+            {
+                Status = DriverScheduleStatus.SCHEDULE_CANCELLED;
             }
         }
 
@@ -68,6 +77,7 @@ namespace FreightManagement.Domain.Entities.DriversSchedules
     {
         SCHEDULE_CREATED,
         CHECKLIST_COMPLETE,
-        SCHEDULE_COMPLETED
+        SCHEDULE_COMPLETED,
+        SCHEDULE_CANCELLED
     }
 }

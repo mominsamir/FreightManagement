@@ -7,6 +7,7 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
     public class CreateDriverScheduleCommandValidator : AbstractValidator<CreateDriverScheduleCommand>
     {
         private readonly IApplicationDbContext _contex;
+
         public CreateDriverScheduleCommandValidator(IApplicationDbContext contex)
         {
             _contex = contex;

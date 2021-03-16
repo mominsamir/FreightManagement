@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import { handleErrors } from 'Utils/errorHandler';
 import CreateUpdateRackModel from '../Add';
-import { FuelProduct } from 'types/product';
 import rackService from 'services/rack';
 import { Rack } from 'types/rack';
 

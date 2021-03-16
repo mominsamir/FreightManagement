@@ -3,10 +3,24 @@ using FreightManagement.Application.Common.Mappings;
 using FreightManagement.Domain.Entities.Vehicles;
 
 
-namespace FreightManagement.Application.Trailers.Queries.GetRacks
+namespace FreightManagement.Application.Trailers.Queries.GetTrailer
 {
     public class TrailerDto : IMapFrom<Trailer>
     {
+
+        public TrailerDto()
+        {
+        }
+
+        public TrailerDto(long id, string numberPlate, string vIN, int compartment, double capacity, VehicleStatus status): this()
+        {
+            Id = id;
+            NumberPlate = numberPlate;
+            VIN = vIN;
+            Compartment = compartment;
+            Capacity = capacity;
+            Status = status;
+        }
 
         public long Id { get; set; }
         public string NumberPlate { get; set; }

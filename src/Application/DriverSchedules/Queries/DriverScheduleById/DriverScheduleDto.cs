@@ -1,5 +1,5 @@
 ﻿using FreightManagement.Application.Common.Mappings;
-using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Application.Trailers.Queries.GetTrailer;
 using FreightManagement.Application.Trucks.Queries;
 using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using FreightManagement.Domain.Entities.DriversSchedules;
@@ -14,20 +14,25 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
         public DateTime StartTime { get; }
         public DateTime EndTime { get;  }
         public UserDto Driver { get;  }
-        public TrailerDto Trailer { get;  }
-        public TruckDto Truck { get;  }
-        public DriverScheduleStatus Status { get; }
-        public IEnumerable<DriverCheckListDto> CheckList { get; }
+        public TrailerListDto Trailer { get;  }
+        public TruckListDto Truck { get;  }
+        public string Status { get; }
+        public IEnumerable<DriverCheckListDto> CheckList { get; } 
+
+        public DriverScheduleDto()
+        {
+            CheckList = new List<DriverCheckListDto>();
+        }
         public DriverScheduleDto(
             long id, 
             DateTime startTime, 
             DateTime endTime,
-            UserDto driver, 
-            TrailerDto trailer, 
-            TruckDto truck, 
-            DriverScheduleStatus status, 
+            UserDto driver,
+            TrailerListDto trailer,
+            TruckListDto truck, 
+            string status, 
             IEnumerable<DriverCheckListDto> checkList
-        ){
+        ):this(){
             Id = id;
             StartTime = startTime;
             EndTime = endTime;

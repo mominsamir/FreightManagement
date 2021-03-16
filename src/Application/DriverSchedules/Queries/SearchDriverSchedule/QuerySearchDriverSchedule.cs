@@ -2,7 +2,7 @@
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.DriverSchedules.Queries.DriverScheduleById;
-using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Application.Trailers.Queries.GetTrailer;
 using FreightManagement.Application.Trucks.Queries;
 using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using MediatR;

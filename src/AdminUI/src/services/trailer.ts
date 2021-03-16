@@ -24,6 +24,11 @@ const create = async (triler: Trailer): Promise<ApiResponse> => {
   return resp as ApiResponse;
 };
 
+const findTrailerByNumber = async (name: string): Promise<Trailer[]> => {
+    let apiResp: any = await fetchApi.get(`${BASE_URL}/${name}/number`);
+    return apiResp.items.map((driver:Trailer) => driver);
+};
+
 const update = async (id: number, trailer: Trailer): Promise<ApiResponse> => {
     let resp = await fetchApi.put(`${BASE_URL}/${id}`, trailer);
     return resp as ApiResponse;
@@ -51,7 +56,8 @@ const vehicleService = {
     update,
     markUnderMaintance,
     markOutOfService,
-    markActive    
+    markActive,
+    findTrailerByNumber
 }
 
 export default vehicleService;

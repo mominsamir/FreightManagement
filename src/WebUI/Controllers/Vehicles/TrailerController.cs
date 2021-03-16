@@ -2,7 +2,8 @@
 using FreightManagement.Application.Trailers.Commands.CreateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailer;
 using FreightManagement.Application.Trailers.Commands.UpdateTrailerStatus;
-using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Application.Trailers.Queries.GetTrailer;
+using FreightManagement.Application.Trailers.Queries.TrailerByNumber;
 using FreightManagement.Application.Trailers.Queries.TrailerSearch;
 using FreightManagement.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,14 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
             return await Mediator.Send(new GetTrailerById { Id = id });
         }
 
+        [HttpGet]
+        [Route("{name}/number")]
+        [Authorize(Roles = "DRIVER,ADMIN,DISPATCHER")]
+        public async Task<ActionResult<PaginatedList<TrailerDto>>> SearchTrailer(string name)
+        {
+            return await Mediator.Send(new QueryTrailerByNumber(name));
+        }
+
         [HttpPost]
         [Route("search")]
         [Authorize(Roles = "DRIVER,ADMIN,DISPATCHER")]
@@ -28,6 +37,7 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
         {
             return await Mediator.Send(query);
         }
+
 
         [HttpPost]
         [Authorize(Roles = "ADMIN,DISPATCHER")]

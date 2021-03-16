@@ -19,6 +19,11 @@ const search = async function (searchParams: SearchParams): Promise<PaginatedSea
     };
   };
 
+const findTruckByNumber = async (name: string): Promise<Truck[]> => {
+    let apiResp: any = await fetchApi.get(`${BASE_URL}/${name}/number`);
+    return apiResp.items.map((driver:Truck) => driver);
+};
+
 
 const create = async (truck: Truck): Promise<ApiResponse> => {
   let resp = await fetchApi.post(`${BASE_URL}/`, truck);
@@ -53,7 +58,8 @@ const truckService = {
     update,
     markUnderMaintance,
     markOutOfService,
-    markActive
+    markActive,
+    findTruckByNumber
 }
 
 export default truckService;

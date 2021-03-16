@@ -7,7 +7,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FreightManagement.Application.Trailers.Queries.GetRacks
+namespace FreightManagement.Application.Trailers.Queries.GetTrailer
 {
     public class GetTrailerById : IRequest<ModelView<TrailerDto>>
     {

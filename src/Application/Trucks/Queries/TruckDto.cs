@@ -5,6 +5,20 @@ namespace FreightManagement.Application.Trucks.Queries
 {
     public class TruckDto 
     {
+        public TruckDto()
+        {
+
+        }
+
+        public TruckDto(long id, string numberPlate, string vIN, DateTime nextMaintanceDate, VehicleStatus status) : this()
+        {
+            Id = id;
+            NumberPlate = numberPlate;
+            VIN = vIN;
+            NextMaintanceDate = nextMaintanceDate;
+            Status = status;
+        }
+
         public long Id { get; set; }
         public string NumberPlate { get; set; }
         public string VIN { get; set; }

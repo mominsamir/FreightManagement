@@ -12,10 +12,18 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
 {
     public class CreateDriverScheduleCommand : IRequest<long>
     {
-        public DateTime StartTime;
-        public long DriverId;
-        public long TrailerId;
-        public long TruckId;
+        public CreateDriverScheduleCommand(DateTime startTime, long driverId, long trailerId, long truckId)
+        {
+            StartTime = startTime;
+            DriverId = driverId;
+            TrailerId = trailerId;
+            TruckId = truckId;
+        }
+
+        public DateTime StartTime { get; }
+        public long DriverId{ get; }
+        public long TrailerId { get; }
+        public long TruckId { get; }
     }
 
     public class CreateDriverScheduleCommandHandler : IRequestHandler<CreateDriverScheduleCommand, long>
@@ -36,10 +44,10 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
                 throw new NotFoundException($"Truck not found with id {request.TruckId}");
 
             var trailer = await _contex.Trailers.Include(i => i.CheckLists)
-                .Where(t => t.Id == request.TruckId).SingleOrDefaultAsync(cancellationToken); 
+                .Where(t => t.Id == request.TrailerId).SingleOrDefaultAsync(cancellationToken); 
 
             if (trailer == null)
-                throw new NotFoundException($"Trailer not found with id {request.TruckId}");
+                throw new NotFoundException($"Trailer not found with id {request.TrailerId}");
 
             var driver = await _contex.AllUsers
                 .Where(t => t.Id == request.DriverId).SingleOrDefaultAsync(cancellationToken);
@@ -51,7 +59,7 @@ namespace FreightManagement.Application.DriverSchedules.Commands.CreateDriverSch
             var scheduleDriver = new DriverSchedule
             {
                 StartTime = request.StartTime,
-                EndTime = request.StartTime.AddHours(8),
+                EndTime = request.StartTime.AddHours(8.0),
                 Driver = driver,
                 Truck = truck,
                 Trailer = trailer,

@@ -8,7 +8,10 @@ import { AppDispatch } from 'redux/store';
 import { DriverScheduleCreate } from 'types/driverSchedule';
 import  driverScheduleService  from 'services/driverSchedule';
 import  userService  from 'services/user';
+import  truckService  from 'services/truck';
+import  trailerService  from 'services/trailer';
 import { handleErrors } from 'Utils/errorHandler';
+import { Trailer, Truck } from 'types/vehicle';
 
 interface Props {
   cancel: () => void;
@@ -43,6 +46,8 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
   const [matchingDrivers, setMatchingDrivers] = useState<User[]>([]);
+  const [matchingTrucks, setMatchingTrucks] = useState<Truck[]>([]);
+  const [matchingTrailer, setMatchingTrailer] = useState<Trailer[]>([]);
   const [form] = Form.useForm();
 
   const save = (values: DriverScheduleCreate) => {
@@ -63,6 +68,32 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
       try {
         let drivers = await userService.findDriverByName(searchText);
         setMatchingDrivers(drivers);
+      } catch (error) {
+        handleErrors(error, history, dispatch);
+      }
+    })();
+  };  
+
+  const truckSearch = (searchText: string) => {
+    if(searchText ===undefined || searchText === '')
+      return;
+    (async () => {
+      try {
+        let trucks = await truckService.findTruckByNumber(searchText);
+        setMatchingTrucks(trucks);
+      } catch (error) {
+        handleErrors(error, history, dispatch);
+      }
+    })();
+  };  
+
+  const trailerSearch = (searchText: string) => {
+    if(searchText ===undefined || searchText === '')
+      return;
+    (async () => {
+      try {
+        let trailers = await trailerService.findTrailerByNumber(searchText);
+        setMatchingTrailer(trailers);
       } catch (error) {
         handleErrors(error, history, dispatch);
       }
@@ -94,7 +125,6 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
                   showArrow={false}
                   filterOption={false}
                   defaultActiveFirstOption={false}
-                  labelInValue
                   onSearch={driverSearch}
                   allowClear        
                   placeholder="Search Driver">
@@ -111,7 +141,20 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
               name="truckId"
               rules={[{ required: true, message: 'Truck is required.' }]}
               label="Truck">
-                Driver  
+                <Select
+                  showSearch={true}
+                  showArrow={false}
+                  filterOption={false}
+                  defaultActiveFirstOption={false}
+                  onSearch={truckSearch}
+                  allowClear        
+                  placeholder="Search Truck">
+                  {matchingTrucks.map((v) => (
+                    <Option key={v.id} value={v.id}>
+                      {v.numberPlate}
+                      </Option>
+                  ))}
+                </Select>
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -119,7 +162,20 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
               name="trailerId"
               rules={[{ required: true, message: 'Trailer is required.' }]}
               label="Trailer">
-                trailerId  
+                <Select
+                  showSearch={true}
+                  showArrow={false}
+                  filterOption={false}
+                  defaultActiveFirstOption={false}
+                  onSearch={trailerSearch}
+                  allowClear        
+                  placeholder="Search Trailer">
+                  {matchingTrailer.map((v) => (
+                    <Option key={v.id} value={v.id}>
+                      {v.numberPlate}
+                      </Option>
+                  ))}
+                </Select>                  
             </Form.Item>
           </Col>          
          </Row>

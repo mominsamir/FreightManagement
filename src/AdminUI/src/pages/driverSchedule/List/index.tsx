@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Datatable } from 'components';
 import driverScheduleServices from 'services/driverSchedule';
 import { Row, Col, Button } from 'antd';
-import { EditFilled  } from '@ant-design/icons';
+import { SearchOutlined  } from '@ant-design/icons';
 import { DataTableFilterOption, FieldType } from 'components/Datatable/filter';
 import { User } from 'types/user';
 import { Column } from 'types/dataTable';
 import _ from 'lodash';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
-import { handleErrors } from 'Utils/errorHandler';
 import { Moment } from 'moment-timezone';
 import {  toDateTimeString } from 'Utils/dateUtils';
 import { Trailer, Truck } from 'types/vehicle';
@@ -20,9 +19,6 @@ import CreateSchedule from '../Add';
 const DriverScheduleList: React.FC = () => {
 
   const [key, setKey] = useState<number>(1);
-  const [schedule, setSchedule] = useState<DriverSchedule>();
-  const [mode, setMode] = useState<'ADD'|'EDIT'>('ADD');
-  const [editedId, setEditId] = useState<number>(0);
   const [showCreateModel, setShowCreateModel] = useState<boolean>(false);
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();  
@@ -71,12 +67,9 @@ const DriverScheduleList: React.FC = () => {
       render: (_: any, record: DriverSchedule) => {
         return (
           <React.Fragment>
-            <Button
-              icon={<EditFilled/>}
-              onClick={() => {
-                setEditId(record.id);
-              }}
-            />
+            <Link to={`/dispatch/schedules/${record.id}`}>
+              <Button icon={<SearchOutlined />}/>
+            </Link>
           </React.Fragment>
         );
       },
@@ -85,8 +78,13 @@ const DriverScheduleList: React.FC = () => {
 
   const filterOptions: DataTableFilterOption[] = [
     {
-      title: 'Driver Name',
-      field: 'Driver.Name',
+      title: 'Driver First Name',
+      field: 'Driver.FirstName',
+      fieldType: FieldType.STRING,
+    },
+    {
+      title: 'Driver Last Name',
+      field: 'Driver.LastName',
       fieldType: FieldType.STRING,
     },
     {
@@ -114,25 +112,7 @@ const DriverScheduleList: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if(editedId !== 0){
-            var ds = await driverScheduleServices.find(editedId);
-            setSchedule(ds);
-            setMode('EDIT');
-            toogleModel();
-        }
-      } catch (error) {
-        handleErrors(error, history, dispatch);
-      }
-    })();
-  }, [dispatch, history,editedId]);
-
-
   const addNewUser = () => {
-    setMode('ADD');
-    setSchedule(undefined);
     toogleModel();
   };  
 

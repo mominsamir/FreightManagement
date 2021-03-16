@@ -2,8 +2,10 @@
 using FreightManagement.Application.DriverSchedules.Commands.CreateDriverSchedule;
 using FreightManagement.Application.DriverSchedules.Commands.UpdateDriverCheckList;
 using FreightManagement.Application.DriverSchedules.Commands.UpdateDriverSchedule;
+using FreightManagement.Application.DriverSchedules.Commands.UpdateScheduleStatus;
 using FreightManagement.Application.DriverSchedules.Queries.DriverScheduleById;
 using FreightManagement.Application.DriverSchedules.Queries.SearchDriverSchedule;
+using FreightManagement.Domain.Entities.DriversSchedules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -29,9 +31,11 @@ namespace FreightManagement.WebUI.Controllers.DriverSchedules
 
         [HttpPost]
         [Authorize(Roles = "ADMIN,DISPATCHER,DRIVER")]
-        public async Task<ActionResult<long>> Create(CreateDriverScheduleCommand command)
+        public async Task<ActionResult<dynamic>> Create(CreateDriverScheduleCommand command)
         {
-            return await Mediator.Send(command);
+            var id =  await Mediator.Send(command);
+
+            return Ok(new { Id = id, success = true, message = "Scheduled Created" });
         }
 
         [HttpPut]
@@ -46,13 +50,13 @@ namespace FreightManagement.WebUI.Controllers.DriverSchedules
 
             await Mediator.Send(command);
 
-            return NoContent();
+            return Ok(new { Id = id, success = true, message = "Scheduled Updated" });
         }
 
         [HttpPut]
         [Route("{id}/checklist")]
         [Authorize(Roles = "ADMIN,DISPATCHER,DRIVER")]
-        public async Task<ActionResult> UpdateCheckList(long id, UpdateDriverCheckListCommand command)
+        public async Task<ActionResult<dynamic>> UpdateCheckList(long id, UpdateDriverCheckListCommand command)
         {
             if (id != command.Id)
             {
@@ -61,10 +65,29 @@ namespace FreightManagement.WebUI.Controllers.DriverSchedules
 
             await Mediator.Send(command);
 
-            return NoContent();
+            return Ok(new { Id = id, success=true, message = "CheckList Completed"});
+        }
+
+        [HttpPut]
+        [Route("{id}/complete")]
+        [Authorize(Roles = "ADMIN,DISPATCHER,DRIVER")]
+        public async Task<ActionResult<dynamic>> CompleteCheckList(long id)
+        {
+            var updateId = await Mediator.Send(new UpdateDriverScheduleStatusCommand(id, DriverScheduleStatus.SCHEDULE_COMPLETED));
+
+            return Ok(new { Id = updateId, success = true, message = "Driver Schdule marked Completed" });
+        }
+
+        [HttpPut]
+        [Route("{id}/cancel")]
+        [Authorize(Roles = "ADMIN,DISPATCHER,DRIVER")]
+        public async Task<ActionResult<dynamic>> CencellSchedule(long id)
+        {
+            var updateId = await Mediator.Send(new UpdateDriverScheduleStatusCommand(id, DriverScheduleStatus.SCHEDULE_CANCELLED));
+
+            return Ok(new { Id = updateId, success = true, message = "Driver Schdule marked Cencelled" });
         }
 
 
-        
     }
 }

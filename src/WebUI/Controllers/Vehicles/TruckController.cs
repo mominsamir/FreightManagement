@@ -3,6 +3,7 @@ using FreightManagement.Application.Trucks.Commands.CreateTruck;
 using FreightManagement.Application.Trucks.Commands.UpdateTruck;
 using FreightManagement.Application.Trucks.Commands.UpdateTruckStatus;
 using FreightManagement.Application.Trucks.Queries;
+using FreightManagement.Application.Trucks.Queries.TruckByNumber;
 using FreightManagement.Application.Trucks.Queries.TruckSearch;
 using FreightManagement.Domain.Entities.Vehicles;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,14 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
         public async Task<ActionResult<ModelView<TruckDto>>> GetRack(long id)
         {
             return await Mediator.Send(new GetTruckById (id));
+        }
+
+        [HttpGet]
+        [Route("{name}/number")]
+        [Authorize(Roles = "DRIVER,ADMIN,DISPATCHER")]
+        public async Task<ActionResult<PaginatedList<TruckDto>>> SearchTruck(string name)
+        {
+            return await Mediator.Send(new QueryTruckByNumber(name));
         }
 
         [HttpPost]

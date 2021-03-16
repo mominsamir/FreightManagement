@@ -21,7 +21,8 @@ namespace FreightManagement.Application.Common.Models
         EQUAL = 0,
         NOT_EQUAL = 1,
         CONTAINT = 2,
-        NOT_CONTAINT = 3
+        NOT_CONTAINT = 3,
+        STARTS_WITH = 4
     }
 
     public class Sort

@@ -1,7 +1,7 @@
 ﻿using FreightManagement.Application.Common.Extentions;
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
-using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Application.Trailers.Queries.GetTrailer;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

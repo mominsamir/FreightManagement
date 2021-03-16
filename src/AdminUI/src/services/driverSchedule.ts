@@ -1,6 +1,6 @@
 import fetchApi, { ApiResponse } from 'Utils/fetchApi';
 import { PaginatedSearchResult, SearchParams } from 'types/dataTable';
-import { DriverSchedule, DriverScheduleCreate, DriverScheduleList, jsonToDriverSchedule, jsonToDriverScheduleList } from 'types/driverSchedule';
+import { DriverSchedule, DriverScheduleCreate, DriverScheduleList, jsonToDriverSchedule, jsonToDriverScheduleList, UpdateDriverScheduleCheckList } from 'types/driverSchedule';
 
 const BASE_URL = '/api/DriverSchedule'; 
 
@@ -26,14 +26,15 @@ const create = async (schedule: DriverScheduleCreate): Promise<ApiResponse> => {
 };
 
 const update = async (id: number, schedule: DriverSchedule): Promise<ApiResponse> => {
-    let resp = await fetchApi.put(`${BASE_URL}/${id}/checklist`, schedule);
-    return resp as ApiResponse;
-};
-
-const updateCheckList = async (id: number, schedule: DriverSchedule): Promise<ApiResponse> => {
     let resp = await fetchApi.put(`${BASE_URL}/${id}`, schedule);
     return resp as ApiResponse;
 };
+
+const updateCheckList = async (id: number, schedule: UpdateDriverScheduleCheckList): Promise<ApiResponse> => {
+  let resp = await fetchApi.put(`${BASE_URL}/${id}/checklist`, schedule);
+  return resp as ApiResponse;
+};
+
 
 const driverScheduleService = {
     find,

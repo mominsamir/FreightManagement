@@ -18,9 +18,7 @@ namespace FreightManagement.WebUI.Services
 
         private string GetUser()
         {
-            string userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            _logger.LogInformation($"XXXXXXXXXXXXXXXXXXX, {userId} XXXXXXXXXXXXXXXXX ");
-            return userId;
+            return _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         public string UserId => GetUser();

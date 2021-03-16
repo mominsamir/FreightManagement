@@ -5,9 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-//TODO: dot notation properties filtering https://stackoverflow.com/questions/47364344/filtering-but-property-and-child-entity-property
-//TODO: In clause implementation
-//TODO: is Null or is not null implementation
+//Completed: dot notation properties filtering https://stackoverflow.com/questions/47364344/filtering-but-property-and-child-entity-property
+//TODO: In clause to be implementation
+//TODO: is Null or is not null to be implementation
 //TODO: Date Between to be implemented
 //TODO: Number filter to be tested.
 
@@ -16,31 +16,34 @@ namespace FreightManagement.Application.Common.Extentions
 {
     public static class BuildWhereExtention
     {
-		public static IQueryable<T> WhereRules<T>(this IQueryable<T> source, IEnumerable<Filter> filters)
+        private static MethodInfo ToLowerCase = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+
+
+        public static IQueryable<T> WhereRules<T>(this IQueryable<T> source, IEnumerable<Filter> filters)
 		{
 			if (!filters.Any())
 				return source;
-
 
 			var parameter = Expression.Parameter(typeof(T));
 			BinaryExpression binaryExpression = null;
 
 			foreach (var filter in filters)
             {
-                var prop = Expression.Property(parameter, filter.Name);
+                var prop = GetProperty(parameter, filter.Name);
                 var value = Expression.Constant(filter.Value);
-                var property = typeof(T).GetProperty(filter.Name);
                 BinaryExpression newBinary = null;
-
 
                 if (prop.Type == typeof(string))
                 {
-                    newBinary = GetBinaryExpression(filter, prop, value);
-                } else if (prop.Type == typeof(DateTime))
+                    value = Expression.Constant(filter.Value.ToLower());
+                    newBinary = GetBinaryExpressionString(filter, prop, value);
+                }
+                else if (prop.Type == typeof(DateTime))
                 {
-                    var date  = DateTime.Parse(filter.Value);
+                    var date = DateTime.Parse(filter.Value);
                     newBinary = GetBinaryExpression(filter, prop, Expression.Constant(date));
-                }else if (prop.Type == typeof(decimal))
+                }
+                else if (prop.Type == typeof(decimal))
                 {
                     var number = decimal.Parse(filter.Value);
                     newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
@@ -62,8 +65,8 @@ namespace FreightManagement.Application.Common.Extentions
                 }
                 else if (prop.Type.IsEnum)
                 {
-                    var number = int.Parse(filter.Value);
-                    newBinary = GetBinaryExpression(filter, prop, Expression.Constant(number));
+                    value = Expression.Constant(filter.Value);
+                    newBinary = GetBinaryExpressionEnum(filter, prop, value);
                 }
 
 
@@ -78,6 +81,17 @@ namespace FreightManagement.Application.Common.Extentions
 			return source.Where(_where);
 		}
 
+        private static MemberExpression GetProperty(ParameterExpression parameter, string propertyOrFieldName)
+        {
+            if(propertyOrFieldName.Contains("."))
+                return  propertyOrFieldName.Split('.')
+                   .Aggregate<string, MemberExpression>(null,
+                      (acc, p) => acc == null
+                          ? Expression.Property(parameter, p)
+                          : Expression.Property(acc, p));
+            else
+                return Expression.Property(parameter, propertyOrFieldName);
+        }
 
         private static BinaryExpression GetBinaryExpression(Filter filter, MemberExpression prop, ConstantExpression value)
         {
@@ -93,38 +107,87 @@ namespace FreightManagement.Application.Common.Extentions
                 case "LESS_THAN":
                 case "LESS_THAN_OR_EQUAL":
                     return Expression.MakeBinary(GetExpression(filter.Operator), prop, value);
-                case "CONTAIN":
-                    method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
-                    zero = Expression.Constant(true);
-                    result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
-                case "DOES_NOT_CONTAIN":
-                    method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
-                    zero = Expression.Constant(false);
-                    result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
-                case "STARTS_WITH":
-                    method = prop.Type.GetMethod("StartsWith", new[] { typeof(string) });
-                    zero = Expression.Constant(true);
-                    result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
-                case "ENDS_WITH":
-                    method = prop.Type.GetMethod("EndsWith", new[] { typeof(string) });
-                    zero = Expression.Constant(true);
-                    result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
                 case "IS_EMPTY":
                     method = prop.Type.GetMethod("Length", new[] { typeof(string) });
                     zero = Expression.Constant(string.Empty);
                     result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
+                    return Expression.MakeBinary(ExpressionType.Coalesce, result, zero);
                 case "NOT_EMPTY":
                     method = prop.Type.GetMethod("Length", new[] { typeof(string) });
                     zero = Expression.Constant(string.Empty);
                     result = Expression.Call(prop, method, value);
-                    return Expression.MakeBinary(ExpressionType.Equal, result, zero);
+                    return Expression.MakeBinary(ExpressionType.Coalesce, result, zero);
             }
             return null;
+        }
+
+        private static BinaryExpression GetBinaryExpressionString(Filter filter, MemberExpression prop, ConstantExpression value)
+        {
+            MethodInfo method = null;
+            ConstantExpression zero = null;
+            MethodCallExpression result = null;
+            var dynamicExpression = Expression.Call(prop, ToLowerCase);
+            switch (filter.Operator)
+            {
+                case "EQUAL":
+                case "NOT_EQUAL":
+                    return Expression.MakeBinary(GetExpression(filter.Operator), dynamicExpression, value);
+                case "CONTAIN":
+                    method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
+                    zero = Expression.Constant(true);
+                    break;
+                case "DOES_NOT_CONTAIN":
+                    method = prop.Type.GetMethod("Contains", new[] { typeof(string) });
+                    zero = Expression.Constant(false);
+                    break;
+                case "STARTS_WITH":
+                    method = prop.Type.GetMethod("StartsWith", new[] { typeof(string) });
+                    zero = Expression.Constant(true);
+                    break;
+                case "ENDS_WITH":
+                    method = prop.Type.GetMethod("EndsWith", new[] { typeof(string) });
+                    zero = Expression.Constant(true);
+                    break;
+                case "IS_EMPTY":
+                    method = prop.Type.GetMethod("Length", new[] { typeof(string) });
+                    zero = Expression.Constant(string.Empty);
+                    break;
+                case "NOT_EMPTY":
+                    method = prop.Type.GetMethod("Length", new[] { typeof(string) });
+                    zero = Expression.Constant(string.Empty);
+                    break;
+                default:
+                    throw new NotSupportedException($"{filter.Operator} not supported for String");
+            }
+            result = Expression.Call(dynamicExpression, method, value);
+            return Expression.MakeBinary(ExpressionType.Equal, result, zero);
+
+        }
+
+        private static BinaryExpression GetBinaryExpressionEnum(Filter filter, MemberExpression prop, ConstantExpression value)
+        {
+            MethodInfo method = null;
+            ConstantExpression zero = null;
+            MethodCallExpression result = null;
+            switch (filter.Operator)
+            {
+                case "EQUAL":
+                    return Expression.MakeBinary(ExpressionType.Equal, prop, value);
+                case "NOT_EQUAL":
+                    return Expression.MakeBinary(ExpressionType.NotEqual, prop, value);
+                case "IS_EMPTY":
+                    method = prop.Type.GetMethod("Length", new[] { typeof(string) });
+                    zero = Expression.Constant(string.Empty);
+                    break;
+                case "NOT_EMPTY":
+                    method = prop.Type.GetMethod("Length", new[] { typeof(string) });
+                    zero = Expression.Constant(string.Empty);
+                    break;
+                default:
+                    throw new NotSupportedException($"{filter.Operator} not supported for String");
+            }
+            result = Expression.Call(prop, method, value);
+            return Expression.MakeBinary(ExpressionType.Equal, result, zero);
         }
 
 
@@ -149,26 +212,7 @@ namespace FreightManagement.Application.Common.Extentions
             };
         }
 
-        private static Expression GetConvertedSource(ParameterExpression sourceParameter, PropertyInfo sourceProperty, TypeCode typeCode)
-        {
-            var sourceExpressionProperty = Expression.Property(sourceParameter, sourceProperty);
-
-            var changeTypeCall = Expression.Call(typeof(Convert).GetMethod("ChangeType", new[] { typeof(object), typeof(TypeCode) }), sourceExpressionProperty, Expression.Constant(typeCode));
-
-            Expression convert = Expression.Convert(changeTypeCall, Type.GetType("System." + typeCode));
-
-            var convertExpr = Expression.Condition(Expression.Equal(sourceExpressionProperty,
-                                                    Expression.Constant(null, sourceProperty.PropertyType)),
-                                                    Expression.Default(Type.GetType("System." + typeCode)),
-                                                    convert);
-
-
-
-            return convertExpr;
-        }
-
-        public static Expression IsDateBetween<TElement>(this IQueryable<TElement> queryable,
-                                                       Expression<Func<TElement, DateTime>> fromDate,
+        public static Expression IsDateBetween<TElement>(Expression<Func<TElement, DateTime>> fromDate,
                                                        Expression<Func<TElement, DateTime>> toDate,
                                                        DateTime date)
         {

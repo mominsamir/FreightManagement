@@ -1,6 +1,7 @@
-﻿using FreightManagement.Application.Common.Interfaces;
+﻿using FreightManagement.Application.Common.Exceptions;
+using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
-using FreightManagement.Application.Trailers.Queries.GetRacks;
+using FreightManagement.Application.Trailers.Queries.GetTrailer;
 using FreightManagement.Application.Trucks.Queries;
 using FreightManagement.Application.Users.Queries.ConfirmUserIdentity;
 using MediatR;
@@ -23,7 +24,9 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
 
     public class QueryDriverScheduleByIdHandler : IRequestHandler<QueryDriverScheduleById, ModelView<DriverScheduleDto>>
     {
-        private readonly IApplicationDbContext _context; 
+        private readonly IApplicationDbContext _context;
+
+
         public QueryDriverScheduleByIdHandler(IApplicationDbContext context)
         {
             _context = context;
@@ -32,7 +35,18 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
         public async Task<ModelView<DriverScheduleDto>> Handle(QueryDriverScheduleById request, CancellationToken cancellationToken)
         {
             var schedule = await _context.DriverScheduleLists
-                .Include(b => b.CheckList).Where(l => l.Id == request.Id).SingleOrDefaultAsync(cancellationToken);
+                .Include(s=> s.Driver)
+                .Include(s => s.Trailer)
+                .Include(s => s.Truck)
+                .Include(b => b.CheckList)
+                .ThenInclude(b => b.CheckList).ThenInclude(b=> b.Vehicle)
+                .Where(l => l.Id == request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if(schedule == null)
+            {
+                throw new NotFoundException($"Schedule not found with {request.Id}");
+            }
 
             var dto = new DriverScheduleDto(
                 schedule.Id,
@@ -46,23 +60,23 @@ namespace FreightManagement.Application.DriverSchedules.Queries.DriverScheduleBy
                     schedule.Driver.Role,
                     schedule.Driver.IsActive
                 ),
-                new TrailerDto
-                {
-                    Id = schedule.Trailer.Id,
-                    NumberPlate = schedule.Trailer.NumberPlate,
-                    VIN = schedule.Trailer.VIN,
-                    Capacity = schedule.Trailer.Capacity,
-                    Compartment = schedule.Trailer.Compartment,
-                },
-                new TruckDto
-                {
-                    Id = schedule.Truck.Id,
-                    NumberPlate = schedule.Truck.NumberPlate,
-                    VIN = schedule.Truck.VIN,
-                    NextMaintanceDate = schedule.Truck.NextMaintanceDate,
-                },
-                schedule.Status,
-                schedule.CheckList.Select(l => new DriverCheckListDto(l.Id, l.CheckList.Note, l.IsChecked)).ToList()
+                new TrailerListDto(
+                    schedule.Trailer.Id,
+                    schedule.Trailer.NumberPlate,
+                    schedule.Trailer.VIN,
+                    schedule.Trailer.Capacity,
+                    schedule.Trailer.Compartment,
+                    schedule.Trailer.Status.ToString()
+                ),
+                new TruckListDto(
+                    schedule.Truck.Id,
+                    schedule.Truck.NumberPlate,
+                    schedule.Truck.VIN,
+                    schedule.Truck.NextMaintanceDate,
+                    schedule.Truck.Status.ToString()
+                ),
+                schedule.Status.ToString(),
+                schedule.CheckList.Select(l => new DriverCheckListDto(l.Id, l.CheckList.Note, l.IsChecked))
             );
 
             return new ModelView<DriverScheduleDto>(dto, true, false, true);
