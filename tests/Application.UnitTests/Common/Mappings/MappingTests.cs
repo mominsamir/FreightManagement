@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using FreightManagement.Application.Common.Mappings;
-using FreightManagement.Application.TodoLists.Queries.GetTodos;
-using FreightManagement.Domain.Entities;
 using NUnit.Framework;
 using System;
 using System.Runtime.Serialization;
@@ -30,8 +28,6 @@ namespace FreightManagement.Application.UnitTests.Common.Mappings
         }
         
         [Test]
-        [TestCase(typeof(TodoList), typeof(TodoListDto))]
-        [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
         public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
         {
             var instance = GetInstanceOf(source);

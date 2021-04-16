@@ -1,6 +1,5 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Domain.Common;
-using FreightManagement.Domain.Entities;
 using FreightManagement.Domain.Entities.Customers;
 using FreightManagement.Domain.Entities.Disptaches;
 using FreightManagement.Domain.Entities.DriversSchedules;
@@ -11,12 +10,10 @@ using FreightManagement.Domain.Entities.StorageRack;
 using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
-using FreightManagement.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -44,8 +41,6 @@ namespace FreightManagement.Infrastructure.Persistence
             _logger = logger;
         }
 
-        public DbSet<TodoItem> TodoItems { get; set; }
-        public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<LocationTank> LocationTanks { get; set; }
@@ -70,8 +65,6 @@ namespace FreightManagement.Infrastructure.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            _logger.LogInformation($"XXXXXXXXXXXXXXXXXXXXX <==> {_currentUserService.UserId} <==> XXXXXXXXXXXXXXXXXXXXX ");
-
             foreach (EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
             {
                 switch (entry.State)

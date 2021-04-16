@@ -1,22 +1,19 @@
 import React, { FC, useState } from 'react';
 import { Row, Col, Form, Input, Button } from 'antd';
 import { LoginOutlined,  UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-//import orgInfoSelector from 'redux/selectors/orgInfo';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Login.module.less';
 import { UserIdendity } from 'types/user';
 import services from 'services';
 import * as messagesAction from 'redux/slices/messages';
 import { AppDispatch } from 'redux/store';
-//import configSelector from 'redux/selectors/config';
 
 interface LoginProps  {
   location: string
 }
 
 const Login: FC = () => {
-//  const orgInfo = useSelector(orgInfoSelector.getOrgInfo);
   const [isUserLoggedIn,setUserLoggedIn] = useState<boolean>(false);
   const location = useLocation();
 

@@ -7,8 +7,9 @@ module.exports = {
             plugin: CracoLessPlugin,
             options: {
                 modifyVars: getThemeVariables({
-                    dark: false,
-                    compact: true,
+                    dark: true,
+                    compact: false,
+                    'primary-color': '#1890ff',
                     'font-size-base': '20px'
                 }),
                 javascriptEnabled: true,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Col, Descriptions, Modal, Row, Table} from 'antd';
 import { Messages } from 'components';
-import { useHistory} from 'react-router-dom';
+import { Link, useHistory} from 'react-router-dom';
 import {useParams} from 'react-router';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
@@ -10,6 +10,8 @@ import  driverScheduleService  from 'services/driverSchedule';
 import { handleErrors } from 'Utils/errorHandler';
 import { toDateTimeString } from 'Utils/dateUtils';
 import { Column } from 'types/dataTable';
+import ModelView from 'components/ModelView';
+import { PlusOutlined, EditOutlined, TableOutlined } from '@ant-design/icons';
 
 interface ViewScheduleProps {
   id: string;  
@@ -94,13 +96,26 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
         }
       ];      
 
+      const buttons = [
+        <Link to={`/dispatch/schedules/add`}>
+        <Button icon={<PlusOutlined />}>Add new</Button>
+        </Link>,
+        <Link to={`/dispatch/schedules/edit/${props.id}`}>
+            <Button icon={<EditOutlined />}>Edit</Button>
+        </Link>,
+        <Link to={`/dispatch/schedules`}>
+            <Button icon={<TableOutlined />}>All</Button>
+        </Link>
+      ]      
+
     return (
+      <ModelView title="Driver Schedule" extra={buttons}>
         <Row gutter={8}>
             <Col span={24}>
                 <Messages />
             </Col>
             <Col span={24}>
-                <Descriptions title="Driver Schedule" bordered>
+                <Descriptions bordered>
                     <Item label="Driver">{schedule?.driver.firstName} {schedule?.driver.lastName}</Item>
                     <Item label="Truck">{schedule?.truck.numberPlate}</Item>
                     <Item label="Truck Status">{schedule?.truck.status}</Item>
@@ -126,6 +141,7 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
                 </Table>              
             </Col>            
         </Row>
+      </ModelView>        
     );
 };
 

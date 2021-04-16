@@ -8,8 +8,14 @@ namespace FreightManagement.Application.Customers.Commands.UpdateLocationStatus
 {
     public class UpdateLocationStatusCommand : IRequest 
     {
-        public long locationId;
-        public bool status;
+        public UpdateLocationStatusCommand(long id, bool status)
+        {
+            Id = id;
+            Status = status;
+        }
+
+        public long Id { get; }
+        public bool Status { get; }
     }
 
     public class UpdateLocationStatusCommandHandler : IRequestHandler<UpdateLocationStatusCommand>
@@ -22,14 +28,12 @@ namespace FreightManagement.Application.Customers.Commands.UpdateLocationStatus
 
         public async Task<Unit> Handle(UpdateLocationStatusCommand request, CancellationToken cancellationToken)
         {
-            var location = await _context.Locations.FindAsync(new object[] { request.locationId }, cancellationToken);
+            var location = await _context.Locations.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if (location == null)
-            {
-                throw new NotFoundException(string.Format("Location not found with id {0}", request.locationId));
-            }
+                throw new NotFoundException($"Location not found with id {request.Id }");
 
-            if (request.status) { location.MarkActive(); } else { location.MarkInActive(); }
+            if (request.Status) { location.MarkActive(); } else { location.MarkInActive(); }
 
             await _context.SaveChangesAsync(cancellationToken);
 

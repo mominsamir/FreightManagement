@@ -1031,7 +1031,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
-                        .HasColumnName("active");
+                        .HasColumnName("is_active");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp with time zone")

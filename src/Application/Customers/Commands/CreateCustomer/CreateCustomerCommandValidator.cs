@@ -16,8 +16,8 @@ namespace FreightManagement.Application.Customers.Commands.CreateCustomer
 
             RuleFor(v => v.Name)
                  .NotEmpty().WithMessage("Customer name is required.")
-                 .MaximumLength(200).WithMessage("Customer name must not exceed 200 characters.")
-                 .MustAsync(BeUniqueName).WithMessage("Customer name must not exceed 200 characters.");
+                 .MaximumLength(200).WithMessage("Customer name must not exceed 200 characters.");
+            //                 .MustAsync(BeUniqueName).WithMessage("Customer name must be Unique.")
 
             RuleFor(v => v.Email)
                 .NotEmpty().WithMessage("Email is required.")

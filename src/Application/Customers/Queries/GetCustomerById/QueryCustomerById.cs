@@ -39,7 +39,7 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
                 new CustomerDto(
                     customer.Id,
                     customer.Name,
-                    customer.Email,
+                    customer.Email.Value,
                     customer.BillingAddress,
                     customer.IsActive,
                     customer.Locations

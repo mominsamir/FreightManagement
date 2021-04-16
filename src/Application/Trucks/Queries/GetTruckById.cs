@@ -1,9 +1,10 @@
-﻿using AutoMapper;
-using FreightManagement.Application.Common.Exceptions;
+﻿using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Domain.Entities.Vehicles;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,29 +23,29 @@ namespace FreightManagement.Application.Trucks.Queries
     public class GetTruckByIdHandler : IRequestHandler<GetTruckById, ModelView<TruckDto>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetTruckByIdHandler(IApplicationDbContext context, IMapper mapper)
+        public GetTruckByIdHandler(IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<ModelView<TruckDto>> Handle(GetTruckById request, CancellationToken cancellationToken)
         {
-            var trailer = await _context.Trucks.FindAsync(new object[] { request.Id }, cancellationToken);
 
-            if (trailer == null)
+            var truck = await _context.Trucks.Where (l=> l.Id == request.Id ).SingleOrDefaultAsync(cancellationToken);
+
+            if (truck  == null)
             {
                 throw new NotFoundException(nameof(Truck), request.Id);
             }
 
             return new ModelView<TruckDto>(
-                    new TruckDto{
-                    Id = trailer.Id,
-                    VIN = trailer.VIN,
-                    NumberPlate = trailer.NumberPlate,
-                    Status = trailer.Status}
+                    new TruckDto(
+                    truck.Id,
+                    truck.NumberPlate,
+                    truck.VIN,
+                    truck.NextMaintanceDate,
+                    truck.Status)
                     ,true,false, true
             );
         }

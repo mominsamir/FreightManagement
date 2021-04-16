@@ -59,6 +59,7 @@ const DataTable: React.FC<Props> = ({ columns,filters, searchApi, downloadApi, t
         setData(response.data);
         setTotalRecords(response.recordsFiltered);
       } catch (err) {
+        console.log(err);
         handleErrors(err, history, dispatch);
       }
     })();

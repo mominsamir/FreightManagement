@@ -8,11 +8,11 @@ namespace FreightManagement.Application.Customers.Commands.RemoveTankFromLocatio
 
             RuleFor(v => v).NotNull().WithMessage("Tank is required.");
 
-            RuleFor(v => v.tankId)
+            RuleFor(v => v.TankId)
                 .NotNull().WithMessage("Tank Id is required.")
                 .GreaterThan(0).WithMessage("Tank Id is required.");
 
-            RuleFor(v => v.locationId)
+            RuleFor(v => v.Id)
                 .NotNull().WithMessage("Location Id is required.")
                 .GreaterThan(0).WithMessage("Location Id is required.");
         }

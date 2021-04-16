@@ -42,6 +42,9 @@ namespace FreightManagement.Domain.Entities.Customers
         public void UpdateTank(long id, FuelGrade fuelGrade, double capacity, string name)
         {
             var tank = _tanks.Find(i => i.Id == id);
+
+            if (tank is null) return;
+
             tank.Capactity = capacity;
             tank.Name = name;
             tank.FuelGrade = fuelGrade;

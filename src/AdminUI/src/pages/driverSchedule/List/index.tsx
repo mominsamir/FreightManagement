@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Datatable } from 'components';
 import driverScheduleServices from 'services/driverSchedule';
 import { Row, Col, Button } from 'antd';
@@ -6,10 +6,7 @@ import { SearchOutlined  } from '@ant-design/icons';
 import { DataTableFilterOption, FieldType } from 'components/Datatable/filter';
 import { User } from 'types/user';
 import { Column } from 'types/dataTable';
-import _ from 'lodash';
-import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'redux/store';
+import { Link} from 'react-router-dom';
 import { Moment } from 'moment-timezone';
 import {  toDateTimeString } from 'Utils/dateUtils';
 import { Trailer, Truck } from 'types/vehicle';
@@ -20,8 +17,6 @@ const DriverScheduleList: React.FC = () => {
 
   const [key, setKey] = useState<number>(1);
   const [showCreateModel, setShowCreateModel] = useState<boolean>(false);
-  const history = useHistory();
-  const dispatch = useDispatch<AppDispatch>();  
 
 
   const columns: Column[] = [

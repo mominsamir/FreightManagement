@@ -35,7 +35,6 @@ namespace FreightManagement.Application.Common.Models
 
         public string Column { get; }
         public string SortOrder { get; }
-
     }
 
     public enum SortDirection

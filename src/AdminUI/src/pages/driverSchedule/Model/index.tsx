@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';
 import { User } from 'types/user';
 import userService from 'services/user';
-import { DriverSchedule, DriverScheduleCreate } from 'types/driverSchedule';
+import { DriverScheduleCreate } from 'types/driverSchedule';
 
 interface Props {
   schedule?: DriverScheduleCreate;

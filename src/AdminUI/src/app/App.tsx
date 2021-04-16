@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {Helmet} from "react-helmet";
-import { Switch, Route, useHistory, Link } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { AppDispatch } from 'redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useLocation, Redirect } from 'react-router-dom';
 import { Messages, Menu as AntMenu } from 'components';
-import {  Menu as AMenu , Dropdown, Layout,Row, Col, Button, Tooltip} from 'antd';
+import {  Menu as AMenu , Dropdown, Layout,Row, Col} from 'antd';
 import { withEventBus } from 'context/eventbus';
 import pages from 'pages';
 import * as messagesActions from 'redux/slices/messages';
 import styles from './App.module.less';
 import { handleErrors } from 'Utils/errorHandler';
 import configService from 'services/config';
-import { UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import { ChangePasswordModel } from 'pages/login/changePassword';
 import { Menu } from 'components/Menu/menu';
 import { User } from 'types/user';
@@ -35,11 +35,6 @@ const App: React.FC = () => {
 //    dispatch(configAction.clear());
     window.location.href = '/login';
     })();
-  }
-
-  const goBack = () => {
-    history.goBack();
-  
   }
 
   useEffect(() => {
@@ -138,6 +133,17 @@ const App: React.FC = () => {
                   <Route path="/dispatch/vendors" component={pages.VendorPages.List} />       
                   <Route path="/dispatch/schedules/:id" component={pages.DriverScheduleList.View} />                   
                   <Route path="/dispatch/schedules" component={pages.DriverScheduleList.List} />
+                  <Route path="/dispatch/locations/edit/:id" component={pages.LocationPages.Edit} />
+                  <Route path="/dispatch/locations/add" component={pages.LocationPages.Add} />                  
+                  <Route path="/dispatch/locations/:id" component={pages.LocationPages.View} />
+                  <Route path="/dispatch/locations" component={pages.LocationPages.List} />   
+                  <Route path="/dispatch/customers/edit/:id" component={pages.CustomerPages.Edit} />                  
+                  <Route path="/dispatch/customers/:id" component={pages.CustomerPages.View} />
+                  <Route path="/dispatch/customers" component={pages.CustomerPages.List} />
+                  <Route path="/dispatch/orders/edit/:id" component={pages.OrderPages.Edit} />                  
+                  <Route path="/dispatch/orders/add" component={pages.OrderPages.Add} />
+                  <Route path="/dispatch/orders/:id" component={pages.OrderPages.View} />                  
+                  <Route path="/dispatch/orders" component={pages.OrderPages.List} />
                   <Route path="/unknown-error" component={pages.ErrorPages.UnknownError} />
                   <Route path="/not-authorized" component={pages.ErrorPages.NotAuthorized} />
                   <Route path="*" component={pages.ErrorPages.NotFound} />

@@ -1,12 +1,10 @@
 import { displayValidationErrors, getGlobalErrors } from './validationHelper';
 import { addError } from 'redux/slices/messages';
 import { FormInstance } from 'antd/lib/form';
-import { ApiError } from 'Utils/fetchApi';
 import { AppDispatch } from 'redux/store';
 import { History } from 'history';
 
-const handleError = (err: ApiError) => {
-  console.error(err);
+const handleError = (err: any) => {
   switch (err.status) {
     case 401:
       return '/login';
@@ -15,13 +13,14 @@ const handleError = (err: ApiError) => {
     case 404:
       return '/page-not-found';
     case 400:
+    case 422:
       return null;
     default:
       return '/unknown-error';
   }
 };
 
-const handleErrorAndRedirect = (err: ApiError, history: History) => {
+const handleErrorAndRedirect = (err: any, history: History) => {
   let url = handleError(err);
   if (url) {
     history.push(url);
@@ -29,22 +28,22 @@ const handleErrorAndRedirect = (err: ApiError, history: History) => {
   return err.status;
 };
 
-const handleFormSubmitError = (form: FormInstance, err: ApiError, history: History) => {
+const handleFormSubmitError = (form: FormInstance, err: any, history: History) => {
   let status = handleErrorAndRedirect(err, history);
-  if (status === 400 && err.response && typeof err.response !== 'string') {
-    return displayValidationErrors(form, err.response);
+  if (status === 422 && err.errors ) {//&& typeof err.response !== 'string'
+    return displayValidationErrors(form, err);
   } else {
     return [];
   }
 };
 
-const handleErrors = (err: ApiError, history: History, dispatch: AppDispatch, form?: FormInstance) => {
+const handleErrors = (err: any, history: History, dispatch: AppDispatch, form?: FormInstance) => {
   let globalErrors;
       if (form) {
         globalErrors = handleFormSubmitError(form, err, history);
       } else {
         let status = handleErrorAndRedirect(err, history);
-        if (status === 400) {
+        if (status === 422) {
           globalErrors = getGlobalErrors(err);
         }
       }

@@ -5,7 +5,6 @@ import { EditFilled  } from '@ant-design/icons';
 import { DataTableFilterOption, FieldType } from 'components/Datatable/filter';
 import { User } from 'types/user';
 import { Column } from 'types/dataTable';
-import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'redux/store';

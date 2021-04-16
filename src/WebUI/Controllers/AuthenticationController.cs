@@ -2,11 +2,7 @@
 using FreightManagement.Application.Users.Queries.UserConfiguration;
 using FreightManagement.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // https://levelup.gitconnected.com/asp-net-5-authorization-and-authentication-with-bearer-and-jwt-2d0cef85dc5d
@@ -42,22 +38,5 @@ namespace FreightManagement.WebUI.Controllers
             return await Mediator.Send(new QueryUserConfiguration());
         }
 
-        [HttpGet]
-        [Route("tester")]
-        [Authorize(Roles = "tester")]
-        public string Tester()
-        {
-            return "You are a Tester";
-        }
-
-        [HttpGet]
-        [Route("employee")]
-        [Authorize(Roles = "employee,manager")]
-        public string Employee() => "Employee";
-
-        [HttpGet]
-        [Route("manager")]
-        [Authorize(Roles = "ADMIN")]
-        public string Manager() => "Manager";
     }
 }

@@ -1,11 +1,11 @@
-import { Moment } from "moment-timezone";
+import moment from "moment";
 
 
   export interface  Truck {
     id : number;    
     numberPlate : string;
     vin : number;
-    nextMaintanceDate: Moment;
+    nextMaintanceDate: moment.Moment;
     status: string;
   } 
   
@@ -26,7 +26,9 @@ import { Moment } from "moment-timezone";
  }
 
 
- export const jsonToTruck = (json: any) => Object.assign({}, json, {});
+ export const jsonToTruck = (json: any) => Object.assign({}, json, {
+  nextMaintanceDate : moment(json.nextMaintanceDate)
+ });
 
  export const jsonToTrailer = (json: any) => Object.assign({}, json, {});
 

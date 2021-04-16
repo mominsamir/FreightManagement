@@ -5,6 +5,7 @@ using FreightManagement.Domain.Entities.DriversSchedules;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation.Results;
 
 namespace FreightManagement.Application.DriverSchedules.Commands.UpdateScheduleStatus
 {
@@ -26,6 +27,8 @@ namespace FreightManagement.Application.DriverSchedules.Commands.UpdateScheduleS
             RuleFor(v => v)
                 .MustAsync(IsNewStatusValid).WithMessage(v=> $"Schedule can not be marked {v.Status}");
         }
+
+        
 
         private async Task<bool> IsNewStatusValid(UpdateDriverScheduleStatusCommand command, CancellationToken cancellationToken)
         {
@@ -50,6 +53,17 @@ namespace FreightManagement.Application.DriverSchedules.Commands.UpdateScheduleS
         private async  Task<bool> Exist(long id, CancellationToken cancellationToken)
         {
             return await _context.DriverScheduleLists.AnyAsync(s => s.Id == id, cancellationToken);
+        }
+
+        public override Task<ValidationResult> ValidateAsync(ValidationContext<UpdateDriverScheduleStatusCommand> context, CancellationToken cancellation = default)
+        {
+
+            return base.ValidateAsync(context, cancellation);
+        }
+
+        protected override void RaiseValidationException(ValidationContext<UpdateDriverScheduleStatusCommand> context, ValidationResult result)
+        {
+            base.RaiseValidationException(context, result);
         }
     }
 }

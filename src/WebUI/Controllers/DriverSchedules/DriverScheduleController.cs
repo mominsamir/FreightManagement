@@ -88,6 +88,5 @@ namespace FreightManagement.WebUI.Controllers.DriverSchedules
             return Ok(new { Id = updateId, success = true, message = "Driver Schdule marked Cencelled" });
         }
 
-
     }
 }

@@ -22,7 +22,6 @@ const FuelProductModel: React.FC<Props> = ({ fuelProduct, mode, onOk, onCancel }
   const save = (values: FuelProduct) => {
     (async () => {
       try {
-        console.log(values);
         if(mode ==='ADD'){
           await productService.create(values);
         }else{
@@ -30,6 +29,7 @@ const FuelProductModel: React.FC<Props> = ({ fuelProduct, mode, onOk, onCancel }
         }
         onOk();
       } catch (error) {
+        console.log(error);        
         handleErrors(error, history, dispatch, form);
       }
     })();

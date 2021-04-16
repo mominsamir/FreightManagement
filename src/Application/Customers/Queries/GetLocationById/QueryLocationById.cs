@@ -34,7 +34,7 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
             return new ModelView<LocationDto>(new LocationDto(
                     location.Id,
                     location.Name,
-                    location.Email,
+                    location.Email.Value,
                     location.IsActive,
                     location.DeliveryAddress,
                     location.Tanks

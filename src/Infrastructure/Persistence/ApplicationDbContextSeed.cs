@@ -1,14 +1,14 @@
 ﻿using FreightManagement.Application.Common.Security;
-using FreightManagement.Domain.Entities;
 using FreightManagement.Domain.Entities.Customers;
 using FreightManagement.Domain.Entities.DriversSchedules;
+using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Products;
 using FreightManagement.Domain.Entities.StorageRack;
 using FreightManagement.Domain.Entities.Users;
 using FreightManagement.Domain.Entities.Vehicles;
 using FreightManagement.Domain.Entities.Vendors;
 using FreightManagement.Domain.ValueObjects;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,48 +18,11 @@ namespace FreightManagement.Infrastructure.Persistence
 {
     public static class ApplicationDbContextSeed
     {
-        public static async Task SeedDefaultUserAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            var administratorRole = new IdentityRole("Administrator");
-
-            if (roleManager.Roles.All(r => r.Name != administratorRole.Name))
-            {
-                await roleManager.CreateAsync(administratorRole);
-            }
-
-            /*            var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
-                        if (userManager.Users.All(u => u.Email != administrator.UserName))
-                        {
-                            await userManager.CreateAsync(administrator, "Administrator1!");
-                            await userManager.AddToRolesAsync(administrator, new [] { administratorRole.Name });
-                        }*/
-        }
 
         public static async Task SeedSampleDataAsync(ApplicationDbContext context)
         {
             // Seed, if necessary
-            if (!context.TodoLists.Any())
-            {
-                context.TodoLists.Add(new TodoList
-                {
-                    Title = "Shopping",
-                    Colour = Colour.Blue,
-                    Items =
-                    {
-                        new TodoItem { Title = "Apples", Done = true },
-                        new TodoItem { Title = "Milk", Done = true },
-                        new TodoItem { Title = "Bread", Done = true },
-                        new TodoItem { Title = "Toilet paper" },
-                        new TodoItem { Title = "Pasta" },
-                        new TodoItem { Title = "Tissues" },
-                        new TodoItem { Title = "Tuna" },
-                        new TodoItem { Title = "Water" }
-                    }
-                });
 
-                await context.SaveChangesAsync();
-            }
 
             var user = new User
             {
@@ -118,6 +81,7 @@ namespace FreightManagement.Infrastructure.Persistence
 
             if (!context.AllUsers.Any())
             {
+
                 await context.AllUsers.AddRangeAsync(user, user1, user2, user3, user4);
                 await context.SaveChangesAsync();
             }
@@ -344,7 +308,8 @@ namespace FreightManagement.Infrastructure.Persistence
                 var trucks = context.Trucks.ToList();
                 var schedules = new List<DriverSchedule>();
                 var select = false;
-                foreach (var d in drivers){
+                foreach (var d in drivers)
+                {
                     var truck = trucks.ElementAt(select ? 1 : 0);
                     var trailer = trailers.ElementAt(select ? 1 : 0);
                     var driverSchedule = new DriverSchedule
@@ -364,6 +329,26 @@ namespace FreightManagement.Infrastructure.Persistence
                 }
                 await context.SaveChangesAsync();
 
+            }
+
+            if (!context.Orders.Any())
+            {
+                var customers =await context.Customers.Include(l => l.Locations).ToListAsync();
+                var locations = await context.Locations.ToListAsync();
+                var list = new List<Order>();
+                customers.ForEach(c =>
+                {
+                    var order = new Order(c, DateTime.Now, DateTime.Now);
+                    
+                    var fuelProducts = context.FuelProducts.ToList();
+
+                    fuelProducts.ForEach(f => {
+                        order.AddOrderItem(f,locations.FirstOrDefault(), 5000, "LOAD CODE");
+                       });
+                    context.Orders.Add(order);
+                });
+
+                await context.SaveChangesAsync();
             }
         }
     }

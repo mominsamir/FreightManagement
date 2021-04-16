@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,18 +12,35 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
 {
     public class CreateOrderCommand : IRequest<long>
     {
-        public long CustomerId;
-        public DateTime OrderDate;
-        public DateTime ShipDate;
-        public List<CreateOrderLine> OrderLines = new List<CreateOrderLine>();
+        public CreateOrderCommand(long customerId, DateTime orderDate, DateTime shipDate, List<CreateOrderLine> orderLines)
+        {
+            CustomerId = customerId;
+            OrderDate = orderDate;
+            ShipDate = shipDate;
+            OrderLines = orderLines;
+        }
+
+        public long CustomerId { get; }
+        public DateTime OrderDate { get; }
+        public DateTime ShipDate { get; }
+        public List<CreateOrderLine> OrderLines { get; }
+
     }
 
     public class CreateOrderLine
     {
-        public long LocationId;
-        public long FuelProductId;
-        public double Quantity= 0; 
-        public string LoadCode;
+        public CreateOrderLine(long locationId, long fuelProductId, double quantity, string loadCode)
+        {
+            LocationId = locationId;
+            FuelProductId = fuelProductId;
+            Quantity = quantity;
+            LoadCode = loadCode;
+        }
+
+        public long LocationId { get; }
+        public long FuelProductId { get; }
+        public double Quantity { get; }
+        public string LoadCode { get; }
     }
 
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, long>
@@ -36,7 +54,7 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
 
         public async Task<long> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(new object[] { request.CustomerId }, cancellationToken);
+            var customer = await _context.Customers.Where(c => c.Id == request.CustomerId).SingleOrDefaultAsync(cancellationToken);
 
             var order = new Order
             {
@@ -45,12 +63,17 @@ namespace FreightManagement.Application.Orders.Commands.CreateOrder
                 ShipDate = request.ShipDate,
             };
 
-            request.OrderLines.ForEach(async l =>
-            {
-                var fuelProduct = await _context.FuelProducts.FindAsync(l.FuelProductId, cancellationToken);
-                var location = await _context.Locations.FindAsync(l.FuelProductId, cancellationToken);
-                order.AddOrderItem(fuelProduct, location, l.Quantity, l.LoadCode);
+            var productsIds =  request.OrderLines.Select(l => l.FuelProductId).Distinct().ToList();
+            var locationIds = request.OrderLines.Select(l => l.LocationId).Distinct().ToList();
+            
+            var fuelProducts = await _context.FuelProducts.Where(f => productsIds.Contains( f.Id)).ToListAsync(cancellationToken);
+            var locations = await _context.Locations.Where(f => locationIds.Contains( f.Id)).ToListAsync(cancellationToken);
 
+            request.OrderLines.ForEach(l =>
+            {
+                var fp = fuelProducts.Where(f => f.Id == l.FuelProductId).FirstOrDefault();
+                var loc = locations.Where(lc => lc.Id == l.LocationId).FirstOrDefault();
+                order.AddOrderItem(fp, loc, l.Quantity, l.LoadCode);
             });
 
             await _context.Orders.AddAsync(order, cancellationToken);

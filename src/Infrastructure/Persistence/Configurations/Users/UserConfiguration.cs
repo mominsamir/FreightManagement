@@ -41,8 +41,8 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Users
                 .IsRequired();
 
             builder.Property(t => t.IsActive)
-                .HasColumnName("active")
-                .HasDefaultValue(true)
+                .HasColumnName("is_active")
+                .HasDefaultValue(1)
                 .IsRequired();
 
             builder.HasIndex(c => c.Email).IsUnique();

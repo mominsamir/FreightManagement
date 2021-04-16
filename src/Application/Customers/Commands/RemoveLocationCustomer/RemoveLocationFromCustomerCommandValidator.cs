@@ -9,11 +9,11 @@ namespace FreightManagement.Application.Customers.Commands.RemoveLocationCustome
         {
             RuleFor(v => v).NotNull().WithMessage("Location is required.");
 
-            RuleFor(v => v.customerId)
+            RuleFor(v => v.Id)
                 .NotNull().WithMessage("Customer Id is required.")
                 .Equal(0).WithMessage("Customer Id is required.");
 
-            RuleFor(v => v.locationId)
+            RuleFor(v => v.LocationId)
                 .NotNull().WithMessage("Location Id is required.")
                 .Equal(0).WithMessage("Location Id is required.");
         }

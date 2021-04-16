@@ -1,4 +1,4 @@
-import { jsonToLocation } from "./location";
+import { jsonToLocation, Location } from "./location";
 
 export interface  Customer {
     id: number;
@@ -10,17 +10,17 @@ export interface  Customer {
     state: string;
     country: string;
     zipCode: string;    
-    Locations : Location[];
+    locations : Location[];
   }
   
 
   export const jsonToCustomer = (json: any) => Object.assign({}, json, {
-      street: json.address.street,
-      city: json.address.city,
-      state: json.address.state,
-      country: json.address.country,
-      zipCode: json.address.zipCode,
-      tanks: json.location.map( (location: any) => jsonToLocation(location)),
+      street: json.billingAddress.street,
+      city: json.billingAddress.city,
+      state: json.billingAddress.state,
+      country: json.billingAddress.country,
+      zipCode: json.billingAddress.zipCode,
+      locations : json.locations === undefined ? [] : json.locations.map( (location: any) => jsonToLocation(location))
     });
 
    

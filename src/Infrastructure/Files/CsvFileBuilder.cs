@@ -1,16 +1,15 @@
 ﻿using FreightManagement.Application.Common.Interfaces;
-using FreightManagement.Application.TodoLists.Queries.ExportTodos;
-using FreightManagement.Infrastructure.Files.Maps;
 using CsvHelper;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using FreightManagement.Domain.Entities.Users;
 
 namespace FreightManagement.Infrastructure.Files
 {
     public class CsvFileBuilder : ICsvFileBuilder
     {
-        public byte[] BuildTodoItemsFile(IEnumerable<TodoItemRecord> records)
+        public byte[] BuildTodoItemsFile(IEnumerable<User> records)
         {
             using var memoryStream = new MemoryStream();
             using (var streamWriter = new StreamWriter(memoryStream))

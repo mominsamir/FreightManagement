@@ -37,9 +37,20 @@ namespace FreightManagement.Application.DriverSchedules.Commands.UpdateScheduleS
                  .Where(l => l.Id == request.Id).SingleOrDefaultAsync(cancellationToken);
 
             if (schedule == null)
-                throw new NotFoundException(string.Format("Schedule not found with id {0}", request.Id));
+                throw new NotFoundException($"Schedule not found with id {request.Id}");
 
-            schedule.TryCompleteCheckList();
+            if(request.Status == DriverScheduleStatus.SCHEDULE_COMPLETED)
+                schedule.TryCompleteCheckList();
+            else if (request.Status == DriverScheduleStatus.SCHEDULE_CANCELLED)
+                schedule.TryCancelSchedule();
+            else
+            {
+                var ve = new ValidationException();
+                ve.Errors.Add("status",new string[] { $"Status can not be changed {request.Status}" });
+                throw ve;
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
 
             return schedule.Id;
         }

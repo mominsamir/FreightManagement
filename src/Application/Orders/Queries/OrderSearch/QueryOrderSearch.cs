@@ -2,6 +2,7 @@
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Customers.Queries.GetCustomerById;
+using FreightManagement.Domain.Entities.Customers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -45,32 +46,26 @@ namespace FreightManagement.Application.Orders.Queries.OrderSearch
         {
             var query = _contex.Orders
                 .Include(b => b.Customer)
-                .Include(b=> b.OrderItems).AsNoTracking().AsNoTracking().AsQueryable()
+                .Include(b=> b.OrderItems).AsNoTracking().AsQueryable()
                 .Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .WhereRules(request.FilterData)
                 .OrderByColumns(request.SortData);
 
-        // add where clause
-
-        // add sort clause
-
-            var data = await query.Skip((request.Page - 1) * request.PageSize)
-                .OrderByDescending(i => i.Id)
-                .Take(request.PageSize)
-                .Select(o =>
+            var data = await query.Select(o =>
                         new OrderListDto(
                         o.Id,
                         new CustomerDto(
                             o.Customer.Id,
                             o.Customer.Name,
-                            o.Customer.Email,
+                            o.Customer.Email.Value,
                             o.Customer.BillingAddress,
-                            o.Customer.IsActive
+                            o.Customer.IsActive,
+                            new List<Location>()
                             ),
                         o.OrderDate,
                         o.ShipDate,
-                        o.Status.ToString(),
+                        o.Status,
                         o.TotalQuantity()
                     )
                  )

@@ -8,8 +8,14 @@ namespace FreightManagement.Application.Customers.Commands.UpdateCustomerStatus
 {
     public class UpdateCustomerStatusCommand : IRequest
     {
-        public long customerId;
-        public bool status;
+        public UpdateCustomerStatusCommand(long id, bool status)
+        {
+            Id = id;
+            Status = status;
+        }
+
+        public long Id { get; }
+        public bool Status { get; }
     }
 
     public class UpdateCustomerStatusCommandHandler : IRequestHandler<UpdateCustomerStatusCommand>
@@ -22,14 +28,14 @@ namespace FreightManagement.Application.Customers.Commands.UpdateCustomerStatus
 
         public async Task<Unit> Handle(UpdateCustomerStatusCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(new object[] { request.customerId }, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.Id }, cancellationToken);
 
             if (customer == null)
             {
-                throw new NotFoundException(string.Format("Customer not found with id {0}", request.customerId));
+                throw new NotFoundException(string.Format("Customer not found with id {0}", request.Id));
             }
 
-            if (request.status) { customer.MarkActive(); } else { customer.MarkInActive(); }
+            if (request.Status) { customer.MarkActive(); } else { customer.MarkInActive(); }
 
             await _context.SaveChangesAsync(cancellationToken);
 

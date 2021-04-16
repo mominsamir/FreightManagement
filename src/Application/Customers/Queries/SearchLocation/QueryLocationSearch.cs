@@ -2,6 +2,7 @@
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Customers.Queries.GetLocationById;
+using FreightManagement.Domain.Entities.Customers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -57,9 +58,10 @@ namespace FreightManagement.Application.Customers.Queries.SearchLocation
                         new LocationDto(
                             c.Id,
                             c.Name,
-                            c.Email,
+                            c.Email.Value,
                             c.IsActive,
-                            c.DeliveryAddress
+                            c.DeliveryAddress,
+                            new List<LocationTank>()
                       )
                  )
                 .ToListAsync(cancellationToken);

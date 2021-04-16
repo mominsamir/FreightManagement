@@ -9,13 +9,24 @@ namespace FreightManagement.Application.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommand  : IRequest<long> 
     {
-        public string Name;
-        public string Email;
-        public string Street;
-        public string City;
-        public string State;
-        public string Country;
-        public string ZipCode;
+        public CreateCustomerCommand(string name, string email, string street, string city, string state, string country, string zipCode)
+        {
+            Name = name;
+            Email = email;
+            Street = street;
+            City = city;
+            State = state;
+            Country = country;
+            ZipCode = zipCode;
+        }
+
+        public string Name { get; }
+        public string Email { get; }
+        public string Street { get; }
+        public string City { get; }
+        public string State { get; }
+        public string Country { get; }
+        public string ZipCode { get; }
     }
 
     public class CreateCustomerCommandHandler: IRequestHandler<CreateCustomerCommand, long>
@@ -39,8 +50,10 @@ namespace FreightManagement.Application.Customers.Commands.CreateCustomer
                              request.State,
                              request.Country,
                              request.ZipCode
-                         ),
-            };
+                         )
+             };
+
+            customer.MarkActive();
 
             await _contex.Customers.AddAsync(customer, cancellationToken);
             await _contex.SaveChangesAsync(cancellationToken);

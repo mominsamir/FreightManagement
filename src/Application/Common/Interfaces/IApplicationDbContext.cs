@@ -17,9 +17,6 @@ namespace FreightManagement.Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-        public DbSet<TodoItem> TodoItems { get; set; }
-
-        public DbSet<TodoList> TodoLists { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
 

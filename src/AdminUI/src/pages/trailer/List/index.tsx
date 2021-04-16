@@ -113,6 +113,7 @@ const TrailerList: React.FC = () => {
       try {
         if(editedUserId !== 0){
             var trailer = await trailerServices.find(editedUserId);
+
             setTrailer(trailer);
             setMode('EDIT');
             toogleModel();

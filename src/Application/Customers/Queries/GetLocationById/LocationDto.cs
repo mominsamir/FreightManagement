@@ -11,12 +11,12 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
     {
         public long Id { get;  }
         public string Name { get; }
-        public Email Email { get; }
+        public string Email { get; }
         public bool IsActive { get;  }
         public Address DeliveryAddress { get;  }
         public IEnumerable<LocationTanksDto> Tanks { get; }
 
-        public LocationDto(long id, string name, Email email, bool isActive, Address deliveryAddress, IEnumerable<LocationTank> tanks)
+        public LocationDto(long id, string name, string email, bool isActive, Address deliveryAddress, IEnumerable<LocationTank> tanks)
         {
             Id = id;
             Name = name;
@@ -26,7 +26,7 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
             Tanks = tanks.Select(t => new LocationTanksDto(t.Id, t.Name, t.FuelGrade, t.Capactity)).ToList();
         }
 
-        public LocationDto(long id, string name, Email email, bool isActive, Address deliveryAddress)
+        public LocationDto(long id, string name, string email, bool isActive, Address deliveryAddress)
         {
             Id = id;
             Name = name;
@@ -42,6 +42,7 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
         public long Id { get; }
         public string Name { get; }
         public FuelGrade FuelGrade { get; }
+        public string FuelGradeLabel { get; }
         public double Capactity { get; }
 
         public LocationTanksDto(long id, string name, FuelGrade fuelGrade, double capactity)
@@ -49,6 +50,7 @@ namespace FreightManagement.Application.Customers.Queries.GetLocationById
             Id = id;
             Name = name;
             FuelGrade = fuelGrade;
+            FuelGradeLabel = fuelGrade.ToString();
             Capactity = capactity;
         }
 

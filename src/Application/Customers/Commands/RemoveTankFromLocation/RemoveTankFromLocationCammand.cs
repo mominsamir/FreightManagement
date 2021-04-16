@@ -1,10 +1,8 @@
 ﻿using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
 using MediatR;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,8 +10,14 @@ namespace FreightManagement.Application.Customers.Commands.RemoveTankFromLocatio
 {
     public class RemoveTankFromLocationCammand : IRequest 
     {
-        public long locationId;
-        public long tankId;
+        public RemoveTankFromLocationCammand(long id, long tankId)
+        {
+            Id = id;
+            TankId = tankId;
+        }
+
+        public long Id { get; }
+        public long TankId { get; }
     }
 
     public class RemoveTankFromLocationCammandHandler : IRequestHandler<RemoveTankFromLocationCammand>
@@ -26,13 +30,13 @@ namespace FreightManagement.Application.Customers.Commands.RemoveTankFromLocatio
 
         public async Task<Unit> Handle(RemoveTankFromLocationCammand request, CancellationToken cancellationToken)
         {
-            var location = await _context.Locations.FindAsync(request.locationId, cancellationToken);
-            if (location == null)
-            {
-                throw new NotFoundException(string.Format("Location with Id {0} not found", request.locationId));
-            }
+            var location = await _context.Locations.Include(l=> l.Tanks)
+                .Where( l=> l.Id == request.Id ).SingleOrDefaultAsync(cancellationToken);
 
-            location.RemoveTank(request.tankId);
+            if (location == null)
+                throw new NotFoundException($"Location with Id {request.Id} not found" );
+
+            location.RemoveTank(request.TankId);
 
             await _context.SaveChangesAsync(cancellationToken);
 

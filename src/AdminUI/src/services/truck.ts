@@ -1,12 +1,12 @@
 import fetchApi, { ApiResponse } from 'Utils/fetchApi';
-import { Truck } from 'types/vehicle';
+import { jsonToTruck, Truck } from 'types/vehicle';
 import { PaginatedSearchResult, SearchParams } from 'types/dataTable';
 
 const BASE_URL = '/api/Truck'; 
 
 const find = async (id: number): Promise<Truck> => {
     let apiResp: any = await fetchApi.get(`${BASE_URL}/${id}`);
-    return apiResp.model as Truck;
+    return jsonToTruck(apiResp.model);
 };
 
 const search = async function (searchParams: SearchParams): Promise<PaginatedSearchResult<Truck>> {

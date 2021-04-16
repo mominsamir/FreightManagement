@@ -10,16 +10,15 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
     {
         public long Id { get;  }
         public string Name { get; }
-        public Email Email { get;  }
+        public string Email { get;  }
         public Address BillingAddress { get; }
         public bool IsActive { get; }
-
-        public IEnumerable<LocationDto> Locations = new List<LocationDto>();
+        public IEnumerable<LocationDto> Locations { get; }
 
         public CustomerDto() { }
         public CustomerDto(long id, 
-            string name, 
-            Email email, 
+            string name,
+            string email, 
             Address billingAddress, 
             bool isActive,
             IEnumerable<Location> locations)
@@ -30,28 +29,14 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
             BillingAddress = billingAddress;
             IsActive = isActive;
             Locations = locations
-                .Select(l => new LocationDto(l.Id, l.Name, l.Email, l.IsActive, l.DeliveryAddress))
+                .Select(l => new LocationDto(l.Id, l.Name, l.Email.Value, l.IsActive, l.DeliveryAddress))
                 .ToList();
         }
-
-        public CustomerDto(long id,
-            string name,
-            Email email,
-            Address billingAddress,
-            bool isActive)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-            BillingAddress = billingAddress;
-            IsActive = isActive;
-        }
-
     }
 
     public class LocationDto
     {
-        public LocationDto(long id, string name, Email email, bool isActive, Address deliveryAddress)
+        public LocationDto(long id, string name, string email, bool isActive, Address deliveryAddress)
         {
             Id = id;
             Name = name;
@@ -62,7 +47,7 @@ namespace FreightManagement.Application.Customers.Queries.GetCustomerById
 
         public long Id { get; }
         public string Name { get; }
-        public Email Email { get; }
+        public string Email { get; }
         public bool IsActive { get; }
         public Address DeliveryAddress { get; }
     }  

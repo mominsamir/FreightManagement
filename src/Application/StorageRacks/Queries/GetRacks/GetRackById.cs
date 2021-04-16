@@ -4,7 +4,8 @@ using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Domain.Entities.StorageRack;
 using MediatR;
-
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,12 @@ namespace FreightManagement.Application.StorageRacks.Queries.GetRacks
 {
     public class GetRackById : IRequest<ModelView<RackDto>>
     {
-        public long Id {get; set;}
+        public GetRackById(long id)
+        {
+            Id = id;
+        }
+
+        public long Id {get;}
     }
 
     public class GetRackByIdHandler : IRequestHandler<GetRackById, ModelView<RackDto>>
@@ -28,12 +34,11 @@ namespace FreightManagement.Application.StorageRacks.Queries.GetRacks
 
         public async Task<ModelView<RackDto>> Handle(GetRackById request, CancellationToken cancellationToken)
         {
-            var rack = await _context.Racks.FindAsync(new object[] { request.Id },cancellationToken);
+            var rack = await _context.Racks.Where(l=> l.Id == request.Id )
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (rack == null)
-            {
                 throw new NotFoundException(nameof(Rack), request.Id);
-            }
 
             return new ModelView<RackDto>(
                 new RackDto

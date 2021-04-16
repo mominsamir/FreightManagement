@@ -101,8 +101,9 @@ const TruckList: React.FC = () => {
     (async () => {
       try {
         if(editedId !== 0){
-            var trailer = await truckServices.find(editedId);
-            setTruck(trailer);
+            var truck = await truckServices.find(editedId);
+            console.log(truck);
+            setTruck(truck);
             setMode('EDIT');
             toogleModel();
         }

@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import store from 'redux/store';
 import * as apiRequest from 'redux/slices/apiRequest';
-import { ValidationError } from 'Utils/validationHelper';
 import download from 'downloadjs';
 
 export type ApiResponse = Record<any, any> | Array<any>;
@@ -126,8 +125,7 @@ const handleErrors = function (res: Response) {
 
   if (res.status !== 200 && res.status !== 201)  {
     return res.json().then((resp) => {
-      console.log(resp);
-      throw new ApiError(res.status, resp);
+      throw new ApiError(res.status,"", resp.errors);
     });
   } else {
     return res.text().then(function(text) {
@@ -138,12 +136,14 @@ const handleErrors = function (res: Response) {
 
 export class ApiError extends Error {
   status: number;
-  response?: string | ValidationError;
+  response?: string;
+  errors? : Record<string, string[]>
 
-  constructor(status: number, response: string) {
+  constructor(status: number, response: string, errors?: Record<string, string[]>) {
     super('ApiError');
     this.status = status;
-    this.response = response;
+    this.response =response;
+    this.errors =  errors;
   }
 }
 

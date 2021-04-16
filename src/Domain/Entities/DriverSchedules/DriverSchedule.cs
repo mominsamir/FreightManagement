@@ -63,7 +63,7 @@ namespace FreightManagement.Domain.Entities.DriversSchedules
             }
         }
 
-        public void CancelSchedule()
+        public void TryCancelSchedule()
         {
             if (Status != DriverScheduleStatus.SCHEDULE_COMPLETED)
             {

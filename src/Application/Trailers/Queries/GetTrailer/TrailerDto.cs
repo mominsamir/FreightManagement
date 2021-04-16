@@ -8,11 +8,7 @@ namespace FreightManagement.Application.Trailers.Queries.GetTrailer
     public class TrailerDto : IMapFrom<Trailer>
     {
 
-        public TrailerDto()
-        {
-        }
-
-        public TrailerDto(long id, string numberPlate, string vIN, int compartment, double capacity, VehicleStatus status): this()
+        public TrailerDto(long id, string numberPlate, string vIN, int compartment, double capacity, VehicleStatus status)
         {
             Id = id;
             NumberPlate = numberPlate;

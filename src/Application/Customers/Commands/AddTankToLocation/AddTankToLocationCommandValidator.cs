@@ -16,7 +16,7 @@ namespace FreightManagement.Application.Customers.Commands.AddTankToLocation
                  .NotEmpty().WithMessage("Customer name is required.")
                  .MaximumLength(200).WithMessage("Customer name must not exceed 200 characters.");
 
-            RuleFor(v => v.fuelGrade)
+            RuleFor(v => v.FuelGrade)
                 .NotEmpty().WithMessage("FuelGrade is required.");
 
             RuleFor(v => v.Capactity)

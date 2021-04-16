@@ -8,10 +8,18 @@ namespace FreightManagement.Application.Customers.Commands.AddTankToLocation
 {
     public class AddTankToLocationCommand : IRequest
     {
-        public long LocationId;
-        public string Name;
-        public FuelGrade fuelGrade;
-        public double Capactity;
+        public AddTankToLocationCommand(long id, string name, FuelGrade fuelGrade, double capactity)
+        {
+            Id = id;
+            Name = name;
+            FuelGrade = fuelGrade;
+            Capactity = capactity;
+        }
+
+        public long Id { get; }
+        public string Name { get; }
+        public FuelGrade FuelGrade { get; }
+        public double Capactity { get; }
     }
 
     public class AddTankToLocationCommandHandler : IRequestHandler<AddTankToLocationCommand>
@@ -24,9 +32,9 @@ namespace FreightManagement.Application.Customers.Commands.AddTankToLocation
         }
         public async Task<Unit> Handle(AddTankToLocationCommand request, CancellationToken cancellationToken)
         {
-            var location = await _contex.Locations.FindAsync(new object[] { request.LocationId }, cancellationToken);
+            var location = await _contex.Locations.FindAsync(new object[] { request.Id }, cancellationToken);
 
-            location.AddNewTank(request.Name,request.fuelGrade, request.Capactity);
+            location.AddNewTank(request.Name,request.FuelGrade, request.Capactity);
 
             await _contex.SaveChangesAsync(cancellationToken);
 

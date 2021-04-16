@@ -18,7 +18,7 @@ namespace FreightManagement.WebUI.Controllers.Terminal
         [Authorize(Roles = "ADMIN,DISPATCHER")]
         public async Task<ActionResult<ModelView<RackDto>>> GetRack(long id)
         {
-            return await Mediator.Send(new GetRackById { Id = id});
+            return await Mediator.Send(new GetRackById (id));
         }
 
         [HttpPost]

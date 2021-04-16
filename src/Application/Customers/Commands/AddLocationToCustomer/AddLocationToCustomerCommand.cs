@@ -8,8 +8,14 @@ namespace FreightManagement.Application.Customers.Commands.AddLocationToCustomer
 {
     public class AddLocationToCustomerCommand : IRequest 
     {
-        public long customerId;
-        public long locationId;
+        public AddLocationToCustomerCommand(long id, long locationId)
+        {
+            Id = id;
+            LocationId = locationId;
+        }
+
+        public long Id { get; }
+        public long LocationId { get; }
     }
 
     public class AddLocationToCustomerCommandHandler : IRequestHandler<AddLocationToCustomerCommand>
@@ -22,17 +28,17 @@ namespace FreightManagement.Application.Customers.Commands.AddLocationToCustomer
 
         public async Task<Unit> Handle(AddLocationToCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(new object[] { request.customerId }, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.Id }, cancellationToken);
             if(customer == null)
             {
-                throw new NotFoundException(string.Format("Customer with Id {0} not found", request.customerId));
+                throw new NotFoundException(string.Format("Customer with Id {0} not found", request.Id));
             }
 
-            var location = await _context.Locations.FindAsync(new object[] { request.locationId }, cancellationToken);
+            var location = await _context.Locations.FindAsync(new object[] { request.LocationId }, cancellationToken);
 
             if (location == null)
             {
-                throw new NotFoundException(string.Format("Location with Id {0} not found", request.locationId));
+                throw new NotFoundException(string.Format("Location with Id {0} not found", request.LocationId));
             }
 
             customer.AddLocation(location);

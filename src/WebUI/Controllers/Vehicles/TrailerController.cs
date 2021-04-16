@@ -17,9 +17,9 @@ namespace FreightManagement.WebUI.Controllers.Vehicles
     {
         [HttpGet("{id}")]
         [Authorize(Roles = "DRIVER,ADMIN,DISPATCHER")]
-        public async Task<ActionResult<ModelView<TrailerDto>>> GetRack(long id)
+        public async Task<ActionResult<ModelView<TrailerDto>>> GetTrailer(long id)
         {
-            return await Mediator.Send(new GetTrailerById { Id = id });
+            return await Mediator.Send(new GetTrailerById ( id ));
         }
 
         [HttpGet]

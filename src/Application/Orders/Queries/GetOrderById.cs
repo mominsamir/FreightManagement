@@ -12,7 +12,12 @@ namespace FreightManagement.Application.Orders.Queries
 {
     public class GetOrderById : IRequest<ModelView<OrderDto>>
     {
-        public long Id;
+        public GetOrderById(long id)
+        {
+            Id = id;
+        }
+
+        public long Id { get; }
     }
 
     public class GetOrderByIdHandler : IRequestHandler<GetOrderById, ModelView<OrderDto>>
@@ -24,13 +29,16 @@ namespace FreightManagement.Application.Orders.Queries
         }
         public async Task<ModelView<OrderDto>> Handle(GetOrderById request, CancellationToken cancellationToken)
         {
-            var order = await _context.Orders.Include(oi => oi.OrderItems)
+            var order = await _context.Orders
+                .Include(o=> o.Customer)
+                .Include(oi => oi.OrderItems)
+                .ThenInclude(oi=> oi.Location)
+                .Include(oi => oi.OrderItems)
+                .ThenInclude(oi => oi.FuelProduct)
                 .Where(o => o.Id == request.Id).SingleOrDefaultAsync(cancellationToken);
 
             if(order == null)
-            {
                 throw new NotFoundException(string.Format("Order Not found with uid {0}", request.Id));
-            }
 
             var orderDto = new OrderDto
             (

@@ -25,7 +25,7 @@ namespace FreightManagement.Application.Common.Extentions
             foreach (var sortedColumn in sortedColumns)
             {
                 // Get the property from the TModel, based on the key
-                var prop = Expression.Property(parameter, sortedColumn.Column);
+                var prop = GetProperty(parameter, sortedColumn.Column);
 
                 // Build something like x => x.Cassette or x => x.SlotNumber
                 var exp = Expression.Lambda(prop, parameter);
@@ -34,14 +34,11 @@ namespace FreightManagement.Application.Common.Extentions
                 string method = String.Empty;
                 if (firstTime)
                 {
-                    method = sortedColumn.SortOrder == "ascend" ? "OrderBy" : "OrderByDescending";
-
+                    method = sortedColumn.SortOrder.Equals("ascend") ? "OrderBy" : "OrderByDescending";
                     firstTime = false;
                 }
                 else
-                {
-                    method = sortedColumn.SortOrder == "ascend" ? "ThenBy" : "ThenByDescending";
-                }
+                    method = sortedColumn.SortOrder.Equals("ascend") ? "ThenBy" : "ThenByDescending";
 
                 Type[] types = new Type[] { itemType, exp.Body.Type };
 
@@ -51,6 +48,18 @@ namespace FreightManagement.Application.Common.Extentions
             }
 
             return collection;
+        }
+
+        private static MemberExpression GetProperty(ParameterExpression parameter, string propertyOrFieldName)
+        {
+            if (propertyOrFieldName.Contains("."))
+                return propertyOrFieldName.Split('.')
+                   .Aggregate<string, MemberExpression>(null,
+                      (acc, p) => acc == null
+                          ? Expression.Property(parameter, p)
+                          : Expression.Property(acc, p));
+            else
+                return Expression.Property(parameter, propertyOrFieldName);
         }
     }
 

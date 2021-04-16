@@ -1,10 +1,10 @@
-﻿using FreightManagement.Application.TodoLists.Queries.ExportTodos;
+﻿using FreightManagement.Domain.Entities.Users;
 using System.Collections.Generic;
 
 namespace FreightManagement.Application.Common.Interfaces
 {
     public interface ICsvFileBuilder
     {
-        byte[] BuildTodoItemsFile(IEnumerable<TodoItemRecord> records);
+        byte[] BuildTodoItemsFile(IEnumerable<User> records);
     }
 }

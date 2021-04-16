@@ -8,8 +8,14 @@ namespace FreightManagement.Application.Customers.Commands.RemoveLocationCustome
 {
     public class RemoveLocationFromCustomerCommand : IRequest
     {
-        public long customerId;
-        public long locationId;
+        public RemoveLocationFromCustomerCommand(long id, long locationId)
+        {
+            Id = id;
+            LocationId = locationId;
+        }
+
+        public long Id { get; }
+        public long LocationId { get; }
     }
 
     public class RemoveLocationFromCustomerCommandHandler : IRequestHandler<RemoveLocationFromCustomerCommand>
@@ -22,13 +28,13 @@ namespace FreightManagement.Application.Customers.Commands.RemoveLocationCustome
         }
         public async Task<Unit> Handle(RemoveLocationFromCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customers.FindAsync(new object[] { request.customerId }, cancellationToken);
+            var customer = await _context.Customers.FindAsync(new object[] { request.Id }, cancellationToken);
             if (customer == null)
             {
-                throw new NotFoundException(string.Format("Customer with Id {0} not found", request.customerId));
+                throw new NotFoundException(string.Format("Customer with Id {0} not found", request.Id));
             }
 
-            customer.RemoveLocation(request.locationId);
+            customer.RemoveLocation(request.LocationId);
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -2,6 +2,7 @@
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Application.Customers.Queries.GetCustomerById;
+using FreightManagement.Domain.Entities.Customers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -50,16 +51,15 @@ namespace FreightManagement.Application.Customers.Queries.SearchCustomer
                 .WhereRules(request.FilterData)
                 .OrderByColumns(request.SortData);
 
-            var data = await query.Skip((request.Page - 1) * request.PageSize)
-                .OrderByDescending(i => i.Name)
-                .Take(request.PageSize)
+            var data = await query
                 .Select(c =>
                         new CustomerDto(
                             c.Id,
                             c.Name,
-                            c.Email,
+                            c.Email.Value,
                             c.BillingAddress,
-                            c.IsActive
+                            c.IsActive,
+                            new List<Location>()
                       )
                  )
                 .ToListAsync(cancellationToken);

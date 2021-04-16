@@ -18,7 +18,7 @@ namespace FreightManagement.Application.Common.Exceptions
         {
             Errors = failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-                .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+                .ToDictionary(failureGroup => String.IsNullOrWhiteSpace(failureGroup.Key)?"Errors": failureGroup.Key, failureGroup => failureGroup.ToArray());
         }
 
         public IDictionary<string, string[]> Errors { get; }
