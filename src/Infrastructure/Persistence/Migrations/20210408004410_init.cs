@@ -822,7 +822,7 @@ namespace FreightManagement.Infrastructure.Persistence.Migrations
                     LocationId = table.Column<long>(type: "bigint", nullable: false),
                     DeliveryType = table.Column<int>(type: "integer", nullable: false),
                     delivered_qnt = table.Column<double>(type: "double precision", nullable: false, defaultValue: 0.0),
-                    received_by_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    received_by_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     DispatchLoadingId = table.Column<long>(type: "bigint", nullable: false),
                     created_on = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_by = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),

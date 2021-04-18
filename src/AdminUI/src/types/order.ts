@@ -1,6 +1,6 @@
 import moment from "moment";
 import { Customer, jsonToCustomer } from "./customer";
-import { jsonToLocation } from "./location";
+import { Location,jsonToLocation } from "./location";
 import { FuelProduct, jsonToFuelProduct } from "./product";
 
 
@@ -31,8 +31,8 @@ export interface  OrderItem {
   });
 
   export const jsonToOrderItem = (json: any) => Object.assign({}, json, {
-    location : jsonToLocation(json.location),
-    fuelProduct: jsonToFuelProduct(json.fuelProduct)
+    location : json.location === undefined ? {}: jsonToLocation(json.location),
+    fuelProduct: json.fuelProduct === undefined ? {}:jsonToFuelProduct(json.fuelProduct)
   });    
 
   export const OrderStatusMap : Record<string, string> = {

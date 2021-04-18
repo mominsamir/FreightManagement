@@ -12,6 +12,7 @@ import DriverScheduleList from './driverSchedule/index';
 import LocationPages from './location/index';
 import CustomerPages from './customer/index';
 import OrderPages from './order/index';
+import DispatchPages from './dispatchOrder/index';
 
 const pages = { 
     Homepage, 
@@ -27,7 +28,8 @@ const pages = {
     DriverScheduleList,
     LocationPages,
     CustomerPages,
-    OrderPages
+    OrderPages,
+    DispatchPages
 };
 
 export default pages;

@@ -53,13 +53,7 @@ namespace FreightManagement.Application.DriverSchedules.Queries.SearchDriverSche
                 .WhereRules(request.FilterData)
                 .OrderByColumns(request.SortData);
 
-            // add where clause
-
-            // add sort clause
-
-            var data = await query.Skip((request.Page - 1) * request.PageSize)
-                .OrderByDescending(i => i.StartTime)
-                .Take(request.PageSize)
+            var data = await query
                 .Select(c =>
                         new DriverScheduleListDto(
                             c.Id,

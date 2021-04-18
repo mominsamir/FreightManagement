@@ -1,5 +1,6 @@
 ﻿using FreightManagement.Application.Common.Security;
 using FreightManagement.Domain.Entities.Customers;
+using FreightManagement.Domain.Entities.Disptaches;
 using FreightManagement.Domain.Entities.DriversSchedules;
 using FreightManagement.Domain.Entities.Orders;
 using FreightManagement.Domain.Entities.Products;
@@ -346,6 +347,21 @@ namespace FreightManagement.Infrastructure.Persistence
                         order.AddOrderItem(f,locations.FirstOrDefault(), 5000, "LOAD CODE");
                        });
                     context.Orders.Add(order);
+                });
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.Dispatches.Any())
+            {
+                var driverSchedule = await context.DriverScheduleLists.FirstAsync();
+                var orders = await context.Orders.ToListAsync();
+                var racks = await context.Racks.ToListAsync();
+                orders.ForEach(o =>
+                {
+                    var dispatch = new Dispatch(driverSchedule, o.ShipDate, racks.First(), o);
+                    o.MarkShipped();
+                    context.Add(dispatch);
                 });
 
                 await context.SaveChangesAsync();

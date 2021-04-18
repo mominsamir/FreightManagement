@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Customers\Commands\UpdateCustomer\" />
-    <Folder Include="Dispatches\Queries\" />
     <Folder Include="Vendors\Commands\UpdateStatusVendor\" />
   </ItemGroup>
 

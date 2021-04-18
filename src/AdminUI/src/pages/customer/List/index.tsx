@@ -24,27 +24,32 @@ const CustomerList: React.FC = () => {
     {
         title: 'Email',
         dataIndex: 'email',
-        sorter: false,
+        sortKey : 'email.value',
+        sorter: true,
     },    
     {
       title: 'Street',
       dataIndex: 'street',
-      sorter: false,
+      sortKey : 'billingAddress.street',
+      sorter: true,
     },    
     {
       title: 'City',
       dataIndex: 'city',
-      sorter: false
+      sortKey : 'billingAddress.city',
+      sorter: true
     },    
     {
       title: 'State',
       dataIndex: 'state',
-      sorter: false
+      sortKey : 'billingAddress.state',
+      sorter: true
     },    
     {
       title: 'ZipCode',
       dataIndex: 'zipCode',
-      sorter: false
+      sortKey : 'billingAddress.zipCode',      
+      sorter: true
     },    
     {
       title: 'Active',

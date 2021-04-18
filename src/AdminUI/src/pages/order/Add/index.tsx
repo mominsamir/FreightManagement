@@ -82,8 +82,9 @@ export const OrderModel: React.FC<CreateProps> = ({ order, mode }: CreateProps) 
     const save = (values: Order) => {
       (async () => {
         try {
-            var result = await orderServices.create(values);
-            history.push(`/dispatch/orders/${result}`);
+            var result: any = await orderServices.create(values);
+            console.log(result)
+            history.push(`/dispatch/orders/${result.id}`);
         } catch (error) {
           handleErrors(error, history, dispatch, form);
         }

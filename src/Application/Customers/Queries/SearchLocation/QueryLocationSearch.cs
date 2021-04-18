@@ -51,9 +51,7 @@ namespace FreightManagement.Application.Customers.Queries.SearchLocation
                 .WhereRules(request.FilterData)
                 .OrderByColumns(request.SortData);
 
-            var data = await query.Skip((request.Page - 1) * request.PageSize)
-                .OrderByDescending(i => i.Name)
-                .Take(request.PageSize)
+            var data = await query
                 .Select(c =>
                         new LocationDto(
                             c.Id,

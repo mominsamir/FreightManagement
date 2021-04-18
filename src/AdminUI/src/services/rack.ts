@@ -7,7 +7,7 @@ const BASE_URL = '/api/Rack';
 
 const find = async (id: number): Promise<Rack> => {
     let apiResp: any = await fetchApi.get(`${BASE_URL}/${id}`);
-    return jsonToRack(apiResp);
+    return jsonToRack(apiResp.model);
 };
 
 const search = async function (searchParams: SearchParams): Promise<PaginatedSearchResult<FuelProduct>> {

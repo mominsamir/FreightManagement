@@ -5,8 +5,7 @@ namespace FreightManagement.Domain.Entities.Vehicles
 {
     public class Truck : Vehicle
     {
-
-        public DateTime NextMaintanceDate;
+        public DateTime NextMaintanceDate { get; set; }
     }
 
 }

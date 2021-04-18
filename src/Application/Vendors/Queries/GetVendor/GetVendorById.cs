@@ -2,6 +2,8 @@
 using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,22 +22,18 @@ namespace FreightManagement.Application.Vendors.Queries.GetVendor
     public class GetVendorByIdHandler : IRequestHandler<GetVendorById, VendorDto>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetVendorByIdHandler(IApplicationDbContext context, IMapper mapper)
+        public GetVendorByIdHandler(IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<VendorDto> Handle(GetVendorById request, CancellationToken cancellationToken)
         {
-            var vendor = await _context.Vendors.FindAsync(request.Id);
+            var vendor = await _context.Vendors.Where(v=> v.Id ==request.Id).SingleOrDefaultAsync(cancellationToken);
 
             if( vendor == null)
-            {
                 throw new NotFoundException(nameof(vendor), request.Id);
-            }
 
             return new VendorDto
             {
@@ -45,7 +43,6 @@ namespace FreightManagement.Application.Vendors.Queries.GetVendor
                 IsActive = vendor.IsActive,
                 Address = vendor.Address
             };
-            //return _mapper.Map<VendorDto>(vendor);
         }
 
     }

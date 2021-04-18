@@ -14,10 +14,10 @@ export interface  Rack {
   
 export const jsonToRack = (json: any) => {
   return Object.assign({}, json, {
-    street: json.address.street,
-    city: json.address.city,
-    state: json.address.state,
-    country: json.address.country,
-    zipCode: json.address.zipCode,
+    street: json.address === undefined? '' : json.address.street ,
+    city: json.address === undefined? '' :json.address.city,
+    state: json.address === undefined? '' :json.address.state,
+    country: json.address === undefined? '' :json.address.country,
+    zipCode: json.address === undefined? '' :json.address.zipCode,
 })
 };

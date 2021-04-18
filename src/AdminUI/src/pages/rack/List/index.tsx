@@ -38,21 +38,25 @@ const RackList: React.FC = () => {
     {
       title: 'Street',
       dataIndex: 'street',
+      sortKey: 'address.street',
       sorter: true,
     },    
     {
       title: 'City',
       dataIndex: 'city',
+      sortKey: 'address.city',
       sorter: true,
     },    
     {
       title: 'State',
       dataIndex: 'state',
+      sortKey: 'address.state',
       sorter: true,
     },    
     {
       title: 'ZipCode',
       dataIndex: 'zipCode',
+      sortKey: 'address.zipCode',
       sorter: true,
     },    
     {

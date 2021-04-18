@@ -19,26 +19,31 @@ const LocationList: React.FC = () => {
     {
         title: 'Email',
         dataIndex: 'email',
+        sortKey: 'email.value',
         sorter: true,
     },    
     {
       title: 'Street',
       dataIndex: 'street',
+      sortKey: 'deliveryAddress.street',
       sorter: true,
     },    
     {
       title: 'City',
       dataIndex: 'city',
+      sortKey: 'deliveryAddress.city',
       sorter: true,
     },    
     {
       title: 'State',
       dataIndex: 'state',
+      sortKey: 'deliveryAddress.state',
       sorter: true,
     },    
     {
       title: 'ZipCode',
       dataIndex: 'zipCode',
+      sortKey: 'deliveryAddress.zipCode',
       sorter: true,
     },    
     {

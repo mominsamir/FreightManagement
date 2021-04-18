@@ -25,7 +25,7 @@ namespace FreightManagement.Domain.Entities.Disptaches
             _deliveries = new List<DisptachDelivery>();
         }
 
-        public DispatchLoading(OrderItem orderItem, Rack rack, Dispatch dispatch)
+        public DispatchLoading(OrderItem orderItem, Rack rack, Dispatch dispatch): this()
         {
             OrderItem = orderItem;
             Rack = rack;

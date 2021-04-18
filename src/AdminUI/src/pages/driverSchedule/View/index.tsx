@@ -12,6 +12,7 @@ import { toDateTimeString } from 'Utils/dateUtils';
 import { Column } from 'types/dataTable';
 import ModelView from 'components/ModelView';
 import { PlusOutlined, EditOutlined, TableOutlined } from '@ant-design/icons';
+import CreateSchedule from '../Add';
 
 interface ViewScheduleProps {
   id: string;  
@@ -24,6 +25,7 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
 
     const[schedule, setSchedule] = useState<DriverSchedule>();
     const[realod, setReload] = useState<boolean>(true);
+    const[showCreateModel, setShowCreateModel] = useState<boolean>(false);
     const [applyTo, setApplyTo] = useState<Map<number, DriverScheduleCheckList>>(new Map());
     const props  = useParams<ViewScheduleProps>();
     const history = useHistory();
@@ -97,16 +99,15 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
       ];      
 
       const buttons = [
-        <Link to={`/dispatch/schedules/add`}>
-        <Button icon={<PlusOutlined />}>Add new</Button>
-        </Link>,
-        <Link to={`/dispatch/schedules/edit/${props.id}`}>
-            <Button icon={<EditOutlined />}>Edit</Button>
-        </Link>,
+        <Button icon={<PlusOutlined />} onClick={()=>toogleModel()}>Add new</Button>,
         <Link to={`/dispatch/schedules`}>
             <Button icon={<TableOutlined />}>All</Button>
         </Link>
       ]      
+
+    const toogleModel = () => {
+        setShowCreateModel(!showCreateModel);
+    };
 
     return (
       <ModelView title="Driver Schedule" extra={buttons}>
@@ -128,9 +129,9 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
             </Col>
             <Col span={24}>
                 <Table 
-                  title={()=> 'Check List'}
+                  title={()=> (<h4>Check List</h4> )}
                   columns={columns} 
-                  rowKey="id"
+                  rowKey={row=> row.id}
                   pagination={false}
                   dataSource={schedule?.checkList}
                   footer={() => (
@@ -139,7 +140,14 @@ const ViewSchedule: React.FC<ViewScheduleProps> = () => {
                     </div>
                   )}>
                 </Table>              
-            </Col>            
+            </Col>  
+            {showCreateModel &&
+                (<Col>
+                  <CreateSchedule 
+                      cancel={toogleModel}>
+                  </CreateSchedule>
+                </Col>)}                
+
         </Row>
       </ModelView>        
     );

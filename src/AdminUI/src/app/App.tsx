@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Helmet} from "react-helmet";
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, Link } from 'react-router-dom';
 import { AppDispatch } from 'redux/store';
 import { useDispatch } from 'react-redux';
 import { useLocation, Redirect } from 'react-router-dom';
@@ -83,7 +83,7 @@ const App: React.FC = () => {
             <Row>
             <Col span={3}>
               <div className={styles.logo}>
-                <span className={styles.suffix}>Dispatch App</span>
+                <span className={styles.suffix}><Link to="/dispatch/home">Dispatch App</Link></span>
               </div>
             </Col>
             <Col span={1}>
@@ -144,6 +144,8 @@ const App: React.FC = () => {
                   <Route path="/dispatch/orders/add" component={pages.OrderPages.Add} />
                   <Route path="/dispatch/orders/:id" component={pages.OrderPages.View} />                  
                   <Route path="/dispatch/orders" component={pages.OrderPages.List} />
+                  <Route path="/dispatch/dispatches/:id" component={pages.DispatchPages.View} />                  
+                  <Route path="/dispatch/dispatches" component={pages.DispatchPages.List} />
                   <Route path="/unknown-error" component={pages.ErrorPages.UnknownError} />
                   <Route path="/not-authorized" component={pages.ErrorPages.NotAuthorized} />
                   <Route path="*" component={pages.ErrorPages.NotFound} />

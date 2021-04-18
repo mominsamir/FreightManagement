@@ -28,7 +28,7 @@ namespace FreightManagement.Application.Users.Queries.UserConfiguration
                 Children = new List<MenuItem>() {
                     new MenuItem { Label = "Orders", Key = "Order", URL="/dispatch/orders" },
                     new MenuItem { Label = "Schedule", Key = "Schedules", URL="/dispatch/schedules" },
-                    new MenuItem { Label = "Dispatchs", Key = "Dispatch",URL="/dispatch/dispatchs" }
+                    new MenuItem { Label = "Dispatchs", Key = "Dispatch",URL="/dispatch/dispatches" }
                 }
             };
             menus.Add(orderMenu);

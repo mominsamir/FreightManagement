@@ -19,13 +19,10 @@ import { jsonToTrailer, jsonToTruck, Trailer, Truck } from "./vehicle";
   export const jsonToDriverSchedule = (json: any) => Object.assign({}, json, {
       startTime: moment(json.startTime),
       endTime: moment(json.startTime),
-        driver: jsonToUser(json.driver),
-        trailer: jsonToTrailer(json.trailer),
-        truck: jsonToTruck(json.truck),
+      driver: jsonToUser(json.driver),
+      trailer: jsonToTrailer(json.trailer),
+      truck: jsonToTruck(json.truck),
     });
-
-//    export const jsonToLocationTanks = (json: any) => Object.assign({}, json, {});    
-
 
   export interface  DriverScheduleList {
     id: number;

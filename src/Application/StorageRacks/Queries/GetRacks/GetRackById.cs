@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FreightManagement.Application.Common.Exceptions;
+﻿using FreightManagement.Application.Common.Exceptions;
 using FreightManagement.Application.Common.Interfaces;
 using FreightManagement.Application.Common.Models;
 using FreightManagement.Domain.Entities.StorageRack;
@@ -24,12 +23,10 @@ namespace FreightManagement.Application.StorageRacks.Queries.GetRacks
     public class GetRackByIdHandler : IRequestHandler<GetRackById, ModelView<RackDto>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetRackByIdHandler(IApplicationDbContext context, IMapper mapper)
+        public GetRackByIdHandler(IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<ModelView<RackDto>> Handle(GetRackById request, CancellationToken cancellationToken)

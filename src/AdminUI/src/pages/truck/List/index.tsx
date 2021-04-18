@@ -41,6 +41,7 @@ const TruckList: React.FC = () => {
     {
       title: 'Maintance Date',
       dataIndex: 'nextMaintanceDate',
+      sortKey: 'NextMaintanceDate',
       sorter: true,
       render: (date:Moment) => toDateString(date)
     },    

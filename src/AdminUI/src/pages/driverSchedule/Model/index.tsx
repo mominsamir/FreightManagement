@@ -81,14 +81,14 @@ const ScheduleAddModel: React.FC<Props> = ({ schedule, mode, onOk, onCancel }: P
           <Col span={20}></Col>
           <Col span={2}>
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button style={{width:'100%'}} type="primary" htmlType="submit">
               {mode === 'ADD'? 'Save' : 'Update'} 
               </Button>
             </Form.Item>
           </Col>
           <Col span={2}>
             <Form.Item>
-              <Button type="text" htmlType="button" onClick={onCancel}>
+              <Button style={{width:'100%'}} type="dashed" htmlType="button" onClick={onCancel}>
                  Cancel
               </Button>
             </Form.Item>

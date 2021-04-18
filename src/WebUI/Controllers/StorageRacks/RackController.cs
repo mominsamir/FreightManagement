@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FreightManagement.WebUI.Controllers.Terminal
 {
-    [Authorize]
+
     public class RackController : ApiControllerBase
     {
         [HttpGet("{id}")]
@@ -31,14 +31,15 @@ namespace FreightManagement.WebUI.Controllers.Terminal
 
         [HttpPost]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult<long>> Create(CreateRackCommand command)
+        public async Task<ActionResult<dynamic>> Create(CreateRackCommand command)
         {
-            return await Mediator.Send(command);
+            var id = await Mediator.Send(command);
+            return new { Id = id, sucess = true, message = "Rack Added." };
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> Update(int id, UpdateRackCommand command)
+        public async Task<ActionResult<dynamic>> Update(int id, UpdateRackCommand command)
         {
             if (id != command.Id)
             {
@@ -47,12 +48,12 @@ namespace FreightManagement.WebUI.Controllers.Terminal
 
             await Mediator.Send(command);
 
-            return NoContent();
+            return new { Id = id, sucess = true, message = "Rack Updated." };
         }
 
         [HttpPut("{id}/activate")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> ActivateTerminal(int id)
+        public async Task<ActionResult<dynamic>> ActivateTerminal(int id)
         {
             var command = new RackStatusCommand
             {
@@ -61,12 +62,12 @@ namespace FreightManagement.WebUI.Controllers.Terminal
             };
             await Mediator.Send(command);
 
-            return NoContent();
+            return new { Id = id, sucess = true, message = "Rack activated." };
         }
 
         [HttpPut("{id}/inactivate")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> DeactivateTerminal(int id)
+        public async Task<ActionResult<dynamic>> DeactivateTerminal(int id)
         {
             var command = new RackStatusCommand
             {
@@ -75,7 +76,7 @@ namespace FreightManagement.WebUI.Controllers.Terminal
             };
             await Mediator.Send(command);
 
-            return NoContent();
+            return new { Id = id, sucess = true, message = "Rack inactivated." };
         }
 
     }

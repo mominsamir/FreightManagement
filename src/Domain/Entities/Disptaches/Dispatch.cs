@@ -39,7 +39,7 @@ namespace FreightManagement.Domain.Entities.Disptaches
             DateTime dispatchDateTime,
             Rack rack,
             Order order 
-            )
+            ): this()
         {
             DriverSchedule = driverSchedule;
             DispatchDateTime = dispatchDateTime;

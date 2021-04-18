@@ -20,7 +20,6 @@ namespace FreightManagement.Infrastructure.Persistence.Configurations.Disptaches
 
             builder.Property(t => t.ReceivedByName)
                 .HasColumnName("received_by_name")
-                .IsRequired()
                 .HasMaxLength(50);
 
             builder

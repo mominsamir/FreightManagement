@@ -31,14 +31,15 @@ namespace FreightManagement.WebUI.Controllers.Vendors
 
         [HttpPost]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult<long>> Create(CreateVendorCommand command)
+        public async Task<ActionResult<dynamic>> Create(CreateVendorCommand command)
         {
-            return await Mediator.Send(command);
+            var id = await Mediator.Send(command);
+            return new { Id = id, sucess = true, message = "Vender Added." };
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> Update(int id, UpdateVendorCommand command)
+        public async Task<ActionResult<dynamic>> Update(int id, UpdateVendorCommand command)
         {
             if (id != command.Id)
             {
@@ -47,7 +48,7 @@ namespace FreightManagement.WebUI.Controllers.Vendors
 
             await Mediator.Send(command);
 
-            return NoContent();
+            return new { Id = id, sucess = true, message = "Vender Updated." };
         }
     }
 }

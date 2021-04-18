@@ -10,7 +10,6 @@ using FreightManagement.Application.Users.Queries.UserSearch;
 using FreightManagement.Domain.Entities.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FreightManagement.WebUI.Controllers.Users
@@ -43,7 +42,7 @@ namespace FreightManagement.WebUI.Controllers.Users
 
         [HttpPut("{id}")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> Update(int id, UpdateUserCommand command)
+        public async Task<ActionResult<dynamic>> Update(int id, UpdateUserCommand command)
         {
             if (id != command.Id)
             {
@@ -52,20 +51,21 @@ namespace FreightManagement.WebUI.Controllers.Users
             
             await Mediator.Send(command);
 
-            return Ok();
+            return new { Id = id, sucess = true, message = "User Updated." };
         }
 
         [HttpPost]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult<long>> Create(CreateUserCommand command)
+        public async Task<ActionResult<dynamic>> Create(CreateUserCommand command)
         {
-            return await Mediator.Send(command);
+            var id  = await Mediator.Send(command);
+            return new { Id = id, sucess = true, message = "User Created." };
         }
 
         [HttpPut]
         [Route("{id}/resetpassword")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> ResetPassword(long id, ResetPasswordCommand command)
+        public async Task<ActionResult<dynamic>> ResetPassword(long id, ResetPasswordCommand command)
         {
             if (id != command.Id)
             {
@@ -74,13 +74,13 @@ namespace FreightManagement.WebUI.Controllers.Users
 
             await Mediator.Send(command);
 
-            return Ok();
+            return new { Id = id, sucess = true, message = "User password reset success." };
         }
 
         [HttpPut]
         [Route("{id}/activate")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> Activate(long id, UpdateUserStatusToActiveCommand command)
+        public async Task<ActionResult<dynamic>> Activate(long id, UpdateUserStatusToActiveCommand command)
         {
             if (id != command.Id)
             {
@@ -89,13 +89,13 @@ namespace FreightManagement.WebUI.Controllers.Users
 
             await Mediator.Send(command);
 
-            return Ok();
+            return new { Id = id, sucess = true, message = "User Activated success." };
         }
 
         [HttpPut]
         [Route("{id}/inactivate")]
         [Authorize(Roles = Role.ADMIN)]
-        public async Task<ActionResult> InActivate(long id, UpdateUserStatusToInActiveCommand command)
+        public async Task<ActionResult<dynamic>> InActivate(long id, UpdateUserStatusToInActiveCommand command)
         {
             if (id != command.Id)
             {
@@ -104,7 +104,7 @@ namespace FreightManagement.WebUI.Controllers.Users
 
             await Mediator.Send(command);
 
-            return Ok();
+            return new { Id = id, sucess = true, message = "User deactivated success." };
         }
 
     }

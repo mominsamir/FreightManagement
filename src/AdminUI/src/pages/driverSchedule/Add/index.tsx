@@ -179,16 +179,16 @@ const CreateScheduleForm : React.FC<PropsForm> = ({ onOk, onCancel }: PropsForm)
             </Form.Item>
           </Col>          
          </Row>
-        <Row>
+        <Row gutter={8}>
           <Col span={20}></Col>
           <Col span={2}>
             <Form.Item>
-              <Button type="primary" htmlType="submit">Save</Button>
+              <Button style={{width:'100%'}} type="primary" htmlType="submit">Save</Button>
             </Form.Item>
           </Col>
           <Col span={2}>
             <Form.Item>
-              <Button type="text" htmlType="button" onClick={onCancel}>
+              <Button style={{width:'100%'}} type="dashed" htmlType="button" onClick={onCancel}>
                  Cancel
               </Button>
             </Form.Item>
